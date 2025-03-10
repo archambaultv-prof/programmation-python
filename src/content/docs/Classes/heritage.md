@@ -2,7 +2,7 @@
 title: Héritage
 description: Héritage en programmation orientée objet.
 sidebar:
-  order: 901
+  order: 902
 ---
 
 L'héritage est un concept fondamental en programmation orientée objet. Il permet

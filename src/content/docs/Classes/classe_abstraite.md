@@ -2,7 +2,7 @@
 title: Classe abstraite et interface
 description: Classe abstraite et interface en Python.
 sidebar:
-  order: 902
+  order: 903
 ---
 
 Nous avons vu qu'avec la notion d'héritage, il est possible de définir des
