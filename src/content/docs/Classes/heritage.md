@@ -17,7 +17,7 @@ classe de base pour définir une classe `PointCouleur` qui ajoute un attribut
 ajoute un attribut `titre` à un point. Ces deux classes héritent des attributs
 et des méthodes de la classe `Point`. Visualisons cela avec un diagramme de
 classes :
-
+<!-- 
 <center>
 
 ```mermaid
@@ -43,7 +43,7 @@ classDiagram
     Point <|-- PointTitre
 ```
 
-</center>
+</center> -->
 
 Le code Python correspondant serait le suivant :
 
