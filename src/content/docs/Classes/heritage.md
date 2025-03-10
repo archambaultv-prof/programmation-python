@@ -15,8 +15,8 @@ Par exemple, la classe `Point` définie précédemment peut être utilisée comm
 classe de base pour définir une classe `PointCouleur` qui ajoute un attribut
 `couleur` à un point. On pourrait aussi définir une classe `PointTitre` qui
 ajoute un attribut `titre` à un point. Ces deux classes héritent des attributs
-et des méthodes de la classe `Point`. Visualisons cela avec un diagramme de
-classes :
+et des méthodes de la classe `Point`.
+
 <!-- 
 <center>
 
