@@ -1,0 +1,92 @@
+/* Remove default numbering */
+.mcqOptions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Each option is laid out as a flex row */
+  .option {
+    display: flex;
+    align-items: flex-start; /* ensures the radio button stays at the top */
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Highlight an option on hover */
+  .option:hover {
+    background-color: #d0e7f9;
+    cursor: pointer;
+  }
+  
+  .option input[type="radio"] {
+    margin-top: 0.5rem;          /* aligns with multi-line labels */
+    margin-right: 0.5rem;        /* space between radio button and label */
+  }
+  
+  .optionLabel {
+    flex: 1;
+    background-color: transparent;
+  }
+  
+  .optionLabel:hover {
+    cursor: pointer;
+  }
+
+  /* Submit Button base styling */
+  .submitButton {
+    width: 150px;        /* largeur fixe */
+    height: 40px;        /* hauteur fixe */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: none;
+    background-color: rgb(53, 120, 229);
+    color: white;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  /* General hover for the submit button */
+  .submitButton:hover {
+    background-color: #0056b3;
+    transform: scale(1.02);
+  }
+  
+  /* Active (pressed) state */
+  .submitButton:active {
+    transform: scale(0.98);
+  }
+  
+  /* Styles applied on submission */
+  .correct {
+    background-color: green;
+  }
+  
+  .incorrect {
+    background-color: red;
+  }
+  
+  /* Override hover styles once submitted */
+  .submitButton.correct:hover {
+    background-color: green;
+    transform: none;
+    cursor: default;
+  }
+  
+  .submitButton.incorrect:hover {
+    background-color: red;
+    transform: none;
+    cursor: default;
+  }
+
+
+  .multipleChoiceSeparator {
+    margin: 2rem 0;
+    /* Optionally, add a border or background for a visual divider */
+    border-top: 1px solid rgb(76, 179, 212);
+  }
