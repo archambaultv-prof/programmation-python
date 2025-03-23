@@ -1,5 +1,5 @@
 /* Remove default numbering */
-.mcqOptions {
+.optionsList {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -90,3 +90,57 @@
     /* Optionally, add a border or background for a visual divider */
     border-top: 1px solid rgb(76, 179, 212);
   }
+
+  /* Container for the entire carousel */
+.carouselContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9; */
+}
+
+/* Content area where each question is rendered */
+.carouselContent {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Navigation area for Previous/Next buttons and status text */
+.carouselNavigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 1rem 1.5rem 1rem;
+}
+
+/* Navigation buttons styling */
+.carouselNavigation button {
+  width: 100px;
+  height: 40px;
+  border: none;
+  background-color: rgb(53, 120, 229);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Hover effect for navigation buttons */
+.carouselNavigation button:hover {
+  background-color: #0056b3;
+}
+
+/* Disabled state for navigation buttons */
+.carouselNavigation button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Status text (e.g., Question 1 of N) */
+.carouselNavigation span {
+  font-size: 1rem;
+}

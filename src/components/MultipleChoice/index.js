@@ -1,7 +1,7 @@
 import React, { useId, useState } from 'react';
 import styles from "./styles.module.css";
 
-export function Option(props) {
+export function MCOption(props) {
   return (
     <li className={styles.option}>
       <input 
@@ -74,7 +74,7 @@ export function MultipleChoice(props) {
 
   return (
     <>
-      <ol className={styles.mcqOptions}>
+      <ol className={styles.optionsList}>
         {options}
       </ol>
       <div>
@@ -105,6 +105,46 @@ export function ManyMultipleChoice(props) {
           </React.Fragment>
         ))}
       </ol>
+    </div>
+  );
+}
+
+export function MultipleChoiceCarousel(props) {
+  const children = React.Children.toArray(props.children);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    if (currentIndex < children.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  return (
+    <div className={styles.carouselContainer}>
+      <div className={styles.carouselNavigation}>
+        <button onClick={handlePrevious} disabled={currentIndex === 0}>
+          Précédent
+        </button>
+        <span>
+          Question {currentIndex + 1} de {children.length}
+        </span>
+        <button onClick={handleNext} disabled={currentIndex === children.length - 1}>
+          Suivant
+        </button>
+      </div>
+      <div className={styles.carouselContent}>
+        {children.map((child, index) => (
+          <div key={index} style={{ display: index === currentIndex ? 'block' : 'none' }}>
+            {child}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import {MultipleChoice, Option, ManyMultipleChoice} from '@site/src/components/MultipleChoice';
+import {MultipleChoice, MCOption, ManyMultipleChoice, MultipleChoiceCarousel} from '@site/src/components/MultipleChoice';
 
 # This is a test
 
@@ -12,35 +12,84 @@ This is a test of the multiple choice component.
  <ManyMultipleChoice>
     <MultipleChoice>
     Quel est l'outil le plus adapté pour écrire du code Python ?
-        <Option>
+        <MCOption>
         web browser. Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text
-        </Option>
-        <Option>
+        </MCOption>
+        <MCOption>
     ```python
     print("Hello, World!")
     ```
-    </Option>
-        <Option isCorrect>
+    </MCOption>
+        <MCOption isCorrect>
         VS Code
-        </Option>
+        </MCOption>
     </MultipleChoice>
 
     <MultipleChoice>
     Une autre question
-        <Option>
+        <MCOption>
         web browser.
-        </Option>
-        <Option>
+        </MCOption>
+        <MCOption>
     ```python
     print("Hello, World!")
     ```
-        </Option>
-        <Option isCorrect>
+        </MCOption>
+        <MCOption isCorrect>
         VS Code
-        </Option>
-        <Option>
+        </MCOption>
+        <MCOption>
         Bin oui toi
-        </Option>
+        </MCOption>
     </MultipleChoice>
 </ManyMultipleChoice>
+</details>
+
+Avec carousel
+<details>
+<summary><strong>🤔 Testez votre compréhension</strong></summary>
+
+ <MultipleChoiceCarousel>
+    <MultipleChoice>
+    Quel est l'outil le plus adapté pour écrire du code Python ?
+        <MCOption>
+        web browser. Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text
+        </MCOption>
+        <MCOption>
+    ```python
+    print("Hello, World!")
+    ```
+    </MCOption>
+        <MCOption isCorrect>
+        VS Code
+        </MCOption>
+    </MultipleChoice>
+
+    <MultipleChoice>
+    Une autre question
+        <MCOption>
+        web browser.
+        </MCOption>
+        <MCOption>
+    ```python
+    print("Hello, World!")
+    ```
+        </MCOption>
+        <MCOption isCorrect>
+        VS Code
+        </MCOption>
+        <MCOption>
+        Bin oui toi
+        </MCOption>
+        <MCOption>
+        Bin oui toi
+        </MCOption>
+        <MCOption>
+        Bin oui toi
+        </MCOption>
+        <MCOption>
+        Bin oui toi
+        </MCOption>
+    </MultipleChoice>
+</MultipleChoiceCarousel>
 </details>
