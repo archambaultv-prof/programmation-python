@@ -9,6 +9,9 @@ import CardFooter from '@site/src/components/Card/CardFooter';
 import CardHeader from '@site/src/components/Card/CardHeader';
 import CardImage from '@site/src/components/Card/CardImage';
 import Caroussel from '@site/src/components/Caroussel';
+import MultipleChoice from '@site/src/components/MultipleChoice';
+import MultipleChoiceList from '@site/src/components/MultipleChoice/MultipleChoiceList';
+import MultipleChoiceOption from '@site/src/components/MultipleChoice/MultipleChoiceOption';
 
 export default {
   // Reusing the default mapping
@@ -21,4 +24,7 @@ export default {
   CardFooter, 
   CardImage,
   Caroussel,
+  MultipleChoice,
+  MultipleChoiceList,
+  MultipleChoiceOption,
 };

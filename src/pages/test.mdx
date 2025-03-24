@@ -1,4 +1,3 @@
-import {MultipleChoice, MCOption, ManyMultipleChoice, MultipleChoiceCarousel} from '@site/src/components/MultipleChoice';
 
 # This is a test
 
@@ -6,90 +5,106 @@ This is a test of the multiple choice component.
 
 ### Quizz
 
-<details>
-<summary><strong>🤔 Testez votre compréhension</strong></summary>
-
- <ManyMultipleChoice>
-    <MultipleChoice>
+    <MultipleChoice style={{padding: "1rem", marginBottom: "1rem"}} shadow="lw">
     Quel est l'outil le plus adapté pour écrire du code Python ?
-        <MCOption>
+        <MultipleChoiceOption>
         web browser. Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text
-        </MCOption>
-        <MCOption>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
     ```python
     print("Hello, World!")
     ```
-    </MCOption>
-        <MCOption isCorrect>
+    </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
         VS Code
-        </MCOption>
+        </MultipleChoiceOption>
+    </MultipleChoice>
+
+<details>
+<summary><strong>🤔 Testez votre compréhension</strong></summary>
+
+ <MultipleChoiceList>
+    <MultipleChoice>
+    Quel est l'outil le plus adapté pour écrire du code Python ?
+        <MultipleChoiceOption>
+        web browser. Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+    ```python
+    print("Hello, World!")
+    ```
+    </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
+        VS Code
+        </MultipleChoiceOption>
     </MultipleChoice>
 
     <MultipleChoice>
     Une autre question
-        <MCOption>
+        <MultipleChoiceOption>
         web browser.
-        </MCOption>
-        <MCOption>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
     ```python
     print("Hello, World!")
     ```
-        </MCOption>
-        <MCOption isCorrect>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
         VS Code
-        </MCOption>
-        <MCOption>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
         Bin oui toi
-        </MCOption>
+        </MultipleChoiceOption>
     </MultipleChoice>
-</ManyMultipleChoice>
+</MultipleChoiceList>
 </details>
 
-Avec carousel
-<details>
+{/* Avec carousel
+<details> 
 <summary><strong>🤔 Testez votre compréhension</strong></summary>
 
  <Caroussel>
     <MultipleChoice>
     Quel est l'outil le plus adapté pour écrire du code Python ?
-        <MCOption>
+        <MultipleChoiceOption>
         web browser. Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text
-        </MCOption>
-        <MCOption>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
     ```python
     print("Hello, World!")
     ```
-    </MCOption>
-        <MCOption isCorrect>
+    </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
         VS Code
-        </MCOption>
+        </MultipleChoiceOption>
     </MultipleChoice>
 
     <MultipleChoice>
     Une autre question
-        <MCOption>
+        <MultipleChoiceOption>
         web browser.
-        </MCOption>
-        <MCOption>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
     ```python
     print("Hello, World!")
     ```
-        </MCOption>
-        <MCOption isCorrect>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
         VS Code
-        </MCOption>
-        <MCOption>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
         Bin oui toi
-        </MCOption>
-        <MCOption>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
         Bin oui toi
-        </MCOption>
-        <MCOption>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
         Bin oui toi
-        </MCOption>
-        <MCOption>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
         Bin oui toi
-        </MCOption>
+        </MultipleChoiceOption>
     </MultipleChoice>
 </Caroussel>
 </details>
+*/}
