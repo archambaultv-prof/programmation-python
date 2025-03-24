@@ -23,13 +23,15 @@ mettant l'accent sur les fonctionnalités attendues du système.
 Son utilité est d'identifier clairement les besoins fonctionnels et les rôles des
 différents acteurs. En voici un exemple simple :
 
-```mermaid
+export const d1 = `
 flowchart LR
   Client([👤 Client]) --> SeConnecter[Se connecter]
   Client --> Reserver[Réserver un billet]
   Client --> Annuler[Annuler une réservation]
   Administrateur([👤 Administrateur]) --> Gerer[Gérer les réservations]
-```
+`
+
+<WithMermaidCode code={d1} />
 
 ## Diagramme de séquence
 
@@ -39,7 +41,7 @@ eux en termes de messages échangés au fil du temps.
 Son utilité est de comprendre les interactions dynamiques entre différents
 éléments du système dans des scénarios précis. Voici un exemple :
 
-```mermaid
+export const d2 = `
 sequenceDiagram
   participant Utilisateur
   participant Interface
@@ -48,7 +50,9 @@ sequenceDiagram
   Interface->>Serveur: Envoie les infos de paiement
   Serveur-->>Interface: Valide le paiement
   Interface-->>Utilisateur: Confirme la commande
-```
+`
+
+<WithMermaidCode code={d2} />
 
 ## Diagramme d'activité
 
@@ -57,13 +61,15 @@ activité ou d'un processus métier dans un système, semblable à un organigram
 
 Sont utilité est de modéliser les flux d'activités pour visualiser clairement le comportement du système.
 
-```mermaid
+export const d3 = `
 flowchart TD
   A[Sélection du cours] --> B[Vérification des prérequis]
   B -->|Prérequis validés| C[Paiement des frais]
   B -->|Prérequis non validés| D[Notification d'erreur]
   C --> E[Confirmation d'inscription]
-```
+`
+
+<WithMermaidCode code={d3} />
 
 ## Diagramme de classe
 
@@ -74,28 +80,26 @@ classes.
 Son utilité est de modéliser clairement la structure des données et leur
 organisation dans le système logiciel. Voici un exemple :
 
-```mermaid
+export const d4 = `
 classDiagram
-  class Livre{
-    +String titre
-    +String auteur
-    +emprunterLivre()
-    +retournerLivre()
+  class Personne{
+    +str nom
+    +int id
   }
 
-  class Emprunteur{
-    +String nom
-    +int id
+  class Lecteur{
+    +int no_membre
     +emprunterLivre()
     +retournerLivre()
   }
 
   class Bibliothécaire{
-    +String nom
-    +int id
-    +gererLivres()
+    +int no_employe
+    +rangerLivres()
   }
 
-  Emprunteur --> Livre : emprunte
-  Bibliothécaire --> Livre : gère
-```
+  Personne  <|-- Lecteur
+  Personne  <|-- Bibliothécaire
+`
+
+<WithMermaidCode code={d4} />

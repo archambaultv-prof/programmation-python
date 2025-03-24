@@ -43,7 +43,7 @@ projet, pour visualiser et optimiser les procédures opérationnelles.
 
 Voici un exemple de diagramme d'activité illustrant le processus d'inscription à un cours :
 
-```mermaid
+export const d1 = `
 flowchart TD
   Start([Début]) --> SelectionCours[Sélectionner un cours]
   SelectionCours --> VerifierPrerequis{Prérequis validés ?}
@@ -52,7 +52,9 @@ flowchart TD
   Paiement --> ConfirmerInscription[Confirmer l'inscription]
   ConfirmerInscription --> Fin([Fin])
   ErreurPrerequis --> Fin
-```
+`
+
+<WithMermaidCode code={d1} />
 
 ## Bonnes pratiques pour réaliser un diagramme d'activité
 
