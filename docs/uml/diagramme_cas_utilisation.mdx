@@ -25,9 +25,11 @@ flowchart (car MermaidJS ne supporte pas directement les useCaseDiagrams) :
 
 {/* TODO: Mettre les trois examples dans un carroussel */}
 
-<Card style={{"margin-bottom": "1.5rem"}}>
+<Tabs>
+<TabItem value="exemple_1" label="Exemple 1">
+<Card >
   <CardHeader>
-  **Exemple 1 : Application web de commerce électronique**
+  **Application web de commerce électronique**
   </CardHeader>
   <CardBody>
 ```mermaid
@@ -40,10 +42,12 @@ flowchart LR
 ```
    </CardBody>
 </Card>
+</TabItem>
 
-<Card style={{"margin-bottom": "1.5rem"}}>
+<TabItem value="exemple_2" label="Exemple 2">
+<Card >
   <CardHeader>
-**Exemple 2 : Système de gestion d'inscription à un cours**
+**Système de gestion d'inscription à un cours**
   </CardHeader>
   <CardBody>
 ```mermaid
@@ -55,10 +59,12 @@ flowchart LR
 ```
    </CardBody>
 </Card>
+</TabItem>
 
-<Card style={{"margin-bottom": "1.5rem"}}>
+<TabItem value="exemple_3" label="Exemple 3">
+<Card >
   <CardHeader>
-**Exemple 3 : Plateforme de réservation d'hôtel**
+**Plateforme de réservation d'hôtel**
   </CardHeader>
   <CardBody>
 ```mermaid
@@ -70,3 +76,6 @@ flowchart LR
 ```
     </CardBody>
 </Card>
+</TabItem>
+
+</Tabs>
