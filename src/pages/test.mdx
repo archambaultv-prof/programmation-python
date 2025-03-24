@@ -1,4 +1,3 @@
-import {MultipleChoice, Option, ManyMultipleChoice} from '@site/src/components/MultipleChoice';
 
 # This is a test
 
@@ -6,41 +5,156 @@ This is a test of the multiple choice component.
 
 ### Quizz
 
-<details>
-<summary><strong>🤔 Testez votre compréhension</strong></summary>
-
- <ManyMultipleChoice>
-    <MultipleChoice>
+    <MultipleChoice style={{padding: "1rem", marginBottom: "1rem"}} shadow="lw">
     Quel est l'outil le plus adapté pour écrire du code Python ?
-        <Option>
+        <MultipleChoiceOption>
         web browser. Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text
-        </Option>
-        <Option>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
     ```python
     print("Hello, World!")
     ```
-    </Option>
-        <Option isCorrect>
+    </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
         VS Code
-        </Option>
+        </MultipleChoiceOption>
+    </MultipleChoice>
+
+<details>
+<summary><strong>🤔 Testez votre compréhension</strong></summary>
+
+ <MultipleChoiceList>
+    <MultipleChoice>
+    Quel est l'outil le plus adapté pour écrire du code Python ?
+        <MultipleChoiceOption>
+        web browser. Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+    ```python
+    print("Hello, World!")
+    ```
+    </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
+        VS Code
+        </MultipleChoiceOption>
     </MultipleChoice>
 
     <MultipleChoice>
     Une autre question
-        <Option>
+        <MultipleChoiceOption>
         web browser.
-        </Option>
-        <Option>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
     ```python
     print("Hello, World!")
     ```
-        </Option>
-        <Option isCorrect>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
         VS Code
-        </Option>
-        <Option>
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
         Bin oui toi
-        </Option>
+        </MultipleChoiceOption>
     </MultipleChoice>
-</ManyMultipleChoice>
+</MultipleChoiceList>
+</details>
+
+Avec carousel
+<details> 
+<summary><strong>🤔 Testez votre compréhension</strong></summary>
+
+ <Caroussel>
+    <MultipleChoice>
+    Quel est l'outil le plus adapté pour écrire du code Python ?
+        <MultipleChoiceOption>
+        web browser. Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+    ```python
+    print("Hello, World!")
+    ```
+    </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
+        VS Code
+        </MultipleChoiceOption>
+    </MultipleChoice>
+
+    <MultipleChoice>
+    Une autre question
+        <MultipleChoiceOption>
+        web browser.
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+    ```python
+    print("Hello, World!")
+    ```
+        </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
+        VS Code
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+        Bin oui toi
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+        Bin oui toi
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+        Bin oui toi
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+        Bin oui toi
+        </MultipleChoiceOption>
+    </MultipleChoice>
+</Caroussel>
+</details>
+
+
+
+Avec tabs
+<details> 
+<summary><strong>🤔 Testez votre compréhension</strong></summary>
+
+ <MultipleChoiceTabs>
+    <MultipleChoice>
+    Quel est l'outil le plus adapté pour écrire du code Python ?
+        <MultipleChoiceOption>
+        web browser. Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text Long text, long text, long text
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+    ```python
+    print("Hello, World!")
+    ```
+    </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
+        VS Code
+        </MultipleChoiceOption>
+    </MultipleChoice>
+
+    <MultipleChoice>
+    Une autre question
+        <MultipleChoiceOption>
+        web browser.
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+    ```python
+    print("Hello, World!")
+    ```
+        </MultipleChoiceOption>
+        <MultipleChoiceOption isCorrect>
+        VS Code
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+        Bin oui toi
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+        Bin oui toi
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+        Bin oui toi
+        </MultipleChoiceOption>
+        <MultipleChoiceOption>
+        Bin oui toi
+        </MultipleChoiceOption>
+    </MultipleChoice>
+</MultipleChoiceTabs>
 </details>

@@ -25,8 +25,13 @@ flowchart (car MermaidJS ne supporte pas directement les useCaseDiagrams) :
 
 {/* TODO: Mettre les trois examples dans un carroussel */}
 
-**Exemple 1 : Application web de commerce électronique**
-
+<Tabs>
+<TabItem value="exemple_1" label="Exemple 1">
+<Card >
+  <CardHeader>
+  **Application web de commerce électronique**
+  </CardHeader>
+  <CardBody>
 ```mermaid
 flowchart LR
   Client([👤 Client]) --> Connexion[Se connecter]
@@ -35,9 +40,16 @@ flowchart LR
   Vendeur([👤 Vendeur]) --> Gerer[Gérer les commandes]
   Vendeur --> MettreAJour[Mettre à jour produits]
 ```
+   </CardBody>
+</Card>
+</TabItem>
 
-**Exemple 2 : Système de gestion d'inscription à un cours**
-
+<TabItem value="exemple_2" label="Exemple 2">
+<Card >
+  <CardHeader>
+**Système de gestion d'inscription à un cours**
+  </CardHeader>
+  <CardBody>
 ```mermaid
 flowchart LR
   Etudiant([👤 Étudiant]) --> Inscrire[S'inscrire à un cours]
@@ -45,9 +57,16 @@ flowchart LR
   Professeur([👤 Professeur]) --> GererCours[Fournir une description]
   Administrateur([👤 Administrateur]) --> Valider[Valider les inscriptions]
 ```
+   </CardBody>
+</Card>
+</TabItem>
 
-**Exemple 3 : Plateforme de réservation d'hôtel**
-
+<TabItem value="exemple_3" label="Exemple 3">
+<Card >
+  <CardHeader>
+**Plateforme de réservation d'hôtel**
+  </CardHeader>
+  <CardBody>
 ```mermaid
 flowchart LR
   Voyageur([👤 Voyageur]) --> ChercherHotel[Chercher hôtel]
@@ -55,3 +74,8 @@ flowchart LR
   Receptionniste([👤 Réceptionniste]) --> GererReservations[Gérer réservations]
   Receptionniste --> EnregistrerClient[Enregistrer client]
 ```
+    </CardBody>
+</Card>
+</TabItem>
+
+</Tabs>

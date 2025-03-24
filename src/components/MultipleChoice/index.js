@@ -1,39 +1,18 @@
 import React, { useId, useState } from 'react';
+import clsx from 'clsx';
 import styles from "./styles.module.css";
 
-export function Option(props) {
-  return (
-    <li className={styles.option}>
-      <input 
-        type="radio" 
-        name={props.name} 
-        id={props.id} 
-        value={props.id}
-        checked={props.checked}
-        onChange={props.onChange}
-      />
-      <label htmlFor={props.id} className={styles.optionLabel}>
-        {props.children}
-      </label>
-    </li>
-  );
-}
-
-export function MultipleChoice(props) {
-  // Unique ID for this MultipleChoice instance
+export default function MultipleChoice(props) {
   const uniqueId = useId();
-  // State to store the id of the selected option
   const [selected, setSelected] = useState(null);
-  // State to track if the user has submitted the answer
   const [submitted, setSubmitted] = useState(false);
+  const multipleChoiceShadow = props.shadow ? `item shadow--${props.shadow}` : "";
 
-  // Reset submission state whenever a new choice is made
   const handleChange = (e) => {
     setSelected(e.target.value);
     setSubmitted(false);
   };
 
-  // Process the children to assign unique names and ids
   const allOptions = React.Children.toArray(props.children);
   const options = allOptions.map((child, index) => {
     const optionId = `choice-${uniqueId}-${index}`;
@@ -45,7 +24,6 @@ export function MultipleChoice(props) {
     });
   });
 
-  // Determine if the selected option is correct
   let isAnswerCorrect = false;
   if (selected) {
     const selectedIndex = allOptions.findIndex(
@@ -56,25 +34,25 @@ export function MultipleChoice(props) {
     }
   }
 
-  // On submit, mark the answer as submitted to trigger button styling
   const handleSubmit = () => {
     if (selected !== null) {
       setSubmitted(true);
     }
   };
 
-  // Build the button's class name based on submission and correctness
-  let buttonClassName = styles.submitButton;
+  let buttonClassName = clsx('button');
   if (submitted && selected) {
-    buttonClassName += ` ${isAnswerCorrect ? styles.correct : styles.incorrect}`;
+    buttonClassName = clsx(buttonClassName, isAnswerCorrect ? 'button--success' : 'button--danger');
+  }
+  else {
+    buttonClassName = clsx(buttonClassName, 'button--primary');
   }
 
-  // Définir le texte du bouton en fonction de l'état
   const buttonText = submitted ? (isAnswerCorrect ? 'Correct!' : 'Réessayer!') : 'Soumettre';
 
   return (
-    <>
-      <ol className={styles.mcqOptions}>
+    <div className={clsx(props.className, multipleChoiceShadow)} style={props.style}>
+      <ol className={styles.multipleChoiceOptions}>
         {options}
       </ol>
       <div>
@@ -82,29 +60,6 @@ export function MultipleChoice(props) {
           {buttonText}
         </button>
       </div>
-    </>
-  );
-}
-
-export function MultipleChoiceSeparator() {
-  return <div className={styles.multipleChoiceSeparator}>
-  </div>;
-}
-
-export function ManyMultipleChoice(props) {
-  const children = React.Children.toArray(props.children);
-  return (
-    <div>
-      <ol>
-        {children.map((child, index) => (
-          <React.Fragment key={index}>
-            <li>
-              {child}
-            </li>
-            {index < children.length - 1 && <MultipleChoiceSeparator />}
-          </React.Fragment>
-        ))}
-      </ol>
     </div>
   );
 }
