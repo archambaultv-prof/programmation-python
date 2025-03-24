@@ -3,6 +3,8 @@ sidebar_label: Diagramme de classe
 sidebar_position: 6
 ---
 
+
+
 # Diagramme de classe
 
 Le diagramme de classe est essentiel durant la phase de conception logicielle.
@@ -50,7 +52,7 @@ Une classe est représentée par un rectangle contenant trois compartiments :
 
 Par exemple le diagramme suivant représente une classe `Etudiant` :
 
-```mermaid
+export const foo = `
 classDiagram
   class Etudiant {
     -str nom
@@ -58,7 +60,10 @@ classDiagram
     +inscrireCours()
     +abandonnerCours()
   }
-```
+`
+
+<WithMermaidCode code={foo} />
+
 
 Dans cet exemple, la classe `Etudiant` possède deux attributs (`nom` et
 `numeroEtudiant`) et deux méthodes (`inscrireCours` et `abandonnerCours`).
@@ -77,7 +82,7 @@ liées d'une certaine manière. Par exemple, une classe `Etudiant` peut être
 associée à une classe `Cours` pour indiquer que chaque étudiant suit un ou
 plusieurs cours.
 
-```mermaid
+export const d2 = `
 classDiagram
   class Etudiant {
     -str nom
@@ -94,7 +99,9 @@ classDiagram
   }
 
   Etudiant -- Cours
-```
+`
+
+<WithMermaidCode code={d2} />
 
 L'association est simplement représentée par une ligne entre les deux classes. Elle ne détaille pas
 la nature de la relation.
@@ -113,7 +120,8 @@ instances de la classe `Etudiant`. Il s'agit d'une relation d'agrégation car le
 étudiants peuvent exister indépendamment du groupe.
 
 **Exemple d'agrégation :**
-```mermaid
+
+export const d3 = `
 classDiagram
   class Etudiant {
     -str nom
@@ -130,14 +138,17 @@ classDiagram
   }
 
   GroupeEtudiant o-- Etudiant
-```
+`
+
+<WithMermaidCode code={d3} />
 
 Un exemple de composition serait une classe `Maison` composée de plusieurs
 instances de la classe `Piece`. Dans ce cas, les pièces ne peuvent exister sans
 la maison.
 
 **Exemple de composition :**
-```mermaid
+
+export const d4 = `
 classDiagram
   class Maison {
     -str adresse
@@ -152,7 +163,9 @@ classDiagram
   }
 
   Maison *-- Piece
-```
+`
+
+<WithMermaidCode code={d4} />
 
 :::note
 
@@ -171,7 +184,7 @@ représentées par une flèche pointant vers la classe parent.
 
 Par exemple, une classe `Etudiant` peut hériter de la classe `Personne` :
 
-```mermaid
+export const d5 = `
 classDiagram
   class Personne {
     -str nom
@@ -186,4 +199,6 @@ classDiagram
   }
 
   Personne <|-- Etudiant
-```
+`
+
+<WithMermaidCode code={d5} />

@@ -13,6 +13,7 @@ import MultipleChoice from '@site/src/components/MultipleChoice';
 import MultipleChoiceList from '@site/src/components/MultipleChoice/MultipleChoiceList';
 import MultipleChoiceOption from '@site/src/components/MultipleChoice/MultipleChoiceOption';
 import MultipleChoiceTabs from '@site/src/components/MultipleChoice/MultipleChoiceTabs';
+import WithMermaidCode from '@site/src/components/WithMermaidCode';
 
 export default {
   // Reusing the default mapping
@@ -28,5 +29,6 @@ export default {
   MultipleChoice,
   MultipleChoiceList,
   MultipleChoiceOption,
-  MultipleChoiceTabs
+  MultipleChoiceTabs,
+  WithMermaidCode
 };

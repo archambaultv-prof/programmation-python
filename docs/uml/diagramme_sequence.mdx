@@ -51,6 +51,8 @@ logiciels, pour valider la cohérence technique des scénarios.
 Voici un exemple concret de diagramme de séquence illustrant le processus d'une
 commande en ligne:
 
+<Tabs>
+  <TabItem value="mermaid" label="Diagramme">
 ```mermaid
 sequenceDiagram
 participant Client
@@ -72,3 +74,30 @@ BaseDeDonnees-->>ServeurApplication: Confirmation enregistrement
 ServeurApplication-->>InterfaceWeb: Confirme commande
 InterfaceWeb-->>Client: Affiche confirmation commande
 ```
+</TabItem>
+<TabItem value="code" label="Code">
+````markdown
+```mermaid
+sequenceDiagram
+participant Client
+participant InterfaceWeb
+participant ServeurApplication
+participant BaseDeDonnees
+
+Client->>InterfaceWeb: Sélectionne produit
+InterfaceWeb->>ServeurApplication: Envoie demande de disponibilité
+ServeurApplication->>BaseDeDonnees: Vérifie disponibilité
+BaseDeDonnees-->>ServeurApplication: Retourne disponibilité
+ServeurApplication-->>InterfaceWeb: Confirme disponibilité
+InterfaceWeb-->>Client: Affiche disponibilité
+
+Client->>InterfaceWeb: Passe commande
+InterfaceWeb->>ServeurApplication: Transmet commande
+ServeurApplication->>BaseDeDonnees: Enregistre commande
+BaseDeDonnees-->>ServeurApplication: Confirmation enregistrement
+ServeurApplication-->>InterfaceWeb: Confirme commande
+InterfaceWeb-->>Client: Affiche confirmation commande
+```
+````
+</TabItem>
+</Tabs>
