@@ -127,6 +127,13 @@ export function MultipleChoiceCarousel(props) {
 
   return (
     <div className={styles.carouselContainer}>
+      <div className={styles.carouselContent}>
+        {children.map((child, index) => (
+          <div key={index} style={{ display: index === currentIndex ? 'block' : 'none' }}>
+            {child}
+          </div>
+        ))}
+      </div>
       <div className={styles.carouselNavigation}>
         <button onClick={handlePrevious} disabled={currentIndex === 0}>
           Précédent
@@ -137,13 +144,6 @@ export function MultipleChoiceCarousel(props) {
         <button onClick={handleNext} disabled={currentIndex === children.length - 1}>
           Suivant
         </button>
-      </div>
-      <div className={styles.carouselContent}>
-        {children.map((child, index) => (
-          <div key={index} style={{ display: index === currentIndex ? 'block' : 'none' }}>
-            {child}
-          </div>
-        ))}
       </div>
     </div>
   );
