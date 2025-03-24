@@ -12,6 +12,7 @@ import Caroussel from '@site/src/components/Caroussel';
 import MultipleChoice from '@site/src/components/MultipleChoice';
 import MultipleChoiceList from '@site/src/components/MultipleChoice/MultipleChoiceList';
 import MultipleChoiceOption from '@site/src/components/MultipleChoice/MultipleChoiceOption';
+import MultipleChoiceTabs from '@site/src/components/MultipleChoice/MultipleChoiceTabs';
 
 export default {
   // Reusing the default mapping
@@ -27,4 +28,5 @@ export default {
   MultipleChoice,
   MultipleChoiceList,
   MultipleChoiceOption,
+  MultipleChoiceTabs
 };
