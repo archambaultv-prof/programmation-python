@@ -133,6 +133,7 @@ classDiagram
   class GroupeEtudiant {
     -str nom
     -int code
+    -list[Etudiant] etudiants
     +ajouterEtudiant()
     +supprimerEtudiant()
   }
@@ -153,6 +154,7 @@ classDiagram
   class Maison {
     -str adresse
     -int codePostal
+    -list[Piece] pieces
     +ajouterPiece()
     +supprimerPiece()
   }

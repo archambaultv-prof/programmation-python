@@ -45,13 +45,10 @@ Voici un exemple de diagramme d'activité illustrant le processus d'inscription 
 
 export const d1 = `
 flowchart TD
-  Start([Début]) --> SelectionCours[Sélectionner un cours]
-  SelectionCours --> VerifierPrerequis{Prérequis validés ?}
-  VerifierPrerequis -->|Oui| Paiement[Paiement des frais]
-  VerifierPrerequis -->|Non| ErreurPrerequis[Afficher erreur]
-  Paiement --> ConfirmerInscription[Confirmer l'inscription]
-  ConfirmerInscription --> Fin([Fin])
-  ErreurPrerequis --> Fin
+  A[Choisir un cours] --> B{Vérifier les prérequis}
+  B -->|Prérequis validés| C[Payer les frais]
+  B -->|Prérequis non validés| D[Notifier l'utilisateur]
+  C --> E[Confirmer l'inscription]
 `
 
 <WithMermaidCode code={d1} />
