@@ -63,10 +63,10 @@ Sont utilité est de modéliser les flux d'activités pour visualiser clairement
 
 export const d3 = `
 flowchart TD
-  A[Sélection du cours] --> B[Vérification des prérequis]
-  B -->|Prérequis validés| C[Paiement des frais]
-  B -->|Prérequis non validés| D[Notification d'erreur]
-  C --> E[Confirmation d'inscription]
+  A[Choisir un cours] --> B{Vérifier les prérequis}
+  B -->|Prérequis validés| C[Payer les frais]
+  B -->|Prérequis non validés| D[Notifier l'utilisateur]
+  C --> E[Confirmer l'inscription]
 `
 
 <WithMermaidCode code={d3} />
