@@ -1,0 +1,145 @@
+---
+sidebar_label: Fichier CSV
+sidebar_position: 2
+---
+
+# Fichiers CSV
+
+## Introduction aux fichiers CSV
+
+Le format CSV (Comma Separated Values) est très utilisé pour représenter des
+données sous forme de tableau. Chaque ligne correspond à une entrée et chaque
+colonne est séparée par un délimiteur, généralement une virgule ou un
+point-virgule. Ce format est couramment utilisé pour exporter ou importer des
+données vers des applications telles que Excel ou pour transmettre des données
+structurées entre différentes plateformes.
+
+## Lire un fichier CSV
+
+Python fournit le module intégré `csv` pour simplifier la lecture et l'écriture
+de fichiers CSV. Voici comment l'utiliser efficacement.
+
+### Exemple de lecture simple
+
+La méthode la plus simple pour lire un fichier CSV est d'utiliser `csv.reader`,
+qui lit chaque ligne comme une *liste* de valeurs. Voici un exemple concret :
+
+```python
+import csv
+
+with open('donnees.csv', 'r', newline='', encoding='utf-8') as fichier:
+    lecteur = csv.reader(fichier, delimiter=',')
+    for ligne in lecteur:
+        print(ligne)
+```
+
+Dans cet exemple, chaque ligne du fichier est affichée comme une liste Python.
+
+### Lecture avec `DictReader`
+
+Le `DictReader` est particulièrement utile car il permet d'accéder aux données
+via les noms des colonnes spécifiées dans la première ligne du fichier CSV.
+C'est idéal pour rendre le code plus lisible et intuitif :
+
+```python
+import csv
+
+with open('donnees.csv', 'r', newline='', encoding='utf-8') as fichier:
+    lecteur = csv.DictReader(fichier)
+    for ligne in lecteur:
+        print(f"Nom: {ligne['Nom']}, Âge: {ligne['Âge']}")
+```
+
+Ici, l'accès aux données par le nom des colonnes améliore nettement la
+lisibilité et la compréhension du code.
+
+---
+
+## Écrire dans un fichier CSV
+
+L'écriture dans un fichier CSV est aussi simplifiée grâce au module `csv`. Nous
+avons plusieurs façons d'écrire des données, chacune adaptée à différents
+contextes.
+
+### Écriture simple avec `writer`
+
+Pour écrire rapidement des données dans un fichier CSV, vous pouvez utiliser
+`csv.writer`. Voici comment écrire une liste de listes dans un fichier :
+
+```python
+import csv
+
+donnees = [
+    ['Nom', 'Âge', 'Ville'],
+    ['Alice', 30, 'Paris'],
+    ['Bob', 25, 'Lyon'],
+    ['Charlie', 35, 'Marseille']
+]
+
+with open('sortie.csv', 'w', newline='', encoding='utf-8') as fichier:
+    ecrivain = csv.writer(fichier)
+    ecrivain.writerows(donnees)
+```
+
+Cet exemple crée un fichier CSV complet avec des entêtes et plusieurs lignes de
+données.
+
+### Écriture avec `DictWriter`
+
+Si vous travaillez avec des données sous forme de dictionnaires, le
+`csv.DictWriter` est particulièrement adapté. Il permet d'associer clairement
+chaque valeur à une colonne spécifique du fichier CSV :
+
+```python
+import csv
+
+champs = ['Nom', 'Âge', 'Ville']
+donnees = [
+    {'Nom': 'Alice', 'Âge': 30, 'Ville': 'Paris'},
+    {'Nom': 'Bob', 'Âge': 25, 'Ville': 'Lyon'},
+    {'Nom': 'Charlie', 'Âge': 35, 'Ville': 'Marseille'}
+]
+
+with open('sortie.csv', 'w', newline='', encoding='utf-8') as fichier:
+    ecrivain = csv.DictWriter(fichier, fieldnames=champs)
+    ecrivain.writeheader()
+    ecrivain.writerows(donnees)
+```
+
+## Traitement des données CSV : exemple pratique
+
+Voici un exemple pratique où nous traitons un fichier CSV pour extraire et
+sauvegarder seulement les personnes âgées de 30 ans ou plus. Cet exemple
+illustre la puissance de combinaison de lecture et d'écriture avec `DictReader`
+et `DictWriter` :
+
+```python
+import csv
+
+resultats = []
+with open('personnes.csv', 'r', newline='', encoding='utf-8') as entree:
+    lecteur = csv.DictReader(entree)
+    for ligne in lecteur:
+        if int(ligne['Âge']) >= 30:
+            resultats.append(ligne)
+
+with open('personnes_filtrees.csv', 'w', newline='', encoding='utf-8') as sortie:
+    champs = ['Nom', 'Âge', 'Ville']
+    ecrivain = csv.DictWriter(sortie, fieldnames=champs)
+    ecrivain.writeheader()
+    ecrivain.writerows(resultats)
+```
+
+## Bonnes pratiques pour les fichiers CSV
+
+Il est important de respecter certaines bonnes pratiques lors de la
+manipulation des fichiers CSV :
+
+- Toujours préciser `newline=''` lors de l'ouverture des fichiers CSV pour
+  éviter les problèmes de sauts de ligne inattendus. `newline=''` indique à la fonction
+  `open` de ne pas modifier les sauts de ligne, car c'est le module `csv` qui
+  va les gérer.
+- Utiliser systématiquement l'encodage `encoding='utf-8'` pour gérer
+  correctement les caractères spéciaux.
+- Préférer l'utilisation de `DictReader` et `DictWriter` pour simplifier
+  l'accès et la gestion des données en fonction des noms de colonnes.

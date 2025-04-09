@@ -1,0 +1,147 @@
+---
+sidebar_label: Fichier texte
+sidebar_position: 1
+---
+
+# Fichiers textes
+
+## Introduction
+
+En Python, la manipulation de fichiers texte est une opération courante et
+essentielle pour stocker, récupérer et traiter des données. Dans cette section,
+nous verrons comment lire et écrire dans des fichiers texte en utilisant des
+méthodes appropriées et des bonnes pratiques.
+
+## Ouverture et fermeture de fichiers : bonnes pratiques
+
+La façon recommandée de manipuler des fichiers en Python est d'utiliser le
+mot-clé `with`. Cela garantit que le fichier est correctement fermé une fois
+les opérations terminées, même en cas d'erreur ou d'exception. Voici un exemple
+simple d'ouverture et de fermeture automatique :
+
+```python
+with open('exemple.txt', 'r') as fichier:
+    contenu = fichier.read()
+    print(contenu)
+```
+
+## Modes d'ouverture des fichiers
+
+Python propose plusieurs modes pour ouvrir un fichier :
+
+- `'r'` : mode lecture (par défaut)
+- `'w'` : mode écriture (écrase le fichier s'il existe, sinon le crée)
+- `'a'` : mode ajout (écrit à la fin du fichier)
+- `'x'` : crée un fichier, mais échoue si le fichier existe déjà
+
+On peut aussi ajouter `'b'` pour traiter des fichiers binaires et `'+'` pour
+lire et écrire simultanément.
+
+## Lire le contenu d'un fichier
+
+### Lecture complète
+
+La méthode `read()` permet de lire tout le contenu du fichier en une seule
+chaîne de caractères :
+
+```python
+with open('exemple.txt', 'r') as fichier:
+    contenu = fichier.read()
+    print(contenu)
+```
+
+### Lire ligne par ligne
+
+La méthode `readline()` permet de lire une ligne à la fois :
+
+```python
+with open('exemple.txt', 'r') as fichier:
+    ligne = fichier.readline()
+    while ligne:
+        print(ligne.strip())  # strip() enlève les sauts de ligne
+        ligne = fichier.readline()
+```
+
+### Lire toutes les lignes dans une liste
+
+La méthode `readlines()` renvoie une liste où chaque élément correspond à une
+ligne du fichier :
+
+```python
+with open('exemple.txt', 'r') as fichier:
+    lignes = fichier.readlines()
+    for ligne in lignes:
+        print(ligne.strip())
+```
+---
+
+## Écrire dans un fichier texte
+
+### Écriture simple (écraser le contenu existant)
+
+```python
+with open('exemple.txt', 'w') as fichier:
+    fichier.write('Bonjour, Python!\n')
+    fichier.write('Ceci est une nouvelle ligne.')
+```
+
+### Écriture à la fin du fichier (ajouter du contenu)
+
+```python
+with open('exemple.txt', 'a') as fichier:
+    fichier.write('\nUne autre ligne ajoutée à la fin du fichier.')
+```
+
+---
+
+## Traitement de fichier texte : exemple pratique
+
+Voici un exemple concret de lecture d'un fichier, traitement des données, puis
+écriture dans un nouveau fichier :
+
+```python
+# Lire et traiter le fichier d'entrée
+with open('notes.txt', 'r') as fichier_entree:
+    lignes = fichier_entree.readlines()
+
+notes_traitées = []
+for ligne in lignes:
+    nom, note = ligne.strip().split(':')
+    note = int(note)
+    if note >= 60:
+        statut = 'Réussi'
+    else:
+        statut = 'Échoué'
+    notes_traitées.append(f"{nom}: {note} ({statut})")
+
+# Écrire les résultats dans un nouveau fichier
+with open('resultats.txt', 'w') as fichier_sortie:
+    for ligne in notes_traitées:
+        fichier_sortie.write(ligne + '\n')
+```
+
+## Gestion des erreurs
+
+Il est toujours recommandé d'inclure une gestion d'erreurs lors de la
+manipulation de fichiers :
+
+```python
+try:
+    with open('exemple.txt', 'r') as fichier:
+        contenu = fichier.read()
+except FileNotFoundError:
+    print("Le fichier n'existe pas.")
+except Exception as e:
+    print(f"Une erreur est survenue : {e}")
+```
+
+## Bonnes pratiques
+
+- Toujours utiliser `with` pour gérer automatiquement la fermeture des
+  fichiers.
+- Vérifier que le fichier existe avant de le lire ou gérer l'exception
+  `FileNotFoundError`.
+- Utiliser les méthodes adaptées à vos besoins (`read`, `readline`,
+  `readlines`) pour optimiser les performances.
+- Toujours spécifier clairement le mode d'ouverture pour éviter des erreurs
+  imprévues.
