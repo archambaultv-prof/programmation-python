@@ -1,0 +1,158 @@
+---
+sidebar_label: Fichier JSON
+sidebar_position: 4
+---
+
+# Fichiers JSON
+
+## Introduction aux fichiers JSON
+
+JSON (JavaScript Object Notation) est un format léger, très utilisé pour
+échanger des données structurées entre différentes applications, services web
+ou scripts. Python fournit le module `json` intégré, facilitant la manipulation
+des données JSON.
+
+### Description détaillée du format JSON
+
+JSON repose sur une syntaxe claire et simple pour représenter des données
+structurées. Voici les types de données autorisés dans JSON ainsi que leur
+correspondance avec les objets Python :
+
+- **Objets JSON (`{}`)** : Correspondent aux dictionnaires Python. Un objet
+  JSON est une collection de paires clé-valeur.
+- **Tableaux JSON (`[]`)** : Correspondent aux listes Python. Un tableau JSON
+  est une collection ordonnée de valeurs.
+- **Chaînes de caractères** : Correspondent au type `str` en Python. Exemple :
+  `"texte"`.
+- **Nombres** : Correspondent aux types `int` ou `float` en Python. Exemple :
+  `123` ou `3.14`.
+- **Booléens** : Correspondent aux types `True` ou `False` en Python. Exemple :
+  `true` ou `false`.
+- **Valeur nulle** : Correspond au type `None` en Python. Exemple : `null`.
+
+### Syntaxe JSON
+
+Un fichier JSON valide suit une syntaxe rigoureuse :
+
+- Toutes les chaînes doivent être entourées de guillemets doubles (`"`).
+- Les clés dans les objets JSON doivent être des chaînes de caractères.
+- Les objets JSON sont délimités par des accolades `{}`.
+- Les tableaux JSON sont délimités par des crochets `[]`.
+- Chaque paire clé-valeur dans un objet est séparée par une virgule.
+- Chaque valeur dans un tableau est séparée par une virgule.
+
+Exemple de fichier JSON :
+
+```json
+{
+    "nom": "Alice",
+    "âge": 30,
+    "ville": "Paris",
+    "competences": ["Python", "Excel", "JSON"],
+    "projets": [
+        {"nom": "Projet A", "statut": "terminé"},
+        {"nom": "Projet B", "statut": "en cours"}
+    ],
+    "est_actif": true,
+    "score": null
+}
+```
+
+### Correspondance JSON-Python
+
+Voici un tableau récapitulatif :
+
+| JSON          | Python             |
+|---------------|--------------------|
+| Objet `{}`    | Dictionnaire `{}`  |
+| Tableau `[]`  | Liste `[]`         |
+| Chaîne        | Chaîne `str`       |
+| Nombre        | `int` ou `float`   |
+| Booléen       | `True` ou `False`  |
+| Null          | `None`             |
+
+Cette correspondance claire facilite la manipulation directe des données JSON
+dans Python.
+
+
+## Lire un fichier JSON
+
+La lecture d’un fichier JSON avec Python est très simple. Voici comment
+procéder :
+
+```python
+import json
+
+with open('donnees.json', 'r', encoding='utf-8') as fichier:
+    donnees = json.load(fichier)
+
+print(donnees)
+```
+
+Ici, `json.load()` lit le contenu du fichier et le convertit directement en une structure Python (dictionnaire ou liste selon le cas).
+
+## Écrire dans un fichier JSON
+
+Pour écrire des données dans un fichier JSON, vous pouvez utiliser `json.dump()` :
+
+```python
+import json
+
+donnees = {
+    "nom": "Alice",
+    "âge": 30,
+    "ville": "Paris"
+}
+
+with open('resultats.json', 'w', encoding='utf-8') as fichier:
+    json.dump(donnees, fichier, ensure_ascii=False, indent=4)
+```
+
+L'option `ensure_ascii=False` permet de sauvegarder correctement les caractères
+spéciaux, tandis que `indent=4` améliore la lisibilité du fichier généré.
+
+## Modifier un fichier JSON existant
+
+Modifier un fichier JSON existant consiste généralement à charger les données,
+les modifier, puis les sauvegarder à nouveau :
+
+```python
+import json
+
+# Charger les données existantes
+with open('resultats.json', 'r', encoding='utf-8') as fichier:
+    donnees = json.load(fichier)
+
+# Modifier les données
+donnees['âge'] = 31
+
+# Sauvegarder les modifications
+with open('resultats_modifies.json', 'w', encoding='utf-8') as fichier:
+    json.dump(donnees, fichier, ensure_ascii=False, indent=4)
+```
+
+## Exemple pratique avec JSON
+
+Voici un exemple pratique montrant comment traiter un fichier JSON contenant
+une liste de personnes, en filtrant les résultats selon un critère précis :
+
+```python
+import json
+
+# Charger le fichier JSON
+with open('personnes.json', 'r', encoding='utf-8') as fichier:
+    personnes = json.load(fichier)
+
+# Filtrer les données
+personnes_filtrees = [personne for personne in personnes if personne['âge'] >= 30]
+
+# Sauvegarder les données filtrées
+with open('personnes_filtrees.json', 'w', encoding='utf-8') as fichier:
+    json.dump(personnes_filtrees, fichier, ensure_ascii=False, indent=4)
+```
+
+## Bonnes pratiques avec JSON
+
+- Utiliser systématiquement l’encodage UTF-8 pour éviter les problèmes de caractères spéciaux.
+- Formater les fichiers JSON avec une indentation pour faciliter leur lecture par les humains.
+- Toujours gérer les exceptions potentielles lors de la lecture des fichiers JSON pour éviter les erreurs inattendues.
