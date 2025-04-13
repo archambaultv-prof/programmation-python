@@ -1,0 +1,68 @@
+---
+sidebar_label: Héritage simple
+sidebar_position: 98
+description: Exercices simples sur l'héritage
+---
+
+# Héritage simple
+
+<ExerciseList>
+
+<Exercise>
+<ExerciseHeader>
+### Personne, Etudiant et Professeur
+</ExerciseHeader>
+<ExerciseBody>
+
+Créez une classe `Personne` avec les attributs `prenom`, `nom` et `age`. 
+Implémentez la méthode `__init__` pour initialiser ces attributs et la méthode `dire_bonjour` 
+qui affiche
+> Bonjour, je m'appelle [prenom] [nom] et j'ai [age] ans.
+
+Voici un bout de code pour vous aider à démarrer :
+```python
+class Personne:
+    def __init__(self, prenom, nom, age):
+        print("Initialisation de la classe Personne")
+        # Écrire votre code ici, remplacer pass par le code
+        pass
+
+    def dire_bonjour(self):
+        # Écrire votre code ici, remplacer pass par le code
+        pass
+```
+
+---
+
+Ensuite, créez une classe `Etudiant` qui hérite de la classe `Personne`. La classe `Etudiant`
+aura un attribut supplémentaire `liste_des_cours`.
+
+```python
+# Ne pas oublier de déclarer la classe Personne comme parent
+class Etudiant():
+    print("Initialisation de la classe Etudiant")
+    pass
+```
+
+--- 
+
+Ensuite, créez une classe `Professeur` qui hérite elle aussi de la classe
+ `Personne` avec en plus un attribut `discipline`. Toutefois,
+la classe `Professeur` surcharge la méthode `dire_bonjour` pour afficher
+> Bonjour, je suis le professeur [prenom] [nom], j'enseigne [discipline].
+
+```python
+# Ne pas oublier de déclarer la classe Personne comme parent
+class Professeur():
+    print("Initialisation de la classe Professeur")
+    pass
+```
+
+</ExerciseBody>
+<ExerciseFooter>
+ *Les `print` sont là pour vous aider à comprendre l'ordre d'initialisation des classes.*
+</ExerciseFooter>
+
+</Exercise>
+
+</ExerciseList>
