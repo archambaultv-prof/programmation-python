@@ -1,0 +1,88 @@
+---
+sidebar_label: Exercices map reduce et filter
+sidebar_position: 99
+description: Exercices sur map, reduce et filter
+---
+
+# Exercices sur map, reduce et filter
+
+<ExerciseList>
+
+  <Exercise> 
+  <ExerciseHeader>
+  ### Générer une liste de carrés avec map
+  </ExerciseHeader>
+  <ExerciseBody>
+  Écrire une fonction qui prend une liste d'entiers et retourne une nouvelle liste 
+  où chaque élément est le carré de l'élément d'origine en utilisant la fonction `map`.
+  ```python
+  def carre_liste(liste):
+      # Écrire votre code ici
+  ```
+  </ExerciseBody>
+  </Exercise>
+
+  <Exercise> 
+  <ExerciseHeader>
+  ### Filtrer les nombres pairs avec filter
+  </ExerciseHeader>
+  <ExerciseBody>
+  Écrire une fonction qui prend une liste d'entiers et retourne une nouvelle liste 
+  ne contenant que les nombres pairs, en utilisant la fonction `filter`.
+  ```python
+  def filter_pair(liste):
+      # Écrire votre code ici
+  ```
+  </ExerciseBody>
+  </Exercise>
+
+  <Exercise> 
+  <ExerciseHeader>
+  ### Calculer la somme d'une liste avec reduce
+  </ExerciseHeader>
+  <ExerciseBody>
+  Écrire une fonction qui utilise la fonction `reduce` (importée depuis le module `functools`) 
+  pour calculer la somme de tous les éléments d'une liste d'entiers.
+  ```python
+  from functools import reduce
+
+  def somme_liste(liste):
+      # Écrire votre code ici
+  ```
+  </ExerciseBody> 
+  </Exercise>
+
+<Exercise> 
+<ExerciseHeader>
+### Combiner filter et map
+</ExerciseHeader>
+<ExerciseBody>
+Écrire une fonction qui prend une liste d'entiers, filtre les nombres pairs, 
+puis retourne une nouvelle liste où chaque nombre filtré est élevé au carré, 
+en utilisant à la fois `filter` et `map`.
+
+```python
+def carres_pairs(liste):
+    # Écrire votre code ici
+```
+</ExerciseBody>
+</Exercise> 
+
+<Exercise>
+<ExerciseHeader>
+### Trouver le maximum d'une liste avec reduce
+</ExerciseHeader>
+<ExerciseBody>
+Écrire une fonction qui prend une liste d'entiers et retourne le 
+plus grand élément en utilisant la fonction `reduce`.
+
+```python
+from functools import reduce
+
+def max_liste(liste):
+    # Écrire votre code ici
+```
+</ExerciseBody>
+</Exercise>
+
+</ExerciseList>
