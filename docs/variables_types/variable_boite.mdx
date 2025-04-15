@@ -1,0 +1,71 @@
+---
+sidebar_label: Variable
+sidebar_position: 1
+description: Qu'est-ce qu'une variable ?
+---
+
+# Qu'est-ce qu'une variable ?
+
+**Une variable est un nom associé à une valeur**. Elles permettent de stocker
+des informations que vous pouvez utiliser et manipuler dans votre programme. En
+Python, vous n'avez pas besoin de déclarer le type de la variable, Python le
+déduit automatiquement.
+
+```python
+# Déclarations et affectations
+nombre_entier = 10       # type int
+nombre_decimal = 3.14    # type float
+est_actif = True         # type bool
+message = "Hello"        # type str
+
+# Affichage des valeurs
+print(nombre_entier)   # 10
+print(nombre_decimal)  # 3.14
+print(est_actif)       # True
+print(message)         # Hello
+```
+
+Vous ne pouvez pas assigner une structure de contrôle (comme `if`, `for`, `while`) à une variable.
+Par exemple, le code suivant est incorrect:
+
+```python
+a = if 1 + 2 == 3:  # Erreur !
+        print("C'est vrai !")
+    else:
+        print("C'est faux !")
+```
+
+## Modèle de la boîte
+
+Pour bien comprendre ce qu'est une variable, imaginez une boîte dans laquelle
+vous pouvez mettre des valeurs. **La variable est l'étiquette sur la boîte**.
+
+Il est donc important de comprendre que
+
+- Dans certain languages de programmation, il est possible de déclarer une
+  variable sans lui donner de valeur. C'est comme si vous aviez une boîte jamais ouverte.
+  *Ceci n'est pas possible en Python*.
+- Une boîte contient à tout moment une et une seule valeur.
+- La valeur dans la boîte peut changer, mais la boîte elle-même reste la même.
+
+```python
+# Déclaration d'une variable
+# Elle doit être initialisée, simplement écrire 'ma_variable' serait une erreur
+ma_variable = 10
+
+# La boîte contient la valeur 10
+print(ma_variable)
+
+# Changement de la valeur dans la boîte
+ma_variable = 20
+
+# La boîte contient maintenant la valeur 20
+print(ma_variable)
+
+# Changement de la valeur et du type
+ma_variable = "Bonjour"
+
+# La boîte contient maintenant la valeur "Bonjour"
+print(ma_variable)
+```
+

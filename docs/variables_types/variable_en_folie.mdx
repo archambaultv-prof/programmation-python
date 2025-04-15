@@ -1,0 +1,84 @@
+---
+sidebar_label: Variables en folie
+sidebar_position: 2
+description: Apprendre à utiliser les variables
+---
+
+# Variables en folie
+
+Dans un script simple ou chaque variable est assignée une seule fois à une
+valeur, il est facile de savoir quelle variable contient quelle
+valeur. Mais parfois la situation se complique.
+
+## Variable = Variable
+
+Il est possible d'assigner une variable à une autre variable. Dans ce cas, la valeur de la variable
+de droite est copiée dans la variable de gauche. Cela signifie que les deux variables
+ont la même valeur, mais elles ne sont pas liées. Vous avez deux boîtes, qui contiennent
+la même chose, mais qui sont indépendantes l'une de l'autre.
+
+Par exemple :
+```python
+a = 10
+b = a  # Le contenu de 'a' est copié dans 'b'
+
+print(a)  # 10
+print(b)  # 10
+
+a = 20  # Modifier la boîte 'a' ne change pas la boîte 'b'
+print(a)  # 20
+print(b)  # 10
+```
+
+## Valeurs mutables
+
+Certaines valeurs en programmation sont dites *mutables*, c'est-à-dire qu'elles
+peuvent être modifiées. Par exemple, les listes en Python sont mutables. Vous pouvez
+ajouter des éléments à une liste, supprimer des éléments ou modifier des éléments et
+cela reste la **même liste**. Par exemple :
+
+```python
+ma_liste = [1, 2, 3]
+
+print(ma_liste)  # [1, 2, 3]
+
+ma_liste[0] = 10    # Modifier le premier élément de la liste
+ma_liste.append(4)  # Ajouter un élément à la fin de la liste
+
+print(ma_liste)  # [10, 2, 3, 4]
+```
+
+Dans l'exemple ci-haut, la variable `ma_liste` contient toujours la même liste, mais
+nous avons modifié le contenu de la liste. Bref, vous pouvez mettre dans une boîte un objet
+*modifiable*, mais c'est toujours et encore une boîte.
+
+Là où ça devient intéressant, c'est que si vous assignez une variable à une autre
+variable et que le contenu de la variable est mutable, alors les deux variables
+pointent vers **le même** objet mutable.
+
+```python
+a = [1, 2, 3]
+b = a  # On copie la référence vers la liste [1, 2, 3]
+
+print(a)  # [1, 2, 3]
+print(b)  # [1, 2, 3]
+
+a[0] = 10    # Modifier le premier élément de la liste 'a'
+b.append(4)  # Ajouter un élément à la fin de la liste 'b'
+
+print(a)  # [10, 2, 3, 4]
+print(b)  # [10, 2, 3, 4]
+```
+
+:::important
+
+Le concept clé ici est que lorsqu'on assigne une valeur mutable à une variable, en réalité on met
+dans la boîte *une référence* vers cet objet mutable. Donc quand vous faites `b = a`, vous
+avez bel et bien une copie, mais une copie de la *référence* et non de la valeur référencée.
+
+:::
+
+### Exemple de valeurs immuables et mutables
+
+- **Immutables** : `int`, `float`, `str`, `tuple`, `bool`
+- **Mutables** : `list`, `dict`, `set`
