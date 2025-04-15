@@ -62,7 +62,7 @@ def str_to_bool(s: str) -> bool:
     elif s == "false":
         return False
     else:
-        raise ValueError(f"Cannot convert '{s}' to a boolean.")
+        raise ValueError(f"Impossible de convertir '{s}' en booléen.")
 
 
 def calculer(v1: str, op: str, v2: str) -> float | str | bool:
