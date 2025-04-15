@@ -7,3 +7,14 @@
 .footer {
     padding: 14px 0;
 }
+
+/* Overwrite infima medium shadow. */
+:root {
+    /* Original values */
+    /* --ifm-global-shadow-lw: 0 1px 2px 0 rgba(0, 0, 0, 0.1); */
+    /* --ifm-global-shadow-md: 0 5px 40px rgba(0, 0, 0, 0.2); */
+    /* --ifm-global-shadow-tl: 0 12px 28px 0 rgba(0, 0, 0, 0.2); */
+
+    /* New values */
+    --ifm-global-shadow-md: 0 5px 10px rgba(0, 0, 0, 0.2);
+}

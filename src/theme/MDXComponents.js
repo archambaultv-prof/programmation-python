@@ -14,6 +14,11 @@ import MultipleChoiceList from '@site/src/components/MultipleChoice/MultipleChoi
 import MultipleChoiceOption from '@site/src/components/MultipleChoice/MultipleChoiceOption';
 import MultipleChoiceTabs from '@site/src/components/MultipleChoice/MultipleChoiceTabs';
 import WithMermaidCode from '@site/src/components/WithMermaidCode';
+import Exercise from '@site/src/components/Exercise';
+import ExerciseBody from '@site/src/components/Exercise/ExerciseBody';
+import ExerciseFooter from '@site/src/components/Exercise/ExerciseFooter';
+import ExerciseHeader from '@site/src/components/Exercise/ExerciseHeader';
+import ExerciseList from '@site/src/components/Exercise/ExerciseList';
 
 export default {
   // Reusing the default mapping
@@ -30,5 +35,10 @@ export default {
   MultipleChoiceList,
   MultipleChoiceOption,
   MultipleChoiceTabs,
-  WithMermaidCode
+  WithMermaidCode,
+  Exercise,
+  ExerciseBody,
+  ExerciseFooter,
+  ExerciseHeader,
+  ExerciseList,
 };
