@@ -1,0 +1,96 @@
+---
+sidebar_label: Expression et valeur
+sidebar_position: 0
+description: Expression et valeur
+---
+
+# Expression et valeur
+
+## Expression
+
+En général dans un langage de programmation, une expression est un morceau de
+code qui peut être évalué. Par exemple, `1 + 2` est une expression qui donne la
+valeur `3`. En voici d'autre exemple:
+
+```python
+# Exemple d'expressions
+
+print(1 + 2)                     # Affiche 3
+print(len("Hello"))              # Affiche 5
+print("Hello" + " World")        # Affiche "Hello World"
+print(True and (False or True))  # Affiche True
+```
+
+### Structure de contrôle
+
+Notez que ce n'est pas tous les morceaux de code qui sont des expressions. Par
+exemple, une structure de contrôle comme `if` ou `for` n'est pas une expression. On ne peut
+pas évaluer `if` ou `for` pour obtenir une valeur. Ces structures de contrôle
+sont des instructions qui modifient le flux d'exécution du programme. Par exemple, `if` est une
+instruction conditionnelle qui exécute un bloc de code seulement si une condition est
+vraie.
+
+La différence entre structure de contrôle et expression dépend des fois du langage, mais
+il est en général, avec un peu d'expérience, assez facile de faire la distinction.
+
+En python, on repère en général facilement les structures de contrôle, car elles
+nécessite un deux points `:` à la fin de la ligne et une identation.
+
+```python
+# Exemple de structure de contrôle
+# Noter le deux points et l'indentation
+
+if 1 + 2 == 3:
+    print("C'est vrai !")
+else:
+    print("C'est faux !")
+```
+
+Comme le code ci-dessous l'illustre, un programme est un mélange d'expressions et
+de structures de contrôle.
+
+## Qu'est-ce qu'une valeur ?
+
+Une valeur est une expression « primitive » comme un nombre entier, un
+nombre décimal, une chaîne de caractères ou un booléen. Il existe aussi
+d'autres types de valeurs, comme les listes. Python vous permet également de
+créer vos propres types d'objets qui seront alors des valeurs.
+
+L'idée principale d'une valeur est que vous avez une *expression qui n'a plus besoin
+d'être évalué davantage*. Par exemple, le nombre `10` est une valeur, alors que
+`9 + 1` est une expression, elle peut être évaluée pour donner la valeur `10`.
+Autre exemple, la liste `[1, 2, 3]` est une valeur, mais l'expression `[1, 2] +
+[3]` est une expression qui donne la valeur `[1, 2, 3]`. Pour finir, la
+liste  `[1, 2, 2 + 1]` n'est pas encore une valeur, car elle contient une
+expression qui doit être évaluée avant de donner la valeur `[1, 2, 3]`.
+
+
+<details>
+<summary>🤔 Testez votre compréhension</summary>
+
+ <MultipleChoiceTabs>
+    <MultipleChoice>
+    En fonction de la définition ci-haut, est-ce qu'une valeur est une expression ?
+
+    <MultipleChoiceOption isCorrect>
+
+    Oui, c'est une expression qui n'a pas besoin d'être évaluée.
+
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption >
+
+    Non, c'est un objet primitif.
+
+    </MultipleChoiceOption>
+    
+    <MultipleChoiceOption>
+
+    Je suis un cheval.
+
+    </MultipleChoiceOption>
+
+    </MultipleChoice>
+
+ </MultipleChoiceTabs>
+ </details> 
