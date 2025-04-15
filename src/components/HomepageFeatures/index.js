@@ -21,7 +21,7 @@ const FeatureList = [
     Svg: require("@site/static/img/2C3.svg").default,
     description: (
       <>
-      Site web pour les informations spécifiques du cours 420-2C3-MA à la session
+      Site web du cours 420-2C3-MA à la session
       d'hiver 2025.
       </>
     ),
@@ -32,7 +32,7 @@ const FeatureList = [
     Svg: require("@site/static/img/910.svg").default,
     description: (
       <>
-      Site web pour les informations spécifiques du cours de la formation continue 420-910-MA débutant en avril 2025.
+      Site web du cours 420-910-MA débutant en avril 2025.
       </>
     ),
   },
