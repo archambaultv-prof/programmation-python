@@ -81,7 +81,7 @@ def calculer(v1: str, op: str, v2: str) -> float | str | bool:
     elif op == '-':
         return float(v1) - float(v2)
     # TODO : Implanter les autres opérations.
-    # Par exemple '*', '/', '^', '%', mais aussi 'and', 'or', 'not', etc.
+    # Par exemple '*', '/', '^', '%', mais aussi 'and', 'or', etc.
     else:
         raise ValueError("Opération non valide.")
 
@@ -92,7 +92,6 @@ if __name__ == "__main__":
     while True:
         v1, op, v2 = lire_entree()
 
-        # TODO : Appeler la fonction calculer() pour effectuer le calcul
         try:
             resultat = calculer(v1, op, v2)
             print(f"Le résultat de {v1} {op} {v2} est : {resultat}")
