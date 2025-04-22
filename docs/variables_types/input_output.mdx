@@ -1,0 +1,77 @@
+---
+sidebar_label: Print et input
+sidebar_position: 7
+description: Les fonctions print et input
+---
+
+# Print et input
+
+## La fonction print
+
+La fonction `print()` est utilisée pour afficher des informations à l'écran.
+Elle peut prendre plusieurs arguments et les afficher dans la console.
+Lorsqu'on exécute un script Python depuis un terminal (console), tout ce qui
+est passé à `print()` sera affiché dans la console.
+
+```python
+print("Hello world !")
+```
+
+Lorsqu'elle reçoit plusieurs arguments, `print()` les affiche séparés par des espaces.
+Il est possible de changer le séparateur en utilisant l'argument `sep`.
+Par exemple, pour afficher les arguments séparés par des virgules :
+
+```python
+print("Hello", "world", sep=", ")
+```
+Cela affichera :
+
+```
+Hello, world
+```
+
+Il est aussi possible de changer la fin de la ligne en utilisant l'argument `end`.
+Par défaut, `print()` ajoute un saut de ligne à la fin de l'affichage.
+Par exemple, pour afficher plusieurs messages sur la même ligne :
+
+```python
+print("Hello", end=", ")
+print("world")
+```
+Cela affichera :
+
+```
+Hello, world
+```
+
+## La fonction input
+
+La fonction `input()` est utilisée pour lire une entrée de l'utilisateur.
+Elle affiche un message à l'écran et attend que l'utilisateur saisisse quelque chose.
+Par exemple :
+
+```python
+nom = input("Quel est votre nom ? ")
+print("Bonjour", nom)
+```
+Cela affichera :
+
+```
+Quel est votre nom ? Alice
+Bonjour Alice
+```
+
+La valeur saisie par l'utilisateur est toujours une chaîne de caractères (type `str`).
+Si vous souhaitez convertir cette valeur en un autre type (par exemple, un entier), vous devez le faire explicitement.
+Par exemple, pour lire un entier :
+
+```python
+age = int(input("Quel est votre âge ? "))
+print("Vous avez", age, "ans")
+```
+Cela affichera :
+
+```
+Quel est votre âge ? 25
+Vous avez 25 ans
+```
