@@ -80,5 +80,182 @@ avez bel et bien une copie, mais une copie de la *référence* et non de la vale
 
 ### Exemple de valeurs immuables et mutables
 
-- **Immutables** : `int`, `float`, `str`, `tuple`, `bool`
+- **Immuables** : `int`, `float`, `str`, `tuple`, `bool`
 - **Mutables** : `list`, `dict`, `set`
+
+## Testez votre compréhension
+
+<details>
+<summary>🤔 Testez votre compréhension</summary>
+
+ <MultipleChoiceTabs>
+    <MultipleChoice>
+    Quelle est la valeur de `b` après l'exécution du code suivant ?
+
+    ```python
+    a = [1, 2, 3]
+    b = a
+    a[0] = 10
+    ```
+
+    <MultipleChoiceOption isCorrect>
+
+    [10, 2, 3]
+
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption >
+
+    [1, 2, 3]
+
+    </MultipleChoiceOption>
+    
+    <MultipleChoiceOption>
+
+    [1, 10, 3]
+
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption>
+
+    `erreur`, `b` est immuable.
+
+    </MultipleChoiceOption>
+
+    </MultipleChoice>
+
+    <MultipleChoice>
+    Quelle est la valeur de `b` après l'exécution du code suivant ?
+
+    ```python
+    a = "bonjour"
+    b = a
+    a = "salut"
+    ```
+
+    <MultipleChoiceOption>
+    "salut"
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption isCorrect>
+    "bonjour"
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption>
+    None
+    </MultipleChoiceOption>
+
+  </MultipleChoice>
+ 
+   <MultipleChoice>
+    Quelle est la valeur de `b` après ce code ?
+
+    ```python
+    a = 5
+    b = a
+    a = a + 1
+    ```
+
+    <MultipleChoiceOption>
+    6
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption isCorrect>
+    5
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption>
+    a
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption>
+    Erreur
+    </MultipleChoiceOption>
+
+  </MultipleChoice>
+ 
+  <MultipleChoice>
+    Quelle est la valeur de `a` ?
+
+    ```python
+    a = [4, 5]
+    b = a
+    b.append(6)
+    ```
+
+    <MultipleChoiceOption>
+    [4, 5]
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption>
+    [6]
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption>
+    Erreur
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption isCorrect>
+    [4, 5, 6]
+    </MultipleChoiceOption>
+
+  </MultipleChoice>
+
+  <MultipleChoice>
+    Quelle est la valeur de `b` ?
+
+    ```python
+    a = (1, 2)
+    b = a
+    a = (3, 4)
+    ```
+
+    <MultipleChoiceOption>
+    (3, 4)
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption isCorrect>
+    (1, 2)
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption>
+    (1, 4)
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption>
+    Erreur
+    </MultipleChoiceOption>
+
+  </MultipleChoice>
+
+  <MultipleChoice>
+    Quelle est la valeur de `b` après l'exécution du code suivant ? Vous n'avez pas encore vu
+    la méthode `copy()`, mais vous pouvez deviner ce qu'elle fait.
+
+    ```python
+    a = [7, 8]
+    b = a.copy()
+    a[0] = 9
+    ```
+
+
+    <MultipleChoiceOption>
+    [9, 8]
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption>
+    [9, 7]
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption isCorrect>
+    [7, 8]
+    </MultipleChoiceOption>
+    
+    <MultipleChoiceOption>
+    Erreur
+    </MultipleChoiceOption>
+
+  </MultipleChoice>
+
+ </MultipleChoiceTabs>
+ </details> 

@@ -1,5 +1,5 @@
 ---
-sidebar_label: Les expressions
+sidebar_label: Les listes
 sidebar_position: 5
 ---
 

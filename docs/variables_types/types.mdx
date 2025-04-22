@@ -6,42 +6,265 @@ description: Types
 
 # Types communs en Python
 
-Python propose plusieurs types de données. Voici les plus courants :
+Nous avons vu que Python possède des expressions qui peuvent être évaluées et
+que ces valeurs peuvent être assignées à des variables. Mais certaines
+expressions ne retourne que des valeurs d'un certain type. Par exemple, une
+expression arithmétique comme `3 + 2` retourne un nombre entier. Il est donc 
+impossible pour la variable `x` dans le code suivant de contenir une chaîne de
+caractères :
+
+```python
+x = 3 + 2
+```
+
+Le concept de types dans les langages de programmation vient donc compléter
+celui des expressions. Il vient indiquer quel sorte de valeur une expression
+peut retourner. Il est en fait très souvent associé aux variables, car
+c'est souvent à la déclaration d'une variable que l'on indique quel est le type
+de la valeur qu'elle contiendra. Le code ci-haut pourrait avoir une annotation
+de type comme ceci :
+
+```python
+x: int = 3 + 2
+```
+
+## Typage dynamique et statique
+
+Il existe deux grands types de typage dans les langages de programmation : le
+typage dynamique et le typage statique. Le typage dynamique signifie que le type
+d'une variable peut *changer* au cours de l'exécution du programme. Par exemple,
+
+```python
+x = 5          # type int
+x = "Bonjour"  # type str
+```
+
+Dans cet exemple, la variable `x` est d'abord un entier, puis elle devient une
+chaîne de caractères. Python est un langage à typage dynamique. D'ailleurs,
+vous n'avez pas besoin de déclarer le type d'une variable avant de l'utiliser,
+car de toute façon il peut changer à tout moment.
+
+Le typage statique, en revanche, signifie que le type d'une variable est
+défini lors de sa déclaration et ne peut pas changer par la suite. Par exemple, en java
+ceci est interdit :
+
+```java
+int x = 5;          // type int
+x = "Bonjour";      // Erreur de compilation
+```
+
+:::warning
+
+Le typage dynamique n'implique pas le non-typage. En Python, les expressions
+et variables ont un type, mais ce type peut changer au cours de l'exécution du
+programme.
+
+:::
+
+## Types de base
+
+Python possède plusieurs types de base. Voici les plus courants.
 
 ### Types numériques
+
+Il existe de nombreux types numériques, mais en Python les deux types
+numériques les plus courants sont les entiers et les flottants. Les
+entiers sont des nombres entiers, tandis que les flottants sont des
+nombres décimaux. Notez que la précision des flottants est limitée, ce qui
+peut entraîner des erreurs d'arrondi. Voici un exemple classique :
+
+```python
+x = 0.1 + 0.1 + 0.1
+if x == 0.3:
+    print("C'est vrai!")
+else:
+    print("C'est faux!")  # Affiche "C'est faux!"
+```
+
 | Type    | Description                  | Exemple                        |
 |---------|------------------------------|--------------------------------|
 | **int** | Nombres entiers              | `x = 5`                       |
 | **float**| Nombres décimaux            | `y = 3.14`                    |
 
+:::info
+
+Nous verrons plus en détail les types numériques, notamment les erreurs
+d'arrondi, dans une section ultérieure.
+
+:::
+
 ### Chaînes de caractères
+
+Les chaînes de caractères sont *immuables* en Python. Lorsque vous
+modifiez une chaîne de caractères, vous créez en fait une nouvelle
+chaîne de caractères. Par exemple, vous ne pouvez pas modifier
+une chaîne de caractères existante. Ceci est une erreur :
+
+```python
+x = "Bonjour"
+x[0] = "b"  # Erreur!
+```
+
 | Type    | Description                  | Exemple                        |
 |---------|------------------------------|--------------------------------|
-| **str** | Chaîne de caractères         | `"Python"`                    |
+| `str` | Chaîne de caractères         | `"Python"`                    |
 
 ### Types séquentiels
+
+Il en existe deux grands types : les listes et les tuples. Ils sont
+tous deux des séquences, c'est-à-dire qu'ils contiennent une
+collection d'éléments. La différence entre les deux est que les
+listes sont *mutables*, c'est-à-dire que vous pouvez modifier
+leur contenu, tandis que les tuples sont *immuables*, c'est-à-dire
+que vous ne pouvez pas modifier leur contenu une fois qu'ils
+sont créés.
+
 | Type    | Description                  | Exemple                        |
 |---------|------------------------------|--------------------------------|
-| **list**| Liste mutable                | `[1, 2, 3]`                   |
-| **tuple**| Tuple immuable              | `(1, 2, 3)`                   |
+| `list`| Liste mutable                | `[1, 2, 3]`                   |
+| `tuple`| Tuple immuable              | `(1, 2, 3)`                   |
 
 ### Types de tableaux associatifs
+
+Un peu comme un annuaire, un tableau associatif est une collection de paires clé-valeur.
+Il permet de stocker des données sous forme de dictionnaire, où chaque clé est
+associée à une valeur. Contrairement aux listes, les tableaux associatifs ne
+sont pas ordonnés et ne peuvent pas contenir de doublons au niveau des clés.
+
+Python est très flexible et permet de mélanger des clés et des valeurs de
+différents types dans un même tableau associatif. Par exemple:
+
+```python
+mon_dictionnaire = {
+    "nom": "Alice",
+    "age": 25,
+    True: "Paris",
+    42: [1, 2, 3]
+}
+```
+
+
 | Type    | Description                  | Exemple                        |
 |---------|------------------------------|--------------------------------|
-| **dict**| Dictionnaire clé-valeur      | `{"nom": "Alice", "age": 25}` |
+| `dict`| Dictionnaire clé-valeur      | `{"nom": "Alice", "age": 25}` |
 
 ### Types d'ensemble
+
+Un ensemble est une collection non ordonnée d'éléments *uniques*.
+Il ne peut pas contenir de doublons et ne conserve pas l'ordre des éléments.
+
 | Type    | Description                  | Exemple                        |
 |---------|------------------------------|--------------------------------|
-| **set** | Ensemble non ordonné         | `{1, 2, 3}`                   |
+| `set` | Ensemble non ordonné         | `{1, 2, 3}`                   |
 
 ### Booléens
+
+Les types booléens sont largement utilisé dans les conditions et les boucles.
+
 | Type    | Description                  | Exemple                        |
 |---------|------------------------------|--------------------------------|
-| **bool**| Peut être `True` ou `False`  | `True` |
+| `bool`| Peut être `True` ou `False`  | `True` |
 
+### NoneType
 
----
+L'objet `None` est un type spécial en Python qui est souvent utilisé pour
+indiquer l'absence de valeur ou un objet nul.
 
-### Ressources supplémentaires
-- [Documentation officielle Python](https://docs.python.org/fr/3/)
+| Type    | Description                  | Exemple                        |
+|---------|------------------------------|--------------------------------|
+| `NoneType` | Représente l'absence de valeur | `None` |
+
+## Comment savoir le type d'une variable?
+
+Vous pouvez utiliser la fonction `type()` pour savoir quel est le type d'une
+variable. Par exemple :
+
+```python
+x = 5
+print(type(x))  # Affiche <class 'int'>
+y = 3.14
+print(type(y))  # Affiche <class 'float'>
+z = "Bonjour"
+print(type(z))  # Affiche <class 'str'>
+```
+
+Vous pouvez aussi utiliser la fonction `isinstance()` pour vérifier si une variable
+est d'un certain type. Par exemple :
+
+```python
+x = 5
+if isinstance(x, int):
+    print("x est un entier")
+else:
+    print("x n'est pas un entier")
+```
+
+La fonction `isinstance()` est particulièrement utile lorsque vous devez adapter
+votre code en fonction du type d'une variable. Par exemple, si l'utilisateur
+entre un nombre, vous pouvez vérifier si c'est un entier ou un flottant et
+adapter votre code en conséquence.
+
+## 💃🕺🏼 La valse des types
+
+Il arrive souvent que vous ayez besoin de convertir une valeur d'un type à un autre.
+Par exemple, si vous lisez une valeur à partir de l'entrée utilisateur, elle sera
+toujours une chaîne de caractères. Vous devrez donc la convertir en entier ou
+en flottant si vous souhaitez effectuer des opérations arithmétiques avec elle.
+Voici quelques fonctions de conversion de type courantes :
+
+| Fonction         | Description                  | Exemple                        |
+|------------------|------------------------------|--------------------------------|
+| `int()`         | Convertit une valeur en entier | `int("5")` → `5`              |
+| `float()`       | Convertit une valeur en flottant | `float("3.14")` → `3.14`      |
+| `str()`         | Convertit une valeur en chaîne de caractères | `str(5)` → `"5"`              |
+| `list()`        | Convertit une séquence en liste | `list((1, 2, 3))` → `[1, 2, 3]` |
+| `tuple()`       | Convertit une séquence en tuple | `tuple([1, 2, 3])` → `(1, 2, 3)` |
+| `set()`         | Convertit une séquence en ensemble | `set([1, 2, 2, 3])` → `{1, 2, 3}` |
+| `dict()`        | Convertit une séquence de paires clé-valeur en dictionnaire | `dict([("a", 1), ("b", 2)])` → `{"a": 1, "b": 2}` |
+| `bool()`        | Convertit une valeur en booléen | `bool(0)` → `False`            |
+
+Comme vous pouvez voir, le nom de la fonction correspond au type vers lequel
+vous souhaitez convertir la valeur. Comme c'est bien fait !
+
+:::warning
+
+La fonction `bool()` est fourbe. En Python, les valeurs suivantes sont considérées comme
+faux : `0`, `0.0`, `""` (chaîne vide), `[]` (liste vide), `()` (tuple vide),
+`{}` (dictionnaire vide) et `None`. Toutes les autres valeurs sont considérées
+comme vraies. Par exemple `bool("False")` est vrai, car la chaîne `"False"` n'est pas vide.
+
+:::
+
+## 🛃 Déclarer vos types !
+
+Bien que non obligatoire en Python, il est fortement recommandé de déclarer le
+type de vos variables. Cela permet de rendre votre code plus lisible et de
+faciliter la détection d'erreurs. Cela va également permettre à votre éditeur
+de texte de vous fournir des suggestions de code. Même chose pour
+l'intelligence artificielle.
+
+Pour déclarer le type d'une variable, vous pouvez utiliser la syntaxe suivante :
+
+```python
+x: int = 5
+y: float = 3.14
+def ma_fonction(param: str) -> int:
+    return len(param)
+```
+
+Dans cet exemple, nous avons déclaré que `x` est un entier, `y` est un flottant
+et que la fonction `ma_fonction` prend un paramètre de type chaîne de
+caractères et retourne un entier. Vous pouvez également utiliser des annotations
+de type pour les listes, les tuples, les ensembles et les dictionnaires. Par exemple :
+
+```python
+a: list[int] = [1, 2, 3]
+b: tuple[str, int] = ("Alice", 25)
+c: set[int] = {1, 2, 3}
+d: dict[str, int] = {"Alice": 25, "Bob": 30}
+```
+
+Dans cet exemple, nous avons déclaré que `a` est une liste d'entiers, `b` est
+un tuple contenant une chaîne de caractères et un entier, `c` est un ensemble
+d'entiers et `d` est un dictionnaire avec des chaînes de caractères comme clés
+et des entiers comme valeurs.

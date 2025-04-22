@@ -1,0 +1,108 @@
+---
+sidebar_label: Conversion int, string et float
+sidebar_position: 3
+description: Conversion entre int, string et float
+---
+
+# 🐣 `Int`, `string`, gram, pic, pic et colégram
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont :
+
+- Comprendre les conversions entre `int`, `str`, `float`
+- Explorer les représentations binaires
+
+## 🧠 Mise en contexte :
+
+Vous êtes tombé·e sur une mystérieuse formule magique :
+
+> `int`, `string`, gram, pic, pic et colégram !
+
+Elle transforme les données… mais encore faut-il bien comprendre les types pour ne pas faire exploser votre programme ! 🧨
+
+## 📜 Énoncé
+
+Créez un fichier `int_str_float.py` et complétez les fonctions suivantes.
+Utilisez la fonction `print` pour afficher les résultats de vos
+transformations.
+
+### 1 – Des entiers aux chaînes et inversement
+
+Complétez les deux fonctions suivantes :
+
+```python
+def transformer_en_chaine(n: int) -> str:
+    """
+    Transforme un entier en chaîne de caractères.
+    """
+    pass
+
+def transformer_en_entier(s: str) -> int:
+    """
+    Transforme une chaîne représentant un entier en entier.
+    """
+    pass
+```
+
+#### 📌 À faire :
+
+- Affichez `transformer_en_chaine(2025)` et affichez le type du résultat.
+- Affichez `transformer_en_entier("42")` et vérifiez que le résultat est bien un int.
+
+### 2 – Des flottants aux chaînes et inversement
+
+Ajoutez deux nouvelles transformations :
+
+```python
+def transformer_en_flottant(s: str) -> float:
+    """
+    Transforme une chaîne représentant un nombre à virgule en flottant.
+    """
+    pass
+
+def flottant_vers_chaine(f: float) -> str:
+    """
+    Transforme un flottant en chaîne de caractères.
+    """
+    pass
+```
+
+#### 📌 À faire :
+
+- Affichez `transformer_en_flottant("3.14")`.
+- Affichez `flottant_vers_chaine(0.1 + 0.2)`.
+
+### 3 – En base 2, la magie opère autrement
+
+Il est pratique d'appeler les fonctions Python pour faire les conversions entre
+entiers et chaînes de caractères. Mais comment cela fonctionne-t-il en
+réalité ?
+
+Dans cette section, on va représenter les entiers en binaire. Le binaire est un
+système de numération qui utilise seulement deux chiffres : 0 et 1. Chaque
+chiffre dans un nombre binaire représente une puissance de 2.
+
+Par exemple, le nombre binaire `101` représente :
+```
+1 * 2^2 + 0 * 2^1 + 1 * 2^0 = 4 + 0 + 1 = 5
+```
+
+Ajoutez deux nouvelles transformations :
+
+```python
+def transformer_en_binaire(n: int) -> str:
+    """
+    Transforme un entier en chaîne de caractères représentant son équivalent binaire.
+
+    Par exemple, 5 devient "101".
+    """
+    pass
+
+def transformer_en_entier_binaire(s: str) -> int:
+    """
+    Transforme une chaîne représentant un nombre binaire en entier.
+    Par exemple, "101" devient 5.
+    """
+    pass
+```

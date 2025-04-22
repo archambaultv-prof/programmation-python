@@ -6,21 +6,142 @@ description: Opérateurs communs
 
 # Opérateurs communs en Python
 
+La façon la plus courantes d'écrire des expressions en Python est de combiner
+des valeurs et sous-expressions à l'aide d'opérateurs. Il est donc important de
+connaître les opérateurs disponibles et leur fonctionnement.
+
 ## Les opérateurs communs
-Les opérateurs permettent d'effectuer des opérations sur des variables et des valeurs. Voici les catégories principales :
+
 
 ### Opérateurs arithmétiques
+
+Très souvent utilisées, les opérations arithmétiques permettent de
+calculer des valeurs numériques. Voici les opérateurs arithmétiques de base :
+
 | Opérateur | Description           | Exemple       |
 |-----------|-----------------------|---------------|
-| `+`       | Addition             | `3 + 2` = 5   |
-| `-`       | Soustraction         | `5 - 2` = 3   |
-| `*`       | Multiplication       | `4 * 3` = 12  |
-| `/`       | Division             | `10 / 2` = 5.0|
-| `//`      | Division entière     | `10 // 3` = 3 |
-| `%`       | Modulo (reste)       | `10 % 3` = 1  |
-| `**`      | Puissance            | `2 ** 3` = 8  |
+| `+`       | Addition             | `3 + 2` → `5`   |
+| `-`       | Soustraction         | `5 - 2` → `3`   |
+| `*`       | Multiplication       | `4 * 3` → `12`  |
+| `/`       | Division             | `10 / 2` → `5.0`|
+| `//`      | Division entière     | `10 // 3` → `3` |
+| `%`       | Modulo (reste)       | `10 % 3` → `1` |
+| `**`      | Puissance            | `2 ** 3` → `8`  |
+
+La plupart vous sont déjà familiers, mais il y a quelques subtilités à
+noter :
+
+- La division `/` retourne toujours un nombre à virgule flottante, même si le résultat est un
+  entier. Par exemple, `10 / 2` retourne `5.0`.
+- La division entière `//` retourne le quotient entier de la division. Par exemple, `10 // 3` retourne `3`.
+  Elle répond à la question : combien de fois 3 entre dans 10 ?
+- Le reste de la division `%` retourne le reste de la division entière. Par exemple, `10 % 3` retourne `1`.
+  Elle répond à la question : après avoi fait la division entière, combien reste-t-il ?
+- Les puissances de 2 sont très courantes en informatique, car les ordinateurs
+  fonctionnent en binaire.
+
+<details>
+<summary>🤔 Testez votre compréhension</summary>
+
+ <MultipleChoiceTabs>
+    <MultipleChoice>
+    Quel est le résultat de l'expression suivante ?
+
+    ```python
+    25 % 4
+    ```
+
+    <MultipleChoiceOption >
+
+    `0`
+
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption isCorrect>
+
+    `1`
+
+    </MultipleChoiceOption>
+
+    
+    <MultipleChoiceOption>
+
+    `2`
+
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption>
+
+    `3`
+
+    </MultipleChoiceOption>
+
+    </MultipleChoice>
+
+      <MultipleChoice>
+    Quel est le résultat de l'expression suivante ?
+
+    ```python
+    25 // 4
+    ```
+
+    <MultipleChoiceOption >
+
+    `7`
+
+    </MultipleChoiceOption>
+
+
+    
+    <MultipleChoiceOption>
+
+    `4`
+
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption>
+
+    `5`
+
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption isCorrect>
+
+    `6`
+
+    </MultipleChoiceOption>
+
+    </MultipleChoice>
+
+ </MultipleChoiceTabs>
+ </details> 
+
+:::tip
+
+Python peut vous servir de calculatrice. Vous pouvez
+lancer Python dans un terminal et faire des calculs directement. 
+Utiliser la commande `python` ou `py` pour Windows, ou `python3` pour Mac et Linux.
+Vous obtiendrez un interpréteur Python interactif où vous pouvez entrer des
+expressions et voir les résultats immédiatement.
+
+Par exemple :
+```bash
+>>> 43 * 2
+86
+>>> 59 ** 2
+3481
+>>> quit()
+```
+
+Utiliser `quit()` pour quitter l'interpréteur.
+
+:::
 
 ### Opérateurs de comparaison
+
+Les opérateurs de comparaison sont utilisés pour comparer des valeurs. Ils retournent
+un booléen (`True` ou `False`) en fonction du résultat de la comparaison.
+
 | Opérateur | Description                      | Exemple          |
 |-----------|----------------------------------|------------------|
 | `==`      | Égal à                          | `5 == 5` → `True`|
@@ -30,7 +151,24 @@ Les opérateurs permettent d'effectuer des opérations sur des variables et des 
 | `>=`      | Supérieur ou égal à             | `5 >= 5` → `True`|
 | `<=`      | Inférieur ou égal à             | `3 <= 5` → `True`|
 
+Il est tout à fait possible de comparer deux variables entres elles.
+
+```python
+a = 5
+b = 3
+print(a == b)  # False
+print(a != b)  # True
+print(a > b)   # True
+print(a < b)   # False
+print(a >= b)  # True
+print(a <= b)  # False
+```
+
 ### Opérateurs logiques
+
+Si les opérateurs de comparaison retournent un booléen, les opérateurs logiques
+eux permettent de combiner plusieurs conditions. Ils retournent également un booléen.
+
 | Opérateur | Description              | Exemple                       |
 |-----------|--------------------------|-------------------------------|
 | `and`     | Retourne `True` si les deux conditions sont vraies | `(5 > 3) and (3 < 10)` → `True`|
@@ -38,65 +176,129 @@ Les opérateurs permettent d'effectuer des opérations sur des variables et des 
 | `not`     | Inverse une condition    | `not (5 > 3)` → `False`       |
 
 ### Opérateurs d'appartenance
+
+Il est fréquent en informatique de vérifier si un élément appartient à une
+séquence (comme une liste ou une chaîne de caractères). Python propose
+des opérateurs pour cela.
+
 | Opérateur | Description              | Exemple                       |
 |-----------|--------------------------|-------------------------------|
 | `in`      | Vérifie si un élément appartient à une séquence | `'a' in 'apple'` → `True` |
 | `not in`  | Vérifie si un élément n'appartient pas à une séquence | `'b' not in 'apple'` → `True` |
 
+L'opérateur `in` fonctionne notamment avec les listes, les chaînes de caractères, les tuples, 
+les dictionnaires et les ensembles.
 
-## Types de données
-Python propose plusieurs types de données. Voici les plus courants :
 
-### 3.1 Types numériques
-- **int** : Nombres entiers.
-  ```python
-  x = 5      # x est un entier
-  ```
-- **float** : Nombres décimaux.
-  ```python
-  y = 3.14   # y est un flottant
-  ```
+<details>
+<summary>🤔 Testez votre compréhension</summary>
 
-### 3.2 Chaînes de caractères (str)
-Les chaînes de caractères sont utilisées pour stocker du texte.
+ <MultipleChoiceTabs>
+    <MultipleChoice>
+    Quel est la valeur de `test` après l'exécution du code suivant ?
 
-```python linenums="1"
-# Exemple de chaînes
-nom = "Python"
-salutation = 'Bonjour'
-texte_multi_ligne = """Ceci est
-un texte multi-ligne."""
+    ```python
+    b = 6
+    test = b in [1, 2, 3, 4, 5]
+    ```
+
+    <MultipleChoiceOption >
+
+    `True`
+
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption isCorrect>
+
+    `False`
+
+    </MultipleChoiceOption>
+
+
+    </MultipleChoice>
+
+      <MultipleChoice>
+    Quel est la valeur de `test` après l'exécution du code suivant ?
+
+    ```python
+    b = 6
+    test = b - 2 not in [1, 3, 4]
+    ```
+
+    <MultipleChoiceOption >
+
+    `True`
+
+    </MultipleChoiceOption>
+
+
+    
+    <MultipleChoiceOption isCorrect>
+
+    `False`
+
+    </MultipleChoiceOption>
+
+    </MultipleChoice>
+
+ </MultipleChoiceTabs>
+ </details> 
+
+
+### Opérateurs d'identité
+
+Les opérateurs d'identité permettent de vérifier si deux objets sont
+le même objet en mémoire. Ils sont particulièrement utiles
+lorsque vous travaillez avec des objets mutables (comme les listes).
+
+| Opérateur | Description              | Exemple                       |
+|-----------|--------------------------|-------------------------------|
+| `is`      | Vérifie si deux variables pointent vers le même objet | `a is b` → `True` |
+| `is not`  | Vérifie si deux variables ne pointent pas vers le même objet | `a is not b` → `True` |
+
+L'opérateur `is` peut être utilisé aussi sur des objets immuables, mais il
+est déconseillé de l'utiliser pour les types immuables comme les chaînes de caractères
+ou les entiers. Utilisez plutôt l'opérateur `==` pour comparer les valeurs. Une exception
+est l'opérateur `is` utilisé pour vérifier si une variable est `None`.
+
+Voici un exemple de code pour bien comprendre la différence entre `is` et `==` :
+```python
+a = [1, 2, 3]
+b = a          # b pointe vers le même objet que a
+print(a is b)  # True
+print(a == b)  # True
+
+b = [1, 2, 3]  # b pointe vers une nouvelle liste
+print(a is b)  # False
+print(a == b)  # True
 ```
 
-### 3.3 Types séquentiels
-| Type    | Description                  | Exemple                        |
-|---------|------------------------------|--------------------------------|
-| **list**| Liste modifiable             | `[1, 2, 3]`                   |
-| **tuple**| Tuple immuable              | `(1, 2, 3)`                   |
 
-### 3.4 Types de tableaux associatifs
-| Type    | Description                  | Exemple                        |
-|---------|------------------------------|--------------------------------|
-| **dict**| Dictionnaire clé-valeur      | `#!py3 {"nom": "Alice", "age": 25}` |
+## Ordre de priorité des opérateurs
 
-### 3.5 Types d'ensemble
-| Type    | Description                  | Exemple                        |
-|---------|------------------------------|--------------------------------|
-| **set** | Ensemble non ordonné         | `{1, 2, 3}`                   |
+Puisqu'on utilise souvent plusieurs opérateurs dans une même expression et qu'il
+est préférable d'éviter les parenthèses pour la lisibilité, les opérateurs
+de Python ont un ordre de priorité. Cela signifie que certains opérateurs
+sont évalués avant d'autres. Par exemple, dans l'expression `3 + 4 * 2`, la
+multiplication est effectuée avant l'addition, donc le résultat est `3 + 8` et non
+`7 * 2`. C'est comme au primaire, mais avec plus d'opérateurs à connaître!
 
-### 3.6 Booléens
-- **bool** : Peut être `True` ou `False`.
-  ```python
-  actif = True
-  termine = False
-  ```
+Voici un tableau qui résume l'ordre de priorité des opérateurs en Python, du
+plus élevé au plus bas. Il manque certains opérateurs et Python possède en fait
+plus de niveau, cette table est donc simplifiée pour les besoins de ce cours. La 
+table officielle est ici : [Python Operator Precedence](https://docs.python.org/3/reference/expressions.html#operator-precedence).
 
----
+| Priorité | Opérateur | Description                      |
+|-----------|-----------|----------------------------------|
+| 1         | `**`      | Puissance                        |
+| 2         | `*`, `/`, `//`, `%` | Multiplication, division, division entière, modulo |
+| 3         | `+`, `-`  | Addition, soustraction           |
+| 4         | `in`, `not in`, `is`, `is not`, `==`, `!=`, `<`, `>`, `<=`, `>=` | Appartenance, Identité, Comparaison |
+| 5         | `not`     | Négation logique                 |
+| 6         | `and`     | Conjonction logique              |
+| 7         | `or`      | Disjonction logique              |
 
-## Conclusion
-Ces bases constituent les fondations de tout programme Python. Comprendre les expressions, les opérateurs et les types est crucial pour écrire du code lisible et fonctionnel.
-
----
-
-### Ressources supplémentaires
-- [Documentation officielle Python](https://docs.python.org/fr/3/)
+La logique de la table est que les priorités les plus élevées sont accordées
+aux calculs avant les comparaisons, et que les comparaisons sont
+effectuées avant les liens logiques. En gros, on fait d'abord des calculs, puis
+on compare les résultats, et enfin on combine les résultats des comparaisons.
