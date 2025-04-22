@@ -204,6 +204,37 @@ votre code en fonction du type d'une variable. Par exemple, si l'utilisateur
 entre un nombre, vous pouvez vérifier si c'est un entier ou un flottant et
 adapter votre code en conséquence.
 
+## 💃🕺🏼 La valse des types
+
+Il arrive souvent que vous ayez besoin de convertir une valeur d'un type à un autre.
+Par exemple, si vous lisez une valeur à partir de l'entrée utilisateur, elle sera
+toujours une chaîne de caractères. Vous devrez donc la convertir en entier ou
+en flottant si vous souhaitez effectuer des opérations arithmétiques avec elle.
+Voici quelques fonctions de conversion de type courantes :
+
+| Fonction         | Description                  | Exemple                        |
+|------------------|------------------------------|--------------------------------|
+| `int()`         | Convertit une valeur en entier | `int("5")` → `5`              |
+| `float()`       | Convertit une valeur en flottant | `float("3.14")` → `3.14`      |
+| `str()`         | Convertit une valeur en chaîne de caractères | `str(5)` → `"5"`              |
+| `list()`        | Convertit une séquence en liste | `list((1, 2, 3))` → `[1, 2, 3]` |
+| `tuple()`       | Convertit une séquence en tuple | `tuple([1, 2, 3])` → `(1, 2, 3)` |
+| `set()`         | Convertit une séquence en ensemble | `set([1, 2, 2, 3])` → `{1, 2, 3}` |
+| `dict()`        | Convertit une séquence de paires clé-valeur en dictionnaire | `dict([("a", 1), ("b", 2)])` → `{"a": 1, "b": 2}` |
+| `bool()`        | Convertit une valeur en booléen | `bool(0)` → `False`            |
+
+Comme vous pouvez voir, le nom de la fonction correspond au type vers lequel
+vous souhaitez convertir la valeur. Comme c'est bien fait !
+
+:::warning
+
+La fonction `bool()` est fourbe. En Python, les valeurs suivantes sont considérées comme
+faux : `0`, `0.0`, `""` (chaîne vide), `[]` (liste vide), `()` (tuple vide),
+`{}` (dictionnaire vide) et `None`. Toutes les autres valeurs sont considérées
+comme vraies. Par exemple `bool("False")` est vrai, car la chaîne `"False"` n'est pas vide.
+
+:::
+
 ## 🛃 Déclarer vos types !
 
 Bien que non obligatoire en Python, il est fortement recommandé de déclarer le
