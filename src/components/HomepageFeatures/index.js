@@ -15,6 +15,9 @@ const FeatureList = [
       </>
     ),
   },
+];
+
+const CourseList = [
   {
     title: "Cours 420-2C3-MA",
     titleLink: "https://archambaultv-prof.github.io/2025H-420-2C3-MA/",
@@ -38,9 +41,9 @@ const FeatureList = [
   },
 ];
 
-function Feature({ Svg, title, titleLink, description }) {
+function Feature({ Svg, title, titleLink, description, colSize = "col--6" }) {
   return (
-    <div className={clsx("col col--6")}>
+    <div className={clsx("col", colSize)}>
       <div className="text--center">
         {titleLink ? (
           <a href={titleLink}>
@@ -66,14 +69,32 @@ function Feature({ Svg, title, titleLink, description }) {
 
 export default function HomepageFeatures() {
   return (
+    <>
+    <div className={clsx("container", "padding-top--lg")}>
+    <h2>📚 Cours en lien avec ce site web</h2>
     <section className={styles.features}>
       <div className="container">
         <div className="row">
-          {FeatureList.map((props, idx) => (
+          {CourseList.map((props, idx) => (
             <Feature key={idx} {...props} />
           ))}
         </div>
       </div>
     </section>
+    </div>
+    <div className={clsx("container", "padding-top--lg")}>
+      <h2>🐍 Et maintenant, pour quelque chose de complètement différent</h2>
+      <section className={styles.features}>
+        <div className="container">
+          <div className="row">
+            {FeatureList.map((props, idx) => (
+              <Feature key={idx} colSize="col--12" {...props} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+    </>
+
   );
 }
