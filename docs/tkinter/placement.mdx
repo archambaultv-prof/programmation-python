@@ -1,0 +1,100 @@
+---
+sidebar_label: Placement des widgets
+sidebar_position: 3
+description: Placement des widgets dans Tkinter
+---
+
+# Placement des widgets dans Tkinter
+
+Tkinter offre trois méthodes principales pour positionner les widgets dans une
+fenêtre : `pack`, `grid` et `place`. Chacune a ses propres avantages et
+inconvénients, et le choix dépend de la complexité de l'interface que vous
+souhaitez créer.
+
+| Méthode | Description                                                   | Cas d'utilisation recommandé          |
+|---------|---------------------------------------------------------------|---------------------------------------|
+| pack    | Empile les widgets les uns après les autres (haut, bas, gauche, droite) | Interfaces simples                   |
+| grid    | Organise les widgets en grille de lignes et colonnes          | Interfaces complexes et alignement précis |
+| place   | Positionne les widgets par coordonnées absolues ou relatives  | Contrôle total mais peu flexible      |
+
+
+## Placement avec pack
+
+La méthode `pack()` est la plus simple et la plus rapide à utiliser. Elle place les
+widgets les uns après les autres dans l'ordre où ils sont ajoutés. Vous pouvez
+spécifier la direction (haut, bas, gauche, droite) et d'autres options de
+placement. Par exemple le code suivant crée une fenêtre avec trois boutons empilés.
+Le premier bouton est placé en haut et prend toute la largeur de la fenêtre,
+le deuxième bouton est placé à gauche et le troisième à droite.
+
+```python
+import tkinter as tk
+
+root = tk.Tk()
+
+btn1 = tk.Button(root, text="Bouton 1")
+btn2 = tk.Button(root, text="Bouton 2")
+btn3 = tk.Button(root, text="Bouton 3")
+
+btn1.pack(side="top", fill="x")
+btn2.pack(side="left")
+btn3.pack(side="right")
+
+root.mainloop()
+```
+
+Parmis les options de `pack()`, vous pouvez notamment utiliser :
+
+- `side`: spécifie le côté de la fenêtre où le widget doit être placé (`top`, `bottom`, `left`, `right`).
+- `fill`: spécifie comment le widget doit remplir l'espace disponible (`x`, `y`, `both`).
+- `expand`: si `True`, le widget peut s'étendre pour remplir l'espace disponible.
+
+
+## Placement avec grid
+
+La méthode `grid()` organise les widgets en lignes et colonnes, ce qui permet un
+placement plus précis. Vous pouvez spécifier la ligne et la colonne où chaque
+widget doit être placé. Voici un exemple de code qui crée une grille de boutons
+avec deux lignes et trois colonnes :
+
+```python
+import tkinter as tk
+root = tk.Tk()
+root.title("Exemple de grille")
+# Créer une grille de boutons
+for i in range(2):
+    for j in range(3):
+        bouton = tk.Button(root, text=f"Button {i*3+j+1}")
+        bouton.grid(row=i, column=j, padx=5, pady=5)
+root.mainloop()
+```
+
+Parmis les options de `grid()`, vous pouvez notamment utiliser :
+
+- `row`: spécifie la ligne où le widget doit être placé.
+- `column`: spécifie la colonne où le widget doit être placé.
+- `padx` et `pady`: ajoutent un espacement horizontal et vertical autour du widget.
+
+## Placement avec place
+
+La méthode `place()` vous permet de positionner les widgets à des coordonnées
+absolues ou relatives. C'est la méthode la plus flexible, mais aussi la plus
+complexe. Voici un exemple de code qui place deux boutons à des
+coordonnées spécifiques dans la fenêtre :
+
+```python
+import tkinter as tk
+root = tk.Tk()
+root.title("Exemple de place")
+
+# Créer un bouton à des coordonnées absolues
+bouton = tk.Button(root, text="Bouton placé")
+bouton.place(x=50, y=50)
+
+# Créer un autre bouton à des coordonnées relatives
+autre_bouton = tk.Button(root, text="Autre bouton")
+# L'ancre "center" place le bouton au centre de la fenêtre
+autre_bouton.place(relx=0.5, rely=0.5, anchor="center")
+
+root.mainloop()
+```
