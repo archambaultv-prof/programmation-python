@@ -1,0 +1,93 @@
+---
+sidebar_label: Introduction
+sidebar_position: 1
+description: Introduction à Tkinter
+---
+
+# Introduction à Tkinter en Python
+
+`tkinter` est la bibliothèque standard de Python pour créer des interfaces
+graphiques (GUI). Elle permet de construire des applications avec des fenêtres,
+des boutons, des champs de texte, etc. C'est un excellent outil pour commencer
+à programmer des interfaces utilisateur simples.
+
+## Créer une fenêtre
+
+Voici comment créer une fenêtre de base avec `tkinter` :
+
+```python
+import tkinter as tk
+
+# Créer la fenêtre principale
+fenetre = tk.Tk()
+fenetre.title("Ma première interface")
+
+# Créer un widget (étiquette)
+etiquette = tk.Label(fenetre, text="Bonjour, tkinter !")
+etiquette.pack()  # Placer l'étiquette dans la fenêtre
+
+# Lancer la boucle principale (obligatoire)
+fenetre.mainloop()
+
+```
+
+Le code ci-dessus crée une fenêtre avec le titre "Ma première interface" et affiche
+une étiquette avec le texte "Bonjour, tkinter !". La méthode `mainloop()` est
+nécessaire pour afficher la fenêtre et gérer les événements (comme les clics de souris).
+
+:::note
+
+Lorsque vous lancer un script python qui fait appelle à `mainloop()`, le programme
+s'exécute jusqu'à ce que la fenêtre soit fermée.
+
+:::
+
+
+## Ajouter un bouton
+
+Pour ajouter un bouton qui exécute une action lorsqu'il est cliqué, vous pouvez
+utiliser le widget `Button`. Lors de la création du bouton, vous devez spécifier
+une fonction à appeler lorsque le bouton est cliqué.
+
+Voici un exemple :
+
+```python
+import tkinter as tk
+
+def cliquer():
+    print("Vous avez cliqué !")
+
+fenetre = tk.Tk()
+
+bouton = tk.Button(fenetre, text="Cliquez ici", command=cliquer)
+bouton.pack()
+
+fenetre.mainloop()
+```
+
+Pour l'instant, la fonction `cliquer()` affiche simplement un message dans la console
+lorsque le bouton est cliqué. Il serait plus intéressant d'afficher un message
+dans la fenêtre elle-même. C'est ce que fait le code ci-dessous avec le widget
+`Label`.
+
+
+```python
+import tkinter as tk
+
+def cliquer():
+    etiquette.config(text="Vous avez cliqué !")
+
+fenetre = tk.Tk()
+
+etiquette = tk.Label(fenetre, text="")
+etiquette.pack()
+
+bouton = tk.Button(fenetre, text="Cliquez ici", command=cliquer)
+bouton.pack()
+
+fenetre.mainloop()
+```
+
+Cette fois-ci, lorsque vous cliquez sur le bouton, le texte de l'étiquette change pour
+afficher "Vous avez cliqué !". La méthode `config()` permet de modifier les
+propriétés d'un widget existant, ici pour changer le texte de l'étiquette.

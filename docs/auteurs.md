@@ -1,6 +1,7 @@
 ---
 sidebar_position: 2
 sidebar_label: Auteurs
+description: Auteurs du site
 ---
 
 # Auteurs
