@@ -45,7 +45,7 @@ La fonction `range` peut prendre un, deux ou trois arguments :
 - `range(start, stop)` : génère les nombres de `start` à `stop - 1`
 - `range(start, stop, step)` : génère les nombres de `start` à `stop - 1`, en incrémentant de `step`
 
-### Exemples avec range
+#### Exemple 1
 
 Cet exemple affiche les nombres de 1 à 5 :
 ```python
@@ -53,12 +53,41 @@ for i in range(1, 6):
     print(i)
 ```
 
+#### Exemple 2
+
 Cet exemple affiche les nombres pairs de 0 à 10 :
 ```python
 for i in range(0, 11, 2):
     print(i)
 ```
 
+## La fonction enumerate
+
+La fonction `enumerate` permet d'itérer sur une séquence tout en gardant une
+référence à l'index de chaque élément. Cela peut être utile lorsque vous avez
+besoin de connaître la position d'un élément dans une liste.
+
+Cet exemple affiche chaque fruit avec son index :
+
+<Tabs>
+  <TabItem value="code" label="Code" default>
+
+    ```python
+    fruits = ["pomme", "banane", "cerise"]
+    for index, fruit in enumerate(fruits):
+        print(f"Index {index}: {fruit}")
+    ```
+
+    </TabItem>
+
+    <TabItem value="resultat" label="Résultat">
+    ```
+    Index 0: pomme
+    Index 1: banane
+    Index 2: cerise
+    ```
+    </TabItem>
+</Tabs>
 
 ## Boucles imbriquées
 

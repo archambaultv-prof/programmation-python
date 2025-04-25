@@ -1,9 +1,10 @@
 ---
-sidebar_label: Les listes
-sidebar_position: 5
+sidebar_label: Les listes (partie 1)
+sidebar_position: 50
+description: Introduction aux listes
 ---
 
-# Les listes
+# Les listes (partie 1)
 
 ## Qu'est-ce qu'une liste ?
 
@@ -81,64 +82,3 @@ print(liste1)  # Affiche [1, 2, 3, 'a', 'b', 'c']
 
 Dans cet exemple, `liste1` est **modifiée** pour inclure les éléments de
 `liste2`.
-
-## Parcourir une liste
-
-### Utilisation de la boucle `for`
-On peut utiliser une boucle `for` pour parcourir les éléments d'une liste.
-
-=== "Python"
-    ```python
-    ma_liste = [1, "texte", 3.14, True]
-    for element in ma_liste:
-        print(element)
-    ```
-=== "Résultat"
-    ```
-    1
-    texte
-    3.14
-    True
-    ```
-
-### Utilisation de `range` avec `len`
-On peut utiliser la fonction `range` avec `len` pour parcourir les indices d'une liste.
-
-=== "Python"
-    ```python
-    ma_liste = [1, "texte", 3.14, True]
-    for i in range(len(ma_liste)):
-        print(f"Index {i} : {ma_liste[i]}")
-    ```
-=== "Résultat"
-    ```
-    Index 0 : 1
-    Index 1 : texte
-    Index 2 : 3.14
-    Index 3 : True
-    ```
-
-### Utilisation de `enumerate`
-La fonction `enumerate` permet de parcourir une liste en obtenant à la fois
-l'indice et l'élément.
-
-=== "Python"
-    ```python
-    ma_liste = [1, "texte", 3.14, True]
-    for i, element in enumerate(ma_liste):
-        print(f"Index {i} : {element}")
-    ```
-=== "Résultat"
-    ```
-    Index 0 : 1
-    Index 1 : texte
-    Index 2 : 3.14
-    Index 3 : True
-    ```
-
-Dans cet exemple, on utilise `enumerate` pour obtenir l'indice et l'élément de
-`ma_liste` et les imprimer.
-
-## Références
-Pour plus d'informations sur les listes en Python, vous pouvez consulter le [manuel officiel de Python](https://docs.python.org/3/tutorial/datastructures.html).
-
