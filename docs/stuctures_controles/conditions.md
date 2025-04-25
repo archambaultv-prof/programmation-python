@@ -4,7 +4,7 @@ sidebar_position: 1
 description: Structures conditionnelles if, elif et else
 ---
 
-# Les structures conditionnelles
+# Structures conditionnelles if, elif et else
 
 L'exécution d'un script Python se déroule normalement du haut vers le bas.
 Cependant, il est parfois nécessaire d'exécuter certaines instructions que si
@@ -18,7 +18,7 @@ des décisions en fonction des données fournies ou des résultats intermédiair
 calculés durant son exécution.
 
 
-## `if`, `elif` et `else`
+## if, elif et else
 
 Les trois principaux mots-clés utilisés pour créer des structures conditionnelles
 sont `if`, `elif` et `else`. Voici un aperçu de chacun d'eux.
