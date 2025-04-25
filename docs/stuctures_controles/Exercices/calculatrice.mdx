@@ -1,0 +1,79 @@
+---
+sidebar_label: Devine le mot
+sidebar_position: 1
+description: Écrire un programme pour jouer au jeu du pendu
+---
+
+# 🎲 Devine le mot
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont:
+
+- Mettre en pratique les fonctions `input` et `print`.
+- Vous familiariser avec les structures de contrôle en Python.
+- Réfléchir à la logique d'un programme et structuré son code.
+
+## 📜 Énoncé
+
+Vous devez écrire un programme qui permet de jouer au jeu du pendu. Au départ,
+le programme choisit un mot secret parmi une liste de mots. Le joueur doit deviner les lettres une à une.
+
+À chaque tour :
+
+- Le programme affiche les lettres trouvées jusqu'à présent (les autres sont remplacées par des `_`)
+- Le joueur entre une lettre
+- Le programme indique si la lettre est dans le mot ou non
+- Le joueur a **8 tentatives maximum**
+
+### ✅ Conditions de victoire / défaite
+
+- Si le joueur devine toutes les lettres : afficher "Bravo ! Tu as gagné ! 🎉"
+- S’il utilise toutes ses chances : afficher "Perdu ! Le mot était : ..."
+
+
+### 🖥️ Exemple d’exécution
+
+```
+Mot à deviner : _ _ _ _ _ _
+Il te reste 8 essais.
+
+Lettre ? y
+Bonne réponse !
+
+Mot à deviner : _ y _ _ _ _
+Il te reste 8 essais.
+
+Lettre ? a
+Raté !
+
+Mot à deviner : _ y _ _ _ _
+Il te reste 7 essais.
+```
+
+### 🤔 Comment choisir un mot au hasard
+
+Le code suivant permet de choisir un mot au hasard dans une liste de mots :
+
+```python
+import random
+mots = ["python", "programmation", "ordinateur", "developpeur"]
+mot_secret = random.choice(mots)
+print(mot_secret)
+```
+
+---
+
+:::tip
+
+On n'écrit jamais un programme en une seule fois. Il est préférable de le faire
+en plusieurs étapes qui s'additionnent.
+
+:::
+
+Avancez étape par étape. D'abord un programme qui affiche un mot au hasard, puis
+ajoutez la logique pour demander une lettre et simplement afficher si elle est
+présente ou non. Ensuite, ajoutez la logique pour afficher le mot à deviner avec
+des `_`. Par la suite, ajoutez la logique pour gérer le nombre d'essais restants et
+la condition de victoire/défaite.
+
