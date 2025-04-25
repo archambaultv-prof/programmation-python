@@ -183,3 +183,73 @@ chaine = "bonjour tout le monde"
 occurrences = chaine.count("o")
 print(occurrences)  # Affiche 5
 ```
+
+
+## Comparaison de chaînes de caractères
+
+La comparaison de chaînes de caractères se fait en utilisant les opérateurs de
+comparaison habituels (`==`, `!=`, `<`, `>`, `<=`, `>=`). Les chaînes de
+caractères sont comparées lexicographiquement, c'est-à-dire en fonction de
+l'ordre des caractères dans la table [Unicode](https://fr.wikipedia.org/wiki/Unicode). Notez que la table [ASCII](https://fr.wikipedia.org/wiki/American_Standard_Code_for_Information_Interchange) est un sous-ensemble de la table Unicode.
+
+Voici un exemple d'utilisation des opérateurs de comparaison avec des chaînes de caractères :
+
+```python linenums="1"
+str1 = "apple"
+str2 = "banana"
+print(str1 < str2)  # True
+print(str1 == str2) # False
+print(str1 > str2)  # False
+
+str1 = "apple"
+str2 = "apple"
+print(str1 < str2)  # False
+print(str1 == str2) # True
+print(str1 > str2)  # False
+
+str1 = "banana"
+str2 = "apple"
+print(str1 < str2)  # False
+print(str1 == str2) # False
+print(str1 > str2)  # True
+```
+
+:::warning
+
+    En présence de caractères spéciaux, la comparaison de chaînes de caractères 
+    peut donner des résultats inattendus. Par exemple, un même symbole peut être représenté de plusieurs 
+    façon en Unicode. Pour éviter ce genre de problème, il est possible de normaliser les chaînes de caractères
+    en utilisant la fonction `unicodedata.normalize()` du module `unicodedata`.
+
+:::
+
+```python
+import unicodedata
+
+# Deux chaînes de caractères qui représentent la même chose
+str1 = "école"  # Caractère 'é' (U+00E9) + "cole"
+str2 = "e\u0301cole"  # Caracter 'e' (U+0065) + diacritique accent aigu (U+0301) + "cole"
+
+# Les deux chaînes s'affichent de la même façon
+print("Même affichage:")
+print(f"str1 (original): {repr(str1)}") # 'école'
+print(f"str2 (original): {repr(str2)}") # 'école'
+
+# Mais elles ne sont pas équivalentes sans normalisation
+print("Sans normalisation:")
+print(len(str1)) # 5
+print(len(str2)) # 6
+print(f"str1 == str2: {str1 == str2}")  # False
+
+# Avec normalisation NFC
+str1_nfc = unicodedata.normalize("NFC", str1)
+str2_nfc = unicodedata.normalize("NFC", str2)
+print("Après normalisation NFC:")
+print(f"str1_nfc == str2_nfc: {str1_nfc == str2_nfc}")  # True
+
+# Avec normalisation NFD
+str1_nfd = unicodedata.normalize("NFD", str1)
+str2_nfd = unicodedata.normalize("NFD", str2)
+print("Après normalisation NFD:")
+print(f"str1_nfd == str2_nfd: {str1_nfd == str2_nfd}")  # True
+```
