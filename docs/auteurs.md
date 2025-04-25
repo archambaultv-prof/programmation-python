@@ -9,7 +9,7 @@ description: Auteurs du site
 Ce site a été créé par Vincent Archambault-Bouffard, enseignant en informatique
 au Collège de Maisonneuve.
 
-## Droits d'auteur
+## Droit d'auteur
 
 Le contenu de ce site est mise à disposition selon les termes de la licence
 [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/deed.fr)
