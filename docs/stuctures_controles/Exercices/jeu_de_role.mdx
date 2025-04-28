@@ -1,0 +1,146 @@
+---
+sidebar_label: Un terminal dont vous êtes le héros
+sidebar_position: 2
+description: Un terminal dont vous êtes le héros
+---
+
+# 🏰 Un terminal dont vous êtes le héros
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont :
+
+- Mettre en pratique les fonctions `input` et `print`.
+- Vous familiariser avec les structures de contrôle en Python.
+- Réfléchir à la logique d'un programme et structurer son code.
+- Devenir un vrai héros du code ! 🦸‍♂️
+
+## 📜 Énoncé
+
+Vous êtes un **héros** ou une **héroïne** qui part à l’aventure. Il y a 5 monstres à vaincre.
+
+Voici un résumé des règles du jeu :
+
+- Vous commencez avec 100 points de vie.
+- À chaque tour, vous tombez sur un **événement aléatoire** :
+  - Affronter un monstre 🐉. Vous pouvez combattre ou fuir. Le combat inflige
+    des dégâts, mais vaincra le monstre. La fuite vous fera perdre des points de vie, mais moins que le combat.
+  - Trouver une potion 🍷. Il faut décider de la boire ou non. Une potion peut
+    faire gagner ou perdre des points de vie.
+- Le jeu se termine si :
+  - Vos PV tombent à 0 (perdu).
+  - Vous avez vaincu tous les 5 monstres (gagné).
+
+### 🖥️ Exemple d’exécution
+
+```
+Bienvenue, aventurier et aventurière ! 🏰 Tu commences avec 100 PV. Il te faut vaincre 5 monstres.
+Le choix (q) te permet de quitter le jeu à tout moment.
+
+--- Nouveau tour ---
+PV : 100 | Monstres vaincus : 0
+Tu avances dans la forêt sombre... 🌲
+😈 Un monstre surgit ! Il a une force équivalente à 17 PV
+Veux-tu le combattre (c) ou fuir (f) ? c
+Tu combats vaillamment le monstre ! Tu ressors victorieux, mais perds 17 PV.
+
+--- Nouveau tour ---
+PV : 83 | Monstres vaincus : 1
+Tu avances dans la forêt sombre... 🌲
+😈 Un monstre surgit ! Il a une force équivalente à 25 PV
+Veux-tu le combattre (c) ou fuir (f) ? f
+Tu fuis et perds 4 PV en courant.
+
+--- Nouveau tour ---
+PV : 79 | Monstres vaincus : 1
+Tu avances dans la forêt sombre... 🌲
+🍷 Tu trouves une potion magique veux-tu la boire (o) ou non (n) ? o
+Tu bois la potion et gagnes 5 PV.
+
+--- Nouveau tour ---
+PV : 84 | Monstres vaincus : 1
+Tu avances dans la forêt sombre... 🌲
+😈 Un monstre surgit ! Il a une force équivalente à 23 PV
+Veux-tu le combattre (c) ou fuir (f) ? c
+Tu combats vaillamment le monstre ! Tu ressors victorieux, mais perds 23 PV.
+
+--- Nouveau tour ---
+PV : 61 | Monstres vaincus : 2
+Tu avances dans la forêt sombre... 🌲
+😈 Un monstre surgit ! Il a une force équivalente à 22 PV
+Veux-tu le combattre (c) ou fuir (f) ? f
+Tu fuis et perds 3 PV en courant.
+
+--- Nouveau tour ---
+PV : 58 | Monstres vaincus : 2
+Tu avances dans la forêt sombre... 🌲
+😈 Un monstre surgit ! Il a une force équivalente à 18 PV
+Veux-tu le combattre (c) ou fuir (f) ? c
+Tu combats vaillamment le monstre ! Tu ressors victorieux, mais perds 18 PV.
+
+--- Nouveau tour ---
+PV : 40 | Monstres vaincus : 3
+Tu avances dans la forêt sombre... 🌲
+🍷 Tu trouves une potion magique veux-tu la boire (o) ou non (n) ? o
+Tu bois la potion et gagnes 3 PV.
+
+--- Nouveau tour ---
+PV : 43 | Monstres vaincus : 3
+Tu avances dans la forêt sombre... 🌲
+😈 Un monstre surgit ! Il a une force équivalente à 17 PV
+Veux-tu le combattre (c) ou fuir (f) ? c
+Tu combats vaillamment le monstre ! Tu ressors victorieux, mais perds 17 PV.
+
+--- Nouveau tour ---
+PV : 26 | Monstres vaincus : 4
+Tu avances dans la forêt sombre... 🌲
+😈 Un monstre surgit ! Il a une force équivalente à 17 PV
+Veux-tu le combattre (c) ou fuir (f) ? c
+Tu combats vaillamment le monstre ! Tu ressors victorieux, mais perds 17 PV.
+
+🏆 Bravo ! Tu as vaincu 5 monstres et gagné l'aventure.
+```
+
+### 🤔 Comment choisir un évènement au hasard
+
+Le code suivant permet de choisir un évènement au hasard :
+
+```python
+import random
+#  Deux fois plus de monstres que de potions
+evenement = random.choice(["monstre", "monstre", "potion magique"])
+```
+
+Le code suivant permet de choisir la force d'un monstre, la quantité de PV
+ d'une potion ou la fuite au hasard. Il prend pour acquis que vous avez déjà
+ importer `random` au début de votre code.  Vous pouvez changer les valeurs
+pour rendre le jeu plus ou moins difficile.
+
+```python
+degats_monstre = random.randint(15, 25)
+degats_fuite = random.randint(0, 5)
+gain_potion = random.randint(-10, 15)
+```
+
+### 🧙‍♂️ Indice
+
+:::tip
+
+On n'écrit jamais un programme en une seule fois. Il est préférable de le faire
+en plusieurs étapes qui s'additionnent.
+
+:::
+
+Allez-y étape par étape.
+
+1. Afficher un message de bienvenue.
+2. Affichez un événement au hasard.
+3. Ajoutez la logique pour demander à l'utilisateur ce qu'il veut faire.
+    - Combattre ou fuir pour un monstre
+    - Boire ou non pour une potion
+   
+   N'oubliez pas de gérer le choix quitter le jeu (q)
+4. Dans les étapes ci-dessus, votre programme ne gère qu'un seul tour. Ajoutez une boucle pour
+   gérer plusieurs tours. Ajoutez la logique pour gérer les PV et les monstres vaincus. Ceci vous
+   sert de condition de sortie pour la boucle.
+5. Afficher le message de victoire ou de défaite une fois la boucle terminée.
