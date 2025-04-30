@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-sidebar_label: Installation
+sidebar_label: Installation de Python
 description: Comment installer Python
 ---
 
