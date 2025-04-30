@@ -38,18 +38,18 @@ a une valeur différente qui lui est associée avec le paramètre `value`.
 import tkinter as tk
 
 root = tk.Tk()
-genre = tk.IntVar(value=1)  # Valeur par défaut
+mon_pokemon = tk.IntVar(value=1)  # Valeur par défaut
 
 tk.Label(root, text="Choisissez votre Pokemon préféré :").pack()
 
-tk.Radiobutton(root, text="Pikachu", variable=genre, value=1).pack()
-tk.Radiobutton(root, text="Charizard", variable=genre, value=2).pack()
-tk.Radiobutton(root, text="Autre", variable=genre, value=3).pack()
+tk.Radiobutton(root, text="Pikachu", variable=mon_pokemon, value=1).pack()
+tk.Radiobutton(root, text="Charizard", variable=mon_pokemon, value=2).pack()
+tk.Radiobutton(root, text="Autre", variable=mon_pokemon, value=3).pack()
 
-def afficher_genre():
-    print("Valeur sélectionnée :", genre.get())
+def afficher_mon_pokemon():
+    print("Valeur sélectionnée :", mon_pokemon.get())
 
-tk.Button(root, text="Soumettre", command=afficher_genre).pack()
+tk.Button(root, text="Soumettre", command=afficher_mon_pokemon).pack()
 
 root.mainloop()
 ```
