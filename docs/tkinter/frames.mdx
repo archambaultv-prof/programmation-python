@@ -1,0 +1,59 @@
+---
+sidebar_label: Frames
+sidebar_position: 4
+description: Frames, le conteneur de widgets
+---
+
+# Organisation des interfaces avec Frame
+
+Un `Frame` est un conteneur qui permet de *regrouper plusieurs widgets*. Cela facilite :
+
+- la disposition (layout) de l’interface
+- la séparation logique des différentes sections
+
+Voici un exemple simple, deux `Frame`, haut et bas:
+
+```python
+import tkinter as tk
+
+root = tk.Tk()
+root.title("Exemple avec Frame")
+
+# Créer deux cadres
+top_frame = tk.Frame(root, bg="lightblue")
+bottom_frame = tk.Frame(root, bg="lightgreen")
+
+# Placer les cadres
+top_frame.pack(fill="both", expand=True)
+bottom_frame.pack(fill="both", expand=True)
+
+# Ajouter des widgets dans chaque cadre
+tk.Label(top_frame, text="Haut de la fenêtre").pack(pady=10)
+tk.Button(bottom_frame, text="Bouton en bas").pack(pady=10)
+
+root.mainloop()
+```
+
+Comme vous pouvez le voir dans le code ci-haut, au lieu d'avoir un seul
+conteneur `root`, nous avons deux sections distinctes.
+
+Voici un autre exemple, cette fois avec des `Frame` orgraniser gauche-droite
+pour simuler un menu latéral :
+
+```python
+import tkinter as tk
+
+root = tk.Tk()
+root.title("Disposition gauche-droite")
+
+left_frame = tk.Frame(root, bg="lightgray", width=150)
+right_frame = tk.Frame(root, bg="white")
+
+left_frame.pack(side="left", fill="y")
+right_frame.pack(side="right", fill="both", expand=True)
+
+tk.Label(left_frame, text="Menu").pack(pady=5)
+tk.Button(right_frame, text="Contenu principal").pack(pady=20)
+
+root.mainloop()
+```
