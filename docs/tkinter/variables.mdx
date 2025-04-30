@@ -1,0 +1,150 @@
+---
+sidebar_label: Variables Tkinter
+sidebar_position: 4
+description: Variables Tkinter
+---
+
+# Variables Tkinter
+
+Les widgets comme `Entry`, `Checkbutton`, `Radiobutton` et `Label` peuvent être
+liés à une variable spéciale. Cette variable peut suivre automatiquement les changements
+de valeurs en temps réel. Cela permet de créer des interfaces utilisateur plus dynamiques et
+réactives. Il est aussi possible de lier plusieurs widgets à la même variable.
+
+Voici un exemple avec `StringVar` et `Entry`.
+
+```python
+import tkinter as tk
+
+root = tk.Tk()
+
+nom_var = tk.StringVar()
+
+tk.Label(root, text="Votre nom :").pack()
+tk.Entry(root, textvariable=nom_var).pack()
+
+def afficher_nom():
+    print("Nom saisi :", nom_var.get())
+
+tk.Button(root, text="Afficher", command=afficher_nom).pack()
+
+root.mainloop()
+```
+
+Voici un exemple avec `IntVar` et `Radiobutton`. Notez que chaque `Radiobutton`
+a une valeur différente qui lui est associée avec le paramètre `value`.
+
+```python
+import tkinter as tk
+
+root = tk.Tk()
+genre = tk.IntVar(value=1)  # Valeur par défaut
+
+tk.Label(root, text="Choisissez votre Pokemon préféré :").pack()
+
+tk.Radiobutton(root, text="Pikachu", variable=genre, value=1).pack()
+tk.Radiobutton(root, text="Charizard", variable=genre, value=2).pack()
+tk.Radiobutton(root, text="Autre", variable=genre, value=3).pack()
+
+def afficher_genre():
+    print("Valeur sélectionnée :", genre.get())
+
+tk.Button(root, text="Soumettre", command=afficher_genre).pack()
+
+root.mainloop()
+```
+
+Voici un autre exmple avec `BooleanVar` et `Checkbutton`
+
+```python
+import tkinter as tk
+
+root = tk.Tk()
+aime_python = tk.BooleanVar()
+
+tk.Checkbutton(root, text="J’aime Python 🐍", variable=aime_python).pack()
+
+def valider():
+    if aime_python.get():
+        print("Excellent choix.")
+    else:
+        print("Vous manquez quelque chose !")
+
+tk.Button(root, text="Valider", command=valider).pack()
+
+root.mainloop()
+```
+
+Finalement, voici un dernier exemple avec `StringVar` et `Label`. Cet exemple
+illustre comment plusieurs widgets peuvent être liés à la même variable.
+
+
+```python
+import tkinter as tk
+
+root = tk.Tk()
+
+msg = tk.StringVar(value="Bonjour !")
+
+entry = tk.Entry(root, textvariable=msg)
+entry.pack()
+
+label = tk.Label(root, textvariable=msg)
+label.pack()
+
+root.mainloop()
+```
+
+
+<details>
+<summary>🤔 Testez votre compréhension</summary>
+
+ <MultipleChoiceTabs>
+    <MultipleChoice>
+    Pourquoi utiliser un `Frame` au lieu de tout mettre dans `root`
+
+    <MultipleChoiceOption >
+
+    Parce que c’est obligatoire.
+
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption isCorrect>
+
+    Pour mieux organiser l’interface.
+
+    </MultipleChoiceOption>
+    
+    <MultipleChoiceOption>
+
+    Pour rendre le programme plus lent.
+
+    </MultipleChoiceOption>
+
+    </MultipleChoice>
+
+    <MultipleChoice>
+    Quel type de variable Tkinter utiliseriez-vous pour un `Checkbutton` ?
+
+    <MultipleChoiceOption >
+
+    `StringVar`.
+
+    </MultipleChoiceOption>
+
+    <MultipleChoiceOption >
+
+    `IntVar`.
+
+    </MultipleChoiceOption>
+    
+    <MultipleChoiceOption isCorrect>
+
+    `BooleanVar`.
+
+    </MultipleChoiceOption>
+
+    </MultipleChoice>
+
+ </MultipleChoiceTabs>
+ </details> 
