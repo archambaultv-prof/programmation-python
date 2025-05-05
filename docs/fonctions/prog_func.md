@@ -131,27 +131,319 @@ sum_numbers = reduce(add, numbers)
 print(sum_numbers)  # 15
 ```
 
-L'image ci-dessous illustre comment la fonction `reduce` fonctionne dans l'exemple précédent :
+:::note
 
-!!! note Note
-    Notez que la fonction `reduce` doit être importée du module `functools`. 
+Notez que la fonction `reduce` doit être importée du module `functools`. 
 
-!!! warning "Attention"
-    La fonction `reduce` retourne une erreur si la séquence est vide.
+:::
 
-Pour les listes, on peut facilement définir la fonction `reduce` en Python comme suit :
+:::warning
 
-```python
-def reduce(f, lst):
-    result = lst[0]
-    for x in lst[1:]:
-        result = f(result, x)
-    return result
-```
+La fonction `reduce` retourne une erreur si la séquence est vide.
 
-Il s'agit donc d'une boucle qui applique la fonction `f` de manière répétée et
-qui accumule le résultat. Bref, à chaque fois qu'on produit un résultat en
-parcourant une liste de gauche à droite, on peut utiliser `reduce`.
+:::
+
+### Testez votre compréhension
+
+<details>
+<summary>🤔 Testez votre compréhension</summary>
+
+<MultipleChoiceTabs>
+
+<MultipleChoice>
+Quelle fonction applique une opération à tous les éléments d'un itérable ?
+
+<MultipleChoiceOption isCorrect>
+
+`map`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`filter`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`reduce`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`zip`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle fonction permet de sélectionner des éléments en fonction d'une condition ?
+
+<MultipleChoiceOption>
+
+`map`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`filter`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`reduce`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`enumerate`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle fonction permet d'appliquer cumulativement une opération à tous les éléments d'un itérable ?
+
+<MultipleChoiceOption>
+
+`map`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`filter`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`reduce`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`sorted`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est le résultat de : `list(map(lambda x: x**2, [1, 2, 3]))` ?
+
+<MultipleChoiceOption>
+
+`[1, 2, 3]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`[1, 4, 9]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[1, 8, 27]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[2, 3, 4]`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est le résultat de : `list(filter(lambda x: x % 2 == 0, [1, 2, 3, 4]))` ?
+
+<MultipleChoiceOption isCorrect>
+
+`[2, 4]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[1, 3]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[1, 2, 3, 4]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[4]`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est le résultat de : `reduce(lambda x, y: x+y, [1, 2, 3])` ?
+
+<MultipleChoiceOption>
+
+`[1, 2, 3]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[1, 3, 6]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`6`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[3, 5]`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle fonction doit être importée depuis le module functools pour être utilisée ?
+
+<MultipleChoiceOption>
+
+`map`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`filter`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`reduce`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`sorted`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quel résultat donne : `list(map(str.upper, ['a', 'b', 'c']))` ?
+
+<MultipleChoiceOption>
+
+`['a', 'b', 'c']`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`['abc']`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`['A', 'B', 'C']`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`['A B C']`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quel résultat donne : `list(filter(None, [0, '', 'Python', None]))` ?
+
+<MultipleChoiceOption>
+
+`[0, '', 'Python', None]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`['Python']`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[0, None]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[0, 'Python']`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Comment obtenir le produit des éléments `[1, 2, 3, 4]` avec `reduce` ?
+
+<MultipleChoiceOption isCorrect>
+
+`reduce(lambda x, y: x*y, [1, 2, 3, 4])`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`reduce(lambda x, y: x+y, [1, 2, 3, 4])`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`reduce(lambda x, y: x/y, [1, 2, 3, 4])`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`reduce(lambda x, y: x-y, [1, 2, 3, 4])`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+</MultipleChoiceTabs>
+
+</details>
+
 
 ## Les fonctions lambda
 
