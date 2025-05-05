@@ -1,0 +1,183 @@
+---
+sidebar_label: Démineur
+sidebar_position: 4
+description: Démineur dans le terminal
+---
+
+# Démineur 🧨
+
+:::warning
+
+Cet exercice est plus difficile que les précédents.
+
+:::
+
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont :
+
+- Mettre en pratique les fonctions `input` et `print`.
+- Vous familiariser avec les boucles imbriquées.
+- Vous familiariser avec la gestion de grilles 2D.
+- Réfléchir à la logique d'un programme et structurer son code.
+
+## 📜 Énoncé
+
+Le jeu [Démineur](https://en.wikipedia.org/wiki/Minesweeper_(video_game))
+consiste à révéler toutes les cases sans déclencher les mines cachées. Si vous n'êtes pas familier
+avec le jeu, prenez le temps de faire une petite recherche pour comprendre les règles.
+
+Votre programme doit permettre de :
+
+1. Choisir la taille de la grille.
+2. Choisir le nombre de mines.
+
+### Déroulement du jeu
+
+- Laisser l'utilisateur choisir la taille de la grille (ex. 5 pour 5x5) et le nombre de mines.
+- Afficher la grille sous forme de cases masquées (`?`).
+- L’utilisateur sélectionne une case en indiquant la ligne et la colonne.
+- Si une mine est révélée, la partie est perdue, et toute la grille doit être affichée en révélant les positions des mines (`*`).
+- Sinon, afficher le nombre de mines adjacentes à cette case.
+- Continuer à demander à l'utilisateur de choisir une case jusqu'à ce qu'il
+  touche une mine ou que toutes les cases sans mines soient révélées.
+
+### 🖥️ Exemple d’exécution
+
+```
+Taille de la grille (ex. 10 pour 10×10) : 3
+Nombre de mines : 1
+? ? ?
+? ? ?
+? ? ?
+
+Ligne (1–3) : 2
+Colonne (1–3) : 2
+
+? ? ?
+? 1 ?
+? ? ?
+
+Ligne (1–3) : 1
+Colonne (1–3) : 1
+
+0 ? ?
+? 1 ?
+? ? ?
+
+Ligne (1–3) : 1
+Colonne (1–3) : 2
+
+0 1 ?
+? 1 ?
+? ? ?
+
+Ligne (1–3) : 1
+Colonne (1–3) : 3
+
+💥 BOOM ! Vous avez touché une mine. Fin de la partie.
+
+0 1 *
+0 1 1
+0 0 0
+```
+
+### 🤔 Comment gérer une grille 2D
+
+Pour gérer une grille 2D, vous pouvez utiliser une liste de listes. Par
+exemple, pour créer une grille de 3 lignes et 3 colonnes, vous pouvez faire
+ceci :
+
+```python
+grid = []
+size = 3
+for line in range(size):
+    new_line = []
+    for colonne in range(size):
+        new_line.append("?")
+    grid.append(new_line)
+```
+
+Ceci donne une grille de 3 lignes et 3 colonnes, initialisée avec des `?`.
+```python
+[["?", "?", "?"], ["?", "?", "?"], ["?", "?", "?"]]
+```
+
+Pour accéder à une case de la grille, vous pouvez utiliser l'indexation :
+`grid[ligne][colonne]`. La première indexation retourne une liste représentant
+la ligne et la deuxième indexation retourne la valeur de la colonne dans cette
+ligne.
+
+### 🤔 Comment placer les mines au hasard
+
+Il y a `size * size` cases dans la grille. Pour placer `n` mines au hasard, il faut
+choisir `n` cases parmi ces `size * size` cases. Pour cela, vous pouvez utiliser
+la fonction `random.sample` de la bibliothèque `random`.
+
+```python
+import random
+
+size = 5  # Taille de la grille
+num_mines = 4  # Nombre de mines
+
+all_positions = list(range(size * size))  # Crée une liste de 0 à size*size-1
+mine_positions = random.sample(all_positions, num_mines)  # Choisit n positions au hasard
+```
+
+Ensuite, il faut traduire ces positions en coordonnées de la grille. En effet, pour l'instant
+la position est un nombre entre `0` et `size * size - 1`.
+
+Je vous laisse réfléchir, mais les fonctions `//` et `%` vous seront utiles. La
+traduction d'indice 1D en 2D est un problème classique, vous serez content de
+l'avoir déjà fait plus tard dans votre vie de développeur. Pour vous aider,
+visuellement pour une grille 3x3 vous voulez convertir ceci :
+
+```python
+["?", "?", "?", "?", "?", "?", "?", "?", "?"]
+# 0 ,  1 ,  2 ,  3 ,  4 ,  5 ,  6 ,  7 ,  8
+```
+
+en cela:
+
+```python
+[ ["?",     "?",    "?"],  ["?",    "?",    "?"], ["?",    "?",    "?"]]
+# (0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)
+```
+
+Donc au niveau des indices, *pour une grille 3x3*, on veut la correspondance suivante :
+
+```
+0  -> (0, 0)
+1  -> (0, 1)
+2  -> (0, 2)
+3  -> (1, 0)
+4  -> (1, 1)
+5  -> (1, 2)
+6  -> (2, 0)
+7  -> (2, 1)
+8  -> (2, 2)
+```
+
+### 🧙‍♂️ Indice
+
+:::tip
+
+On n'écrit jamais un programme en une seule fois. Il est préférable de le faire
+en plusieurs étapes qui s'additionnent.
+
+:::
+
+Allez-y étape par étape.
+
+1. Affichez un message de bienvenue.
+2. Demandez à l'utilisateur la taille de la grille et le nombre de mines.
+3. Créez la grille et placez les mines au hasard.
+4. Affichez la grille avec les mines visibles pour tester votre code.
+5. Affichez la grille avec les mines masquées (`?`).
+6. Demandez à l'utilisateur de choisir une case (ligne et colonne).
+7. Vérifiez si la case choisie contient une mine ou non.
+8. Si c'est une mine, affichez la grille avec les mines visibles et terminez le jeu.
+9. Sinon, affichez le nombre de mines adjacentes à la case choisie.
+10. Répétez les étapes 6 à 9 jusqu'à ce que l'utilisateur touche une mine ou que toutes les cases sans mines soient révélées.
+11. Affichez un message de victoire si l'utilisateur a gagné.
