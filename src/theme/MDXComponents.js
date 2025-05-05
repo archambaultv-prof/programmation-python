@@ -19,6 +19,7 @@ import ExerciseBody from '@site/src/components/Exercise/ExerciseBody';
 import ExerciseFooter from '@site/src/components/Exercise/ExerciseFooter';
 import ExerciseHeader from '@site/src/components/Exercise/ExerciseHeader';
 import ExerciseList from '@site/src/components/Exercise/ExerciseList';
+import ExerciseTabs from '@site/src/components/Exercise/ExerciseTabs';
 
 export default {
   // Reusing the default mapping
@@ -41,4 +42,5 @@ export default {
   ExerciseFooter,
   ExerciseHeader,
   ExerciseList,
+  ExerciseTabs,
 };
