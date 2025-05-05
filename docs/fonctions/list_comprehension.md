@@ -88,3 +88,188 @@ puissant pour créer des listes de manière concise et élégante. Elles permett
 de réduire la quantité de code nécessaire pour créer des listes en utilisant des
 boucles `for` et des conditions `if`. Les compréhensions de liste sont un
 moyen efficace de rendre votre code plus lisible et plus expressif.
+
+## Testez votre compréhension
+
+<details>
+<summary>🤔 Testez votre compréhension</summary>
+
+<MultipleChoiceTabs>
+
+<MultipleChoice>
+Quelle syntaxe correspond à une compréhension de liste en Python ?
+
+<MultipleChoiceOption isCorrect>
+
+`[x**2 for x in range(5)]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`(x**2 for x in range(5))`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`{x**2 for x in range(5)}`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`<x**2 for x in range(5)>`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est le résultat de `[x*2 for x in [1, 2, 3]]` ?
+
+<MultipleChoiceOption>
+
+`[1, 2, 3]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`[2, 4, 6]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[1, 4, 9]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[1, 2, 3, 1, 2, 3]`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle expression crée une liste contenant uniquement les nombres pairs jusqu'à 10 ?
+
+<MultipleChoiceOption>
+
+`[x for x in range(10)]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[x for x in range(1, 10, 2)]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`[x for x in range(11) if x % 2 == 0]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[x*2 for x in range(10)]`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle syntaxe génère la liste `['A', 'B', 'C']` à partir de `['a', 'b', 'c']` ?
+
+<MultipleChoiceOption>
+
+`[x.capitalize() for x in ['a', 'b', 'c']]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[x.lower() for x in ['a', 'b', 'c']]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[x.swapcase() for x in ['a', 'b', 'c']]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`[x.upper() for x in ['a', 'b', 'c']]`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle compréhension de liste permet de générer `[1, 4, 9, 16]` ?
+
+<MultipleChoiceOption>
+
+`[x*x for x in range(1, 5, 2)]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[x*2 for x in range(4)]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`[x**2 for x in range(1, 5)]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[x+x for x in range(1, 5)]`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Comment filtrer uniquement les nombres supérieurs à 2 dans la liste `[1, 2, 3, 4]` ?
+
+<MultipleChoiceOption>
+
+`[x for x in [1, 2, 3, 4]]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[x*2 for x in [1, 2, 3, 4]]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`[x for x in [1, 2, 3, 4] if x > 2]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[x > 2 for x in [1, 2, 3, 4]]`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+</MultipleChoiceTabs>
+
+</details>

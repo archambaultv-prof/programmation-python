@@ -82,3 +82,275 @@ print(liste1)  # Affiche [1, 2, 3, 'a', 'b', 'c']
 
 Dans cet exemple, `liste1` est **modifiée** pour inclure les éléments de
 `liste2`.
+
+## Testez votre compréhension
+
+<details>
+<summary>🤔 Testez votre compréhension</summary>
+
+<MultipleChoiceTabs>
+
+<MultipleChoice>
+Quelle est la syntaxe correcte pour créer une liste vide en Python ?
+
+<MultipleChoiceOption isCorrect>
+
+`[]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`()`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`{}`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`list{}`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle méthode permet d'ajouter un élément à la fin d'une liste ?
+
+<MultipleChoiceOption>
+
+`add()`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`extend()`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`append()`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`insert()`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Comment accède-t-on au premier élément d'une liste `ma_liste` ?
+
+<MultipleChoiceOption>
+
+`ma_liste[1]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`ma_liste[0]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`ma_liste[-1]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`ma_liste.first()`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle opération permet d'obtenir le nombre d'éléments dans une liste ?
+
+<MultipleChoiceOption>
+
+`ma_liste.size()`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`ma_liste.count()`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`len(ma_liste)`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`length(ma_liste)`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est le résultat de `len([1, [2, 3], 4])` ?
+
+<MultipleChoiceOption>
+
+`2`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`4`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`3`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`1`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Comment fusionner deux listes `a` et `b` en une seule liste ?
+
+<MultipleChoiceOption>
+
+`merge(a, b)`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`a + b`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`a.extend(b)`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`concat(a, b)`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle méthode retire un élément d'une liste en fonction de son index ?
+
+<MultipleChoiceOption>
+
+`remove()`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`pop()`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`delete()`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`erase()`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est le résultat de `[1, 2, 3] * 2` ?
+
+<MultipleChoiceOption>
+
+`[2, 4, 6]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`[1, 2, 3, 1, 2, 3]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[1, 4, 9]`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[1, 2, 3, 2, 4, 6]`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle expression crée une liste de nombres de 0 à 4 ?
+
+<MultipleChoiceOption>
+
+`range(1, 5)`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`range(0, 5, 2)`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption isCorrect>
+
+`list(range(5))`
+
+</MultipleChoiceOption>
+
+<MultipleChoiceOption>
+
+`[0...4]`
+
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+</MultipleChoiceTabs>
+
+</details>

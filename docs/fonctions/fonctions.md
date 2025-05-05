@@ -101,7 +101,7 @@ un paramètre de la même façon que pour une variable normale. Cela n'affectera
 pas la valeur de la variable passée en argument. Voici le code ci-haut modifié
 pour illustrer ce point.
 
-```python {2-3,10}
+```python
 def ma_fonction(param1, param2):
     param1 = param1 + 1
     # maintenant param1 vaut 1 de plus que la valeur passée en argument
