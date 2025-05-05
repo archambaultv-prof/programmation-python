@@ -96,8 +96,6 @@ maximum = a if a > b else b
 print(f"Le maximum entre {a} et {b} est {maximum}.")
 ```
 
----
-
 ## Conditions et opérateurs logiques
 
 Les opérateurs logiques permettent de combiner plusieurs conditions pour créer
@@ -179,3 +177,146 @@ def ma_fonction(x: int) -> str:
     # ...
     return "x est positif"
 ```
+
+## Testez votre compréhension
+
+<details>
+<summary>🤔 Testez votre compréhension</summary>
+
+<MultipleChoiceTabs>
+  <MultipleChoice>
+  Que va afficher le code suivant ?
+  ```python
+  x = 10
+  if x < 5:
+      print("A")
+  elif x == 10:
+      print("B")
+  else:
+      print("C")
+  ```
+
+  <MultipleChoiceOption>
+  A
+  </MultipleChoiceOption>
+  <MultipleChoiceOption isCorrect>
+  B
+  </MultipleChoiceOption>
+  <MultipleChoiceOption>
+  C
+  </MultipleChoiceOption>
+  <MultipleChoiceOption>
+  Rien (aucun affichage)
+  </MultipleChoiceOption>
+  </MultipleChoice>
+
+  <MultipleChoice>
+  Quel sera le résultat de ce programme ?
+  ```python
+  resultat = 75
+  if resultat >= 90:
+      note = "A"
+  elif resultat >= 80:
+      note = "B"
+  elif resultat >= 70:
+      note = "C"
+  else:
+      note = "D"
+  print(note)
+  ```
+  <MultipleChoiceOption>
+  A
+  </MultipleChoiceOption>
+  <MultipleChoiceOption>
+  B
+  </MultipleChoiceOption>
+  <MultipleChoiceOption isCorrect>
+  C
+  </MultipleChoiceOption>
+  <MultipleChoiceOption>
+  D
+  </MultipleChoiceOption>
+  </MultipleChoice>
+
+  <MultipleChoice>
+  Que va afficher ce code ?
+  ```python
+  n = -3
+  if n > 0:
+      print("Positif")
+  else:
+      if n == -3:
+          print("Zéro")
+      else:
+          print("Négatif")
+  ```
+  <MultipleChoiceOption>
+  Positif
+  </MultipleChoiceOption>
+  <MultipleChoiceOption isCorrect>
+  Zéro
+  </MultipleChoiceOption>
+  <MultipleChoiceOption >
+  Négatif
+  </MultipleChoiceOption>
+  <MultipleChoiceOption>
+  Erreur
+  </MultipleChoiceOption>
+  </MultipleChoice>
+</MultipleChoiceTabs>
+</details>
+
+<details>
+<summary>💪 Exercices</summary>
+
+<ExerciseTabs>
+
+<Exercise >
+  <ExerciseHeader>
+  Réécrivez ce bloc `if/else` en une seule expression avec l’opérateur ternaire :
+  </ExerciseHeader>
+  <ExerciseBody>
+    ```python
+    x = 8
+    if x % 2 == 0:
+        résultat = "pair"
+    else:
+        résultat = "impair"
+    print(résultat)
+    ```
+   </ExerciseBody>
+</Exercise>
+
+<Exercise >
+  <ExerciseHeader>
+  Transformez cette expression ternaire en un bloc classique `if/else` :
+  </ExerciseHeader>
+  <ExerciseBody>
+    ```python
+    message = "OK" if score >= 50 else "Échec"
+    print(message)
+    ```
+   </ExerciseBody>
+</Exercise>
+
+<Exercise >
+  <ExerciseHeader>
+  Traduisez en `if/elif/else` :
+  </ExerciseHeader>
+  <ExerciseBody>
+  > Si la variable langue vaut "fr", afficher "Bonjour", sinon si elle vaut "en", afficher "Hello", sinon afficher "Salut".
+   </ExerciseBody>
+</Exercise>
+
+<Exercise >
+  <ExerciseHeader>
+  Traduisez en `if/elif/else` :
+  </ExerciseHeader>
+  <ExerciseBody>
+  > Si temp ≥ 30, afficher "Très chaud". Sinon si temp ≥ 20, afficher "Chaud". Sinon si temp ≥ 10, afficher "Frais". Sinon afficher "Froid"
+  </ExerciseBody>
+</Exercise>
+
+</ExerciseTabs>
+
+</details>
