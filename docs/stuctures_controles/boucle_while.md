@@ -1,7 +1,6 @@
 ---
 sidebar_label: Boucle while
 sidebar_position: 4
-sidebar_class_name: Boucle while
 description: Boucle while
 ---
 
