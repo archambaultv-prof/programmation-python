@@ -1,0 +1,226 @@
+---
+sidebar_label: Exceptions
+sidebar_position: 1
+description: Les exceptions en Python
+---
+
+# Les exceptions
+
+Les exceptions sont un mécanisme de gestion des erreurs et des événements
+imprévus qui se produisent durant l'exécution d'un programme. Elles permettent de
+:
+
+- **Isoler** le code de traitement normal du code de gestion des erreurs.
+- **Propager** les erreurs à un niveau supérieur sans casser l’exécution complète du programme.
+- **Centraliser** la gestion des erreurs pour la rendre plus lisible et maintenable.
+
+Sans exceptions, il faudrait vérifier manuellement chaque opération susceptible
+d’échouer (lecture de fichier, conversion de type, accès à un index hors
+limites, etc.), ce qui alourdirait considérablement le code et le rendrait
+vulnérable aux oublis.
+
+## Lever une exception
+
+Lorsqu'une erreur se produit, il est possible de lever une exception. En Python,
+cela se fait avec le mot-clé `raise`. Par exemple, vous pouvez lever une
+`ZeroDivisionError` de la manière suivante :
+
+```python
+# Exemple de levée d'une exception
+def division(a, b):
+    if b == 0:
+        raise ZeroDivisionError("Division par zéro !")
+    return a / b
+
+print(division(10, 2))  # Affiche 5.0
+print(division(10, 0))  # Lève ZeroDivisionError
+```
+
+Il est important de noter que lever une exception interrompt l'exécution
+normale du programme. Le code après la levée de l'exception ne sera pas exécuté
+et le programme se terminera à moins que l'exception ne soit attrapée.
+
+## Attraper une exception
+
+Lorsqu'une exception est levée, elle peut être attrapée et gérée à l'aide d'un
+bloc `try/except`. Le bloc `try` contient le code qui peut lever une exception, et le bloc
+`except` contient le code qui gère l'exception. Voici un exemple simple :
+
+```python
+try:
+    result = division(10, 0)
+except ZeroDivisionError as e:
+    print("Erreur détectée :", e)
+```
+
+Il existe aussi la syntaxe `else` et `finally` pour gérer les exceptions de
+manière plus fine. Le bloc `else` s'exécute si aucune exception n'est levée, et le bloc `finally` s'exécute
+toujours, qu'une exception soit levée ou non. Voici un exemple :
+
+```python
+try:
+    result = division(10, 2)
+except ZeroDivisionError as e:
+    print("Erreur détectée :", e)
+else:
+    print("Résultat :", result)
+finally:
+    print("Fin du traitement.")
+```
+
+Le code ci-dessus affichera "Résultat : 5.0" et "Fin du traitement." si une
+exception n'est pas levée. Si une exception est levée, il affichera "Erreur
+détectée : Division par zéro !" et "Fin du traitement.".
+
+En résumé, 
+
+* **`try`** : zone où l’on place le code à risque.
+* **`except ExceptionType as e`** : sert à capturer l’exception et lier l’objet à la variable `e`.
+* **`else`** (optionnel) : exécuté si aucune exception n’est levée.
+* **`finally`** (optionnel) : exécuté toujours, que l’exception soit levée ou non.
+
+## La hiérarchie des exceptions
+
+Toutes les exceptions héritent de la classe de base `BaseException`. Les plus courantes héritent de `Exception`.
+Voici un aperçu de la [hiérarchie des exceptions](https://docs.python.org/3/library/exceptions.html) en Python.
+
+```
+BaseException
+ ├── SystemExit
+ ├── KeyboardInterrupt
+ └── Exception
+      ├── StopIteration
+      ├── ArithmeticError
+      │    ├── ZeroDivisionError
+      │    └── OverflowError
+      ├── LookupError
+      │    ├── IndexError
+      │    └── KeyError
+      └── ... (et bien d'autres)
+```
+
+Il n'est pas recommandé d'attraper `BaseException`, car cela inclut des
+exceptions système comme `SystemExit` et `KeyboardInterrupt`, qui ne sont pas
+des erreurs de programme. Il est préférable d'attraper des exceptions
+spécifiques, comme `ValueError`, `TypeError`, etc. Pour une exception
+générique, vous pouvez utiliser `Exception`.
+
+## Attraper plusieurs types d’exceptions
+
+Il est possible d'attraper plusieurs types d'exceptions en les séparant par des
+virgules dans le bloc `except`. Il est également possible d'utiliser plusieurs
+blocs `except` pour gérer différents types d'exceptions de manière distincte.
+
+```python
+try:
+    # code pouvant lever différentes erreurs
+    valeur = liste[10]
+    x = int("abc")
+except (IndexError, KeyError) as e:
+    print("Erreur de lookup :", e)
+except ValueError:
+    print("Impossible de convertir en entier.")
+except Exception as e:
+    print("Autre erreur détectée :", type(e).__name__, e)
+```
+
+:::warning
+
+L’ordre des `except` compte : du plus précis au plus général. Une fois dans un
+`except`, les suivants ne seront pas testés.
+
+:::
+
+## Créer ses propres exceptions
+
+Il est courant de définir des exceptions personnalisées pour votre domaine métier.
+Cela permet de mieux gérer les erreurs spécifiques à votre application et de
+fournir des messages d'erreur plus clairs. Bien que nous n'ayons pas encore
+vu la notion de classes, la syntaxe est relativement simple :
+
+```python
+class MyError(Exception):
+    """Exception levée pour un cas spécifique de mon application."""
+    pass
+
+
+def fonction_critique(x):
+    if x < 0:
+        raise MyError("x doit être positif")
+    return x * 2
+
+try:
+    fonction_critique(-5)
+except MyError as e:
+    print("Erreur métier :", e)
+```
+
+Voici quelques bonnes pratiques pour créer vos propres exceptions :
+
+* **Hériter** toujours de `Exception` (et non de `BaseException`).
+* **Nommer** vos exceptions avec le suffixe `Error`.
+* **Documenter** clairement les conditions de levée.
+
+## Chaînage d’exceptions et `raise from`
+
+Il arrive que vous souhaitiez lever une nouvelle exception en réponse à une
+autre. Ceci est particulièrement utile pour encapsuler des exceptions de bas
+niveau dans des exceptions de plus haut niveau, tout en conservant la trace de
+l'exception d'origine. Cela permet d'ajouter du contexte à l'erreur et facilite
+le débogage.
+
+Ainsi, lorsque vous attrapez une exception pour en lancer une autre, utilisez `raise
+... from ...` pour conserver la trace :
+
+```python
+class MyError(Exception):
+    pass
+
+try:
+    open("/chemin/inexistant.txt")
+except FileNotFoundError as e:
+    raise MyError("Échec du stockage : fichier introuvable") from e
+```
+
+Le `from e` à la fin permet de lier l'exception d'origine à la nouvelle
+exception. Ainsi, lorsque vous affichez l'erreur, vous verrez la chaîne d'exceptions
+complète, ce qui facilite le débogage.
+
+## Quand **ne pas** utiliser les exceptions
+
+Il arrive parfois que l'utilisation d'exceptions ne soit pas la meilleure
+solution. Voici quelques cas où il est préférable d'éviter les exceptions :
+
+1. **Contrôle de flux prévisible** : Par exemple lorsque vous savez à l’avance qu’une valeur peut être `None` ou hors plage.
+
+   ```python
+   # Mauvais
+   try:
+       longueur = len(texte)
+   except TypeError:
+       longueur = 0
+
+   # Meilleur : test explicite
+   if texte is None:
+       longueur = 0
+   else:
+       longueur = len(texte)
+   ```
+
+2. **Performance critique ou boucles intensives** : La levée d’une exception
+   est **coûteuse** en termes de performances. Si vous devez effectuer une
+    opération répétée, il est préférable d'utiliser des tests préalables.
+
+   ```python
+   # Mauvais : levée d'exception dans une boucle
+   for i in range(1000000):
+       try:
+           result = division(i, 0)
+       except ZeroDivisionError:
+           pass
+
+   # Meilleur : test préalable
+   for i in range(1000000):
+       if i != 0:
+           result = division(i, 0)
+   ```

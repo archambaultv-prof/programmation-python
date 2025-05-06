@@ -1,0 +1,37 @@
+---
+sidebar_label: Devine le nombre
+sidebar_position: 1
+description: Écrire un programme qui permet de deviner un nombre.
+---
+
+# 🎲 Devine le nombre
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont :
+
+- Mettre en pratique les exceptions en Python.
+
+## 📜 Énoncé
+
+Vous devez écrire un programme qui permet à l'utilisateur de deviner un nombre.
+D'abord, votre programme demande à l'utilisateur de choisir deux nombres
+*positifs*, le deuxième étant plus grand que le premier. Ensuite, le programme
+choisit un nombre au hasard entre ces deux nombres (inclus) et demande à
+l'utilisateur de le deviner.
+
+Si l'utilisateur se trompe, le programme lui indique si le nombre à deviner est plus
+petit ou plus grand que le nombre proposé.
+
+Votre programme doit gérer les erreurs via des exceptions et la boucle principale doit être incluse
+dans un `try/except` pour gérer les erreurs d'entrée de l'utilisateur. Vous devez notamment gérer les cas suivants :
+- Si l'utilisateur entre une chaîne de caractères qui ne peut pas être convertie en entier.
+- Si l'utilisateur entre un nombre négatif.
+- Si l'utilisateur entre un nombre qui n'est pas compris entre les deux nombres choisis au départ.
+- Si l'utilisateur entre les bornes dans le mauvais ordre (le premier nombre doit être plus petit que le deuxième).
+- Si l'utilisateur entre un nombre qui n'est pas dans l'intervalle.
+
+Pour certaines exceptions, vous pouvez utiliser des exceptions prédéfinies comme
+`ValueError`, mais pour d'autres, vous devrez créer vos propres exceptions. Par
+exemple, vous pouvez créer une exception `NombreHorsIntervalleErreur` pour gérer le
+cas où l'utilisateur entre un nombre en dehors de l'intervalle.
