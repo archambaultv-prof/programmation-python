@@ -96,6 +96,8 @@ BaseException
       ├── LookupError
       │    ├── IndexError
       │    └── KeyError
+      ├── ValueError
+      ├── TypeError
       └── ... (et bien d'autres)
 ```
 
@@ -161,6 +163,49 @@ Voici quelques bonnes pratiques pour créer vos propres exceptions :
 * **Nommer** vos exceptions avec le suffixe `Error`.
 * **Documenter** clairement les conditions de levée.
 
+## Gérer les ressources avec `with … as`
+
+Le mot-clé `with … as` simplifie la gestion des ressources (fichiers,
+connexions réseau, verrous, etc.) en garantissant que les opérations
+d’initialisation et de nettoyage sont toujours exécutées, *même en cas
+d’exception*.
+
+Voici comment fonctionne `with` :
+
+1. L’expression après `with` est affectée à la variable après `as`. Cette
+   expression doit retourner un objet qui implémente notamment la méthode
+   `__exit__`. Nous verrons plus tard comment créer de tels objets.
+2. Exécution du bloc indenté
+3. Si une exception est levée, le bloc `__exit__` de l’objet est appelé avec
+   l’exception comme argument.
+4. Si aucune exception n’est levée, le bloc `__exit__` est appelé avec `None` comme
+   valeur d’exception.
+
+Donc dans tous les cas, la méthode `__exit__` est appelée, ce qui permet de
+libérer les ressources correctement.
+
+Par exemple, l'usage de `with` est particulièrement courant pour la gestion de fichiers. Voici
+comment ouvrir fichier en mode lecture :
+
+```
+with open("data.txt", "r") as f:
+    contenu = f.read()
+# Ici, f.close() a été appelé automatiquement, même en cas d’erreur.
+```
+
+Sans `with`, il faudrait écrire :
+
+```
+f = open("data.txt", "r")
+try:
+    contenu = f.read()
+finally:
+    f.close()
+```
+
+Il est facile d'oublier de fermer le fichier dans le bloc `finally`, ce qui peut
+entraîner des fuites de ressources. Avec `with`, cela est géré automatiquement.
+
 ## Chaînage d’exceptions et `raise from`
 
 Il arrive que vous souhaitiez lever une nouvelle exception en réponse à une
@@ -224,3 +269,59 @@ solution. Voici quelques cas où il est préférable d'éviter les exceptions :
        if i != 0:
            result = division(i, 0)
    ```
+
+## Testez votre compréhension
+
+<details>
+<summary>💪 Exercices</summary>
+
+<ExerciseTabs>
+
+<Exercise >
+  <ExerciseHeader>
+  Écire un programme qui parcours la liste ["1", "2", "abc", "4", "5.xyz"] et tenter de convertir chaque élément en entier.
+  Essayer d'attraper l'exception la plus spécifique possible.
+  </ExerciseHeader>
+  <ExerciseBody>
+    ```python
+    liste = ["1", "2", "abc", "4", "5.xyz"]
+    # ... votre code ici
+    ```
+   </ExerciseBody>
+</Exercise>
+
+<Exercise >
+  <ExerciseHeader>
+    Écrire un programme qui prend une liste de paires  
+    `[(10, 2), (5, 0), (7, "a"), (8, 4)]` et tente de calculer la division a / b
+    pour chaque couple `(a, b)`.  
+    Attraper les exceptions les plus spécifiques possibles.
+  </ExerciseHeader>
+  <ExerciseBody>
+    ```python
+    paires = [(10, 2), (5, 0), (7, "a"), (8, 4)]
+    for a, b in paires:
+        # ... votre code ici
+    ```
+  </ExerciseBody>
+</Exercise>
+
+<Exercise >
+  <ExerciseHeader>
+    Écrire un programme qui parcourt la liste  
+    `[[1, 2], [3], [], [4, 5, 6]]` et tente d’afficher le deuxième élément
+    de chaque sous-liste.  
+    Attraper les exceptions les plus spécifiques possibles.
+  </ExerciseHeader>
+  <ExerciseBody>
+    ```python
+    listes = [[1, 2], [3], [], [4, 5, 6]]
+    for sous_liste in listes:
+        # ... votre code ici
+    ```
+  </ExerciseBody>
+</Exercise>
+
+</ExerciseTabs>
+
+</details>
