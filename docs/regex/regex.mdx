@@ -1,0 +1,203 @@
+---
+sidebar_label: Validation de chaînes
+sidebar_position: 4
+description: "Validation de chaînes avec des expressions régulières"
+---
+
+# Les expressions régulières en Python
+
+Les expressions régulières (ou regex) permettent de rechercher, valider ou
+manipuler facilement des chaînes de caractères. En Python, le module `re` est
+utilisé pour travailler avec les regex.
+
+## Pourquoi utiliser des expressions régulières?
+
+Sans regex, vérifier si un texte respecte un certain format peut être fastidieux :
+
+```python
+texte = "Bonjour"
+if len(texte) >= 5 and texte.isalpha():
+    print("Texte valide")
+else:
+    print("Texte invalide")
+```
+
+Avec des regex, on simplifie grandement ces tâches complexes. En plus,
+le module `re` est inclus dans Python, aucune installation n’est nécessaire :
+
+## Les bases : rechercher une chaîne simple
+
+`re.search()` permet de rechercher une expression simple dans une chaîne :
+
+```python
+import re
+
+texte = "Le soleil brille"
+if re.search("soleil", texte):
+    print("Trouvé !")
+else:
+    print("Non trouvé.")
+```
+
+## La syntaxe des Regex
+
+* `.` correspond à n'importe quel caractère.
+* `[abc]` correspond à un caractère a, b ou c.
+* `[a-z]` correspond à une lettre minuscule.
+* `[A-Z]` correspond à une lettre majuscule.
+* `[0-9]` correspond à un chiffre.
+* `^` correspond au début d'une chaîne.
+* `$` correspond à la fin d'une chaîne.
+* `+` correspond à une répétition une ou plusieurs fois.
+* `*` correspond à zéro ou plusieurs répétitions.
+* `?` correspond à zéro ou une répétition.
+* `{min,max}` correspond à un nombre précis de répétitions.
+
+
+## Exemples courants
+
+### Vérifier la taille minimale d'une chaîne
+
+Regex : `.{5,}` signifie au moins 5 caractères :
+
+```python
+import re
+
+texte = "Salut"
+if re.match(r".{5,}", texte):
+    print("Longueur valide")
+else:
+    print("Trop court")
+```
+
+### Vérifier qu'une chaîne contient uniquement des lettres (a-z, A-Z) sans accents
+
+Regex : `^[a-zA-Z]+$`
+
+```python
+import re
+
+texte = "Bonjour"
+if re.match(r"^[a-zA-Z]+$", texte):
+    print("Uniquement des lettres sans accent")
+else:
+    print("Caractère invalide trouvé")
+```
+
+Testez avec des accents :
+
+```python
+texte = "Café"
+if re.match(r"^[a-zA-Z]+$", texte):
+    print("Valide")
+else:
+    print("Invalide : accents ou autres caractères")
+```
+
+### Vérifier si une chaîne contient un espace, un tiret ou un point
+
+Regex : `[ -.]` signifie espace, tiret ou point :
+
+```python
+import re
+
+texte = "Jean-Pierre"
+if re.search(r"[ -.]", texte):
+    print("Contient un espace, un tiret ou un point")
+else:
+    print("Ne contient ni espace, ni tiret, ni point")
+```
+
+
+### Valider des courriels simples avec regex
+
+Par exemple, pour des courriels du style (`nom-prenom@domain.extension`)
+
+```python
+import re
+
+courriel = "jean-dupont@gmail.com"
+if re.match(r"^[a-zA-Z]+-[a-zA-Z]+@[a-zA-Z]+\.[a-zA-Z]+$", courriel):
+    print("Courriel simple valide")
+else:
+    print("Courriel invalide")
+```
+
+**Exemple invalide :**
+
+```python
+courriel = "jean.dupont@gmail.com"
+# point invalide ici
+```
+
+
+## Expressions régulières pour mots de passe :
+
+### Vérifier la présence d'un caractère spécial
+
+Par exemple, vérifier qu'un mot de passe contient au moins un caractère spécial (`!@#$%^&*()`):
+
+```python
+import re
+
+mot_de_passe = "Abcdef1!"
+
+regex_special = r"[!@#$%^&*()]"
+if re.search(regex_special, mot_de_passe):
+    print("Mot de passe contient un caractère spécial.")
+else:
+    print("Mot de passe manque un caractère spécial.")
+```
+
+### Exemple invalide :
+
+```python
+mot_de_passe = "Password123"
+```
+
+---
+
+### Valider un mot de passe robuste
+
+Pour vérifier qu'il contient obligatoirement au moins :
+
+* une lettre majuscule (`[A-Z]`)
+* une lettre minuscule (`[a-z]`)
+* un chiffre (`[0-9]`)
+* un caractère spécial (`[!@#$%^&*()]`)
+* minimum 8 caractères
+
+Regex avancée avec lookahead :
+
+```python
+import re
+
+regex_complet = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()]).{8,}$"
+
+mot_de_passe = "Abc123!@"
+if re.match(regex_complet, mot_de_passe):
+    print("Mot de passe robuste !")
+else:
+    print("Mot de passe non conforme")
+```
+
+ou simplement une série de conditions :
+
+```python
+import re
+def valider_mot_de_passe(mot_de_passe):
+    if (len(mot_de_passe) >= 8 and
+        re.search(r"[A-Z]", mot_de_passe) and
+        re.search(r"[a-z]", mot_de_passe) and
+        re.search(r"[0-9]", mot_de_passe) and
+        re.search(r"[!@#$%^&*()]", mot_de_passe)):
+        return True
+    return False
+```
+
+
+## Ressources complémentaires
+
+* [Documentation officielle Python - module re](https://docs.python.org/3/library/re.html)
+* Tester vos regex en ligne : [regex101.com](https://regex101.com/)
+
