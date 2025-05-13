@@ -1,0 +1,62 @@
+---
+sidebar_label: Les dictionnaires (partie 1)
+sidebar_position: 51
+description: Introduction aux dictionnaires
+---
+# Les dictionnaires (partie 1)
+
+## Qu'est-ce qu'un dictionnaire ?
+
+Un dictionnaire est une structure de données en Python qui stocke des paires clé:valeur.  
+Il est défini par des accolades `{}`, est modifiable et les clés doivent être immuables.
+
+```python
+mon_dict = {"nom": "Alice", "âge": 30, "ville": "Paris"}
+print(mon_dict)  # Affiche {'nom': 'Alice', 'âge': 30, 'ville': 'Paris'}
+```
+
+## Accéder aux valeurs
+
+- Syntaxe `dict[cle]` : lève `KeyError` si la clé n'existe pas.  
+- Méthode `dict.get(cle, defaut)` : retourne `defaut` si la clé est absente.
+
+```python
+print(mon_dict["nom"])              # 'Alice'
+print(mon_dict.get("email"))        # None
+print(mon_dict.get("email", "N/A")) # 'N/A'
+```
+
+## Ajouter ou modifier une entrée
+
+```python
+mon_dict["pays"] = "France"   # ajout
+mon_dict["âge"] = 31          # modification
+```
+
+## Supprimer une entrée
+
+```python
+age = mon_dict.pop("âge")     # retourne et supprime 'âge'
+del mon_dict["ville"]         # supprime 'ville'
+```
+
+## Itérer sur un dictionnaire
+
+Il existe trois méthodes très utilse pour itérer sur un dictionnaire :
+
+- `keys()`   : renvoie les clés  
+- `values()` : renvoie les valeurs  
+- `items()`  : renvoie (clé, valeur)  
+
+Voici comment les utiliser :
+
+```python
+for clé in mon_dict:
+    print(clé, mon_dict[clé])
+for valeur in mon_dict.values():
+    print(valeur)
+for clé, valeur in mon_dict.items():
+    print(clé, "→", valeur)
+```
+
+
