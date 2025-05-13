@@ -1,0 +1,93 @@
+---
+sidebar_label: Arbre et récursion
+sidebar_position: 4
+description: Arbre et récursion
+---
+
+# 🌲 Arbre et récursion
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont:
+
+- Vous familiariser avec la récursion.
+- Vous familiariser avec les arbres binaires.
+
+## 📜 Énoncé
+
+### Structure de départ
+
+On utilise une structure d'arbre binaire définie par la classe suivante :
+
+```python
+from dataclasses import dataclass
+from typing import Optional
+
+@dataclass
+class Noeud:
+    valeur: int
+    gauche: Optional['Noeud'] = None
+    droite: Optional['Noeud'] = None
+```
+
+### Exercice 1 : Compter les feuilles
+
+Écrire une fonction `compter_feuilles(arbre)` qui retourne le nombre de feuilles d'un arbre binaire (un nœud sans enfant).
+
+Exemple :
+
+```python
+arbre = Noeud(1, Noeud(2), Noeud(3, Noeud(4), Noeud(5)))
+print(compter_feuilles(arbre))  # devrait afficher 3
+```
+
+### Exercice 2 : Compter les nœuds
+
+Écrire une fonction `compter_noeuds(arbre)` qui retourne le nombre total de nœuds de l'arbre binaire.
+
+Exemple :
+
+```python
+arbre = Noeud(1, Noeud(2), Noeud(3, Noeud(4), Noeud(5)))
+print(compter_noeuds(arbre))  # devrait afficher 5
+```
+
+### Exercice 3 : Calculer la hauteur
+
+Écrire une fonction `hauteur(arbre)` qui retourne la hauteur de l'arbre binaire (nombre maximum d'étapes pour atteindre une feuille).
+
+Exemple :
+
+
+```python
+arbre = Noeud(1)
+print(hauteur(arbre))  # devrait afficher 1
+```
+
+```python
+arbre = Noeud(1, Noeud(2), Noeud(3, Noeud(4, Noeud(6)), Noeud(5)))
+print(hauteur(arbre))  # devrait afficher 4
+```
+
+### Exercice 4 : Vérifier si une valeur existe
+
+Écrire une fonction `existe(arbre, valeur)` qui retourne `True` si la valeur existe dans l'arbre, sinon `False`.
+
+Exemple :
+
+```python
+arbre = Noeud(1, Noeud(2), Noeud(3, Noeud(4), Noeud(5)))
+print(existe(arbre, 4))  # True
+print(existe(arbre, 7))  # False
+```
+
+### Exercice 5 : Parcours infixe (plus difficile)
+
+Écrire une fonction `parcours_infixe(arbre)` qui retourne une liste des valeurs des nœuds de l'arbre selon le parcours infixe (gauche, racine, droite).
+
+Exemple :
+
+```python
+arbre = Noeud(1, Noeud(2), Noeud(3, Noeud(4), Noeud(5)))
+print(parcours_infixe(arbre))  # [2, 1, 4, 3, 5]
+```

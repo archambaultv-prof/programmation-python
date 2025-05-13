@@ -1,0 +1,62 @@
+---
+sidebar_label: Gestion d'inventaire
+sidebar_position: 3
+description: Gestion d'inventaire
+---
+
+# 🏪 Gestion d'inventaire
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont:
+
+- Vous familiariser avec les dictionnaires.
+- Vous familiariser avec les fonctions.
+
+
+## 📜 Énoncé
+
+Vous devez écrire des fonctions pour gérer l'inventaire d'une boutique.
+L'inventaire est représenté sous forme d'une liste de dictionnaires, chaque
+dictionnaire représentant un produit avec son nom, sa catégorie, son prix et
+son stock.
+
+Exemple d'inventaire initial :
+
+```python
+inventaire = [
+    {"nom": "Chaise", "categorie": "Meuble", "prix": 49.99, "stock": 10},
+    {"nom": "Table", "categorie": "Meuble", "prix": 499.99, "stock": 5},
+    {"nom": "Lampe", "categorie": "Décoration", "prix": 99.99, "stock": 20},
+    {"nom": "Tapis", "categorie": "Décoration", "prix": 149.99, "stock": 7}
+]
+```
+
+### 1. Ajouter un produit
+
+Écrire la fonction `ajouter_produit(inventaire, nom, categorie, prix, stock)`
+qui ajoute un produit dans l'inventaire.
+
+### 2. Supprimer plusieurs produits
+
+Écrire la fonction `supprimer_produits(inventaire, *noms)` qui retire *plusieurs*
+produits par leurs noms de l'inventaire. Si un produit n'existe pas, utiliser une exception
+`ValueError` pour indiquer que le produit n'a pas été trouvé.
+
+### 3. Mettre à jour les attributs d'un produit
+
+Écrire la fonction `mettre_a_jour_produit(inventaire, nom, **attributs)` qui
+met à jour plusieurs attributs d'un produit existant (prix, stock, categorie).
+
+### 4. Afficher les produits d'une catégorie ou plusieurs catégories
+
+Écrire la fonction `produits_par_categories(inventaire, *categories)` qui
+retourne une liste de tous les produits appartenant à une *ou* plusieurs
+catégories données.
+
+### 5. Calculer la valeur totale de certains produits
+
+Écrire la fonction `valeur_totale_selection(inventaire, *noms)` qui retourne la
+valeur totale (somme du prix multiplié par le stock) des produits spécifiés par
+leurs noms.
+
