@@ -11,7 +11,7 @@ Un dictionnaire est une structure de données en Python qui stocke des paires cl
 Il est défini par des accolades `{}`, est modifiable et les clés doivent être immuables.
 
 ```python
-mon_dict = {"nom": "Alice", "âge": 30, "ville": "Paris"}
+mon_dict = {"nom": "Alice", "age": 30, "ville": "Paris"}
 print(mon_dict)  # Affiche {'nom': 'Alice', 'âge': 30, 'ville': 'Paris'}
 ```
 
@@ -30,13 +30,13 @@ print(mon_dict.get("email", "N/A")) # 'N/A'
 
 ```python
 mon_dict["pays"] = "France"   # ajout
-mon_dict["âge"] = 31          # modification
+mon_dict["age"] = 31          # modification
 ```
 
 ## Supprimer une entrée
 
 ```python
-age = mon_dict.pop("âge")     # retourne et supprime 'âge'
+age = mon_dict.pop("age")     # retourne et supprime 'âge'
 del mon_dict["ville"]         # supprime 'ville'
 ```
 
@@ -51,12 +51,12 @@ Il existe trois méthodes très utilse pour itérer sur un dictionnaire :
 Voici comment les utiliser :
 
 ```python
-for clé in mon_dict:
-    print(clé, mon_dict[clé])
+for cle in mon_dict:
+    print(cle, mon_dict[cle])
 for valeur in mon_dict.values():
     print(valeur)
-for clé, valeur in mon_dict.items():
-    print(clé, "→", valeur)
+for cle, valeur in mon_dict.items():
+    print(cle, "→", valeur)
 ```
 
 
