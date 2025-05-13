@@ -1,6 +1,6 @@
 ---
 sidebar_label: Exercices simples
-sidebar_position: 98
+sidebar_position: 1
 description: Exercices simples sur les fonctions
 ---
 
@@ -95,4 +95,82 @@ def troisieme_plus_grand(liste):
     tandis que `troisieme_plus_grand([5, 4])` devrait retourner `None`.
   </ExerciseFooter>
 </Exercise>
+
+<Exercise>
+<ExerciseHeader>
+
+### Somme d'un nombre indéfini d'entiers avec \*args
+
+</ExerciseHeader>
+<ExerciseBody>
+
+Écrire une fonction `somme_entiers` qui prend un nombre indéfini d'entiers en paramètres et retourne leur somme.
+
+```python
+def somme_entiers(...):
+    # Écrire votre code ici
+
+# Exemple d'appel :
+somme_entiers(1, 2, 3, 4, 5)
+```
+
+</ExerciseBody>
+</Exercise>
+
+<Exercise>
+<ExerciseHeader>
+
+### Créer un dictionnaire avec \*\*kwargs
+
+</ExerciseHeader>
+<ExerciseBody>
+
+Écrire une fonction `creer_dictionnaire` qui accepte un nombre indéfini d'arguments nommés et retourne un dictionnaire formé à partir de ces arguments.
+
+```python
+def creer_dictionnaire(...):
+    # Écrire votre code ici
+
+# Exemple d'appel :
+creer_dictionnaire(nom="Alice", age=25, ville="Montréal")
+```
+
+</ExerciseBody>
+</Exercise>
+
+
+<Exercise>
+<ExerciseHeader>
+
+### Fonction mixte avec paramètres positionnels, nommés, \*args et \*\*kwargs
+
+</ExerciseHeader>
+<ExerciseBody>
+
+Écrire une fonction `commande_pizza` qui accepte :
+
+* deux paramètres positionnels : taille (str) et pâte (str),
+* un paramètre nommé obligatoire : sauce (str),
+* un nombre indéfini d'ingrédients avec `*args`,
+* et un nombre indéfini d'options supplémentaires avec `**kwargs`.
+
+La fonction doit afficher clairement chaque élément de la commande.
+
+```python
+def commande_pizza(...):
+    # Écrire votre code ici
+
+# Exemple d'appel :
+commande_pizza(
+    "Grande",
+    "mince",
+    "pepperoni", "champignons", "oignons",
+    sauce="tomate",
+    livraison=True, heure_livraison="18h30"
+)
+```
+
+</ExerciseBody>
+</Exercise>
+
 </ExerciseList>
