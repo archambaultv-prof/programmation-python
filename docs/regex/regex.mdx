@@ -15,12 +15,25 @@ utilisé pour travailler avec les regex.
 Sans regex, vérifier si un texte respecte un certain format peut être fastidieux :
 
 ```python
-texte = "Bonjour"
-if len(texte) >= 5 and texte.isalpha():
-    print("Texte valide")
+# Exemple : valider un courriel simple sans regex
+email = "jean-dupont@gmail.com"
+if (
+    "@" in email and
+    email.count("@") == 1 and
+    "." in email.split("@")[1] and
+    len(email.split("@")[0]) > 0 and
+    len(email.split("@")[1].split(".")[0]) > 0 and
+    len(email.split("@")[1].split(".")[-1]) > 1 and
+    "-" in email.split("@")[0]
+):
+    print("Courriel valide")
 else:
-    print("Texte invalide")
+    print("Courriel invalide")
 ```
+
+Cet exemple montre que le code devient vite complexe et difficile à maintenir
+dès que l'on souhaite vérifier plusieurs contraintes (présence d'un tiret, d'un
+point, longueur minimale, etc.).
 
 Avec des regex, on simplifie grandement ces tâches complexes. En plus,
 le module `re` est inclus dans Python, aucune installation n’est nécessaire :
@@ -41,18 +54,48 @@ else:
 
 ## La syntaxe des Regex
 
-* `.` correspond à n'importe quel caractère.
-* `[abc]` correspond à un caractère a, b ou c.
-* `[a-z]` correspond à une lettre minuscule.
-* `[A-Z]` correspond à une lettre majuscule.
-* `[0-9]` correspond à un chiffre.
-* `^` correspond au début d'une chaîne.
-* `$` correspond à la fin d'une chaîne.
-* `+` correspond à une répétition une ou plusieurs fois.
-* `*` correspond à zéro ou plusieurs répétitions.
-* `?` correspond à zéro ou une répétition.
-* `{min,max}` correspond à un nombre précis de répétitions.
+Une expression régulière (regex) est une chaîne de caractères qui décrit un
+motif à rechercher dans un texte. Elle combine des caractères "normaux"
+(lettres, chiffres) et des caractères spéciaux qui servent à définir des règles
+de recherche très précises.
 
+Voici les principaux éléments à connaître :
+
+**Caractères spéciaux de base :**
+- `.` : correspond à n'importe quel caractère (sauf retour à la ligne)
+- `^` : début de la chaîne
+- `$` : fin de la chaîne
+- `+` : une ou plusieurs répétitions
+- `*` : zéro ou plusieurs répétitions
+- `?` : zéro ou une répétition
+- `{min,max}` : nombre précis de répétitions
+
+**Classes de caractères :**
+- `[abc]` : un caractère parmi a, b ou c
+- `[a-z]` : une lettre minuscule
+- `[A-Z]` : une lettre majuscule
+- `[0-9]` : un chiffre
+
+**Séquences spéciales :**
+- `\d` : un chiffre (équivalent à `[0-9]`)
+- `\D` : tout sauf un chiffre
+- `\w` : un caractère alphanumérique (lettre, chiffre ou _)
+- `\W` : tout sauf un caractère alphanumérique
+- `\s` : un espace (espace, tabulation, saut de ligne)
+- `\S` : tout sauf un espace
+
+**Remarques :**
+- Le caractère `\` sert à échapper un caractère spécial si on veut le chercher
+  littéralement (ex : `\.` pour un point).
+- Les crochets `[]` définissent une classe de caractères, les parenthèses `()`
+  servent à regrouper ou capturer des sous-motifs.
+- À l'intérieur des crochets, les caractères spéciaux perdent leur signification
+  (ex : `[$+*]` correspond à un caractère parmi `$`, `+` ou `*`).
+
+
+Grâce à ces éléments, on peut construire des motifs très puissants pour
+valider, extraire ou remplacer des parties de texte. Nous allons maintenant
+voir quelques exemples pratiques d'utilisation des regex en Python.
 
 ## Exemples courants
 
@@ -149,13 +192,11 @@ else:
     print("Mot de passe manque un caractère spécial.")
 ```
 
-### Exemple invalide :
+Ainsi, ce mot de passe est valide :
 
 ```python
 mot_de_passe = "Password123"
 ```
-
----
 
 ### Valider un mot de passe robuste
 

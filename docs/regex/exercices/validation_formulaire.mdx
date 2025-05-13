@@ -1,0 +1,30 @@
+---
+sidebar_label: Validation de champs de formulaire
+sidebar_position: 1
+description: Validation de champs de formulaire avec des expressions régulières
+---
+
+# Validation de champs de formulaire
+
+Soit la classe suivante qui représente un formulaire de contact :
+
+```python
+class Form():
+    def __init__(self, nom, prenom, adresse, courriel):
+        self.nom = nom
+        self.prenom = prenom
+        self.adresse = adresse
+        self.courriel = courriel
+```
+
+On cherche à valider les champs suivants :
+
+- `nom` : Minimum 5 caractères, maximum 20 caractères, lettres autorisés (sans accents)
+- `prenom` : Même chose
+- `adresse` : 4 chiffres, un ou plusieurs espaces et une rue (ex: 1234 Maisonneuve)
+- `rue` : lettres uniquement, minimum 1 caractère
+- `courriel` : au format `prenom.nom@cmaisonneuve.qc.ca` (exactement cmaisonneuve.qc.ca)
+
+Écrire une fonction `valider_formulaire` qui prend en entrée un objet de type `Form` et
+qui retourne `True` si le formulaire est valide, `False` sinon. Utiliser des expressions
+régulières pour valider les champs.
