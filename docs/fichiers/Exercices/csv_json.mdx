@@ -1,0 +1,51 @@
+---
+sidebar_label: Fusion de données (CSV + JSON)
+sidebar_position: 3
+description: Fusionner des données provenant de fichiers CSV et JSON
+---
+
+# Fusion de données (CSV + JSON)
+
+## 🎯 Objectif pédagogique
+
+- Savoir lire des données à partir de deux formats différents
+- Savoir fusionner les données de façon cohérente
+- Savoir organiser les données pour les traiter efficacement
+
+## 📜 Énoncé
+
+Vous disposez de deux fichiers, [employes.csv](pathname:///exercises/fichiers_employes.csv) et [heures.json](pathname:///exercises/fichiers_heures.json), contenant
+respectivement des informations sur les employés d'une entreprise et leurs
+heures travaillées.
+
+Voici un extrait de chaque fichier :
+
+**employes.csv**
+```
+id,nom,poste
+1,Alice,Analyste
+2,Bob,Développeur
+3,Chloé,Technicienne
+```
+
+**heures.json**
+
+```json
+[
+  { "id": 1, "heures": [8, 7.5, 8, 8, 7] },
+  { "id": 2, "heures": [9, 8, 8, 8, 8] },
+  { "id": 3, "heures": [8, 8, 8, 8, 6] }
+]
+```
+
+Écrire un programme Python qui :
+
+1. Lit les deux fichiers.
+2. Associe chaque employé à ses heures travaillées (en utilisant l’`id` comme clé).
+3. Affiche un résumé par employé :
+
+   ```
+   Alice (Analyste) : 38.5 heures
+   Bob (Développeur) : 41 heures
+   Chloé (Technicienne) : 38 heures
+   ```

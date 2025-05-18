@@ -1,0 +1,40 @@
+---
+sidebar_label: Carnet d'adresses (JSON)
+sidebar_position: 2
+description: Lire un fichier JSON avec Python
+---
+
+# Carnet d'adresses (JSON)
+
+## 🎯 Objectif pédagogique
+
+- Comprendre la structure d'un fichier JSON
+- Savoir lire un fichier JSON avec `json.load`
+- Savoir extraire et filtrer des données
+
+## 📜 Énoncé
+
+Vous disposez d’un [fichier JSON `contacts.json`](pathname:///exercises/json_contacts.json) contenant une liste de
+contacts, chacun avec un nom, un courriel et un ou plusieurs numéros de
+téléphone. Voici un extrait :
+
+```json
+[
+  {
+    "nom": "Alice Tremblay",
+    "email": "alice@example.com",
+    "telephones": ["000-123-4567", "000-999-0000"]
+  },
+  {
+    "nom": "Bob Dubois",
+    "email": "bob@example.com",
+    "telephones": ["000-765-4321"]
+  }
+]
+```
+
+Écrire un programme Python qui :
+
+1. Charge le fichier JSON dans une variable.
+2. Affiche tous les noms et leurs courriels.
+3. Affiche les personnes qui ont **plus d’un numéro de téléphone**.

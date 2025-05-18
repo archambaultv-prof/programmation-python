@@ -1,0 +1,22 @@
+[
+  {
+    "nom": "Alice Tremblay",
+    "email": "alice@example.com",
+    "telephones": ["000-123-4567", "000-999-0000"]
+  },
+  {
+    "nom": "Bob Dubois",
+    "email": "bob@example.com",
+    "telephones": ["000-765-4321"]
+  },
+  {
+    "nom": "Claire Martin",
+    "email": "claire.martin@example.com",
+    "telephones": ["000-555-1234", "000-555-5678", "000-555-9999"]
+  },
+  {
+    "nom": "David Roy",
+    "email": "david.roy@example.com",
+    "telephones": ["000-888-7777"]
+  }
+]

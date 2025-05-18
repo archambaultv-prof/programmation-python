@@ -1,0 +1,32 @@
+---
+sidebar_label: Analyse de ventes (CSV)
+sidebar_position: 1
+description: Lire et analyser un fichier CSV avec Python
+---
+
+# Analyse de ventes (CSV)
+
+## 🎯 Objectif pédagogique
+
+- Savoir lire un fichier CSV
+- Savoir manipuler les données extraites
+- Savoir effectuer des calculs simples (somme, moyenne)
+
+## 📜 Énoncé
+
+On vous fournit un [fichier CSV `ventes.csv`](pathname:///exercises/csv_ventes.csv) contenant les ventes d’un magasin.  
+Chaque ligne représente une transaction, avec les colonnes suivantes. Voici un extrait :
+
+```
+Date,Produit,Quantité,PrixUnitaire
+2024-01-01,Clavier,2,49.99
+2024-01-01,Souris,1,24.99
+```
+
+Écrire un programme Python qui :
+
+1. Lit le fichier CSV.
+2. Affiche le nombre total de transactions.
+3. Calcule et affiche le chiffre d'affaires total (Quantité × Prix).
+4. Calcule et affiche la moyenne des ventes par transaction.
+5. Affiche le chiffre d'affaires total **par produit**.
