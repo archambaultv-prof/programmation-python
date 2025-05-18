@@ -151,8 +151,126 @@ with open('personnes_filtrees.json', 'w', encoding='utf-8') as fichier:
     json.dump(personnes_filtrees, fichier, ensure_ascii=False, indent=4)
 ```
 
-## Bonnes pratiques avec JSON
+## Testez votre compréhension
 
-- Utiliser systématiquement l’encodage UTF-8 pour éviter les problèmes de caractères spéciaux.
-- Formater les fichiers JSON avec une indentation pour faciliter leur lecture par les humains.
-- Toujours gérer les exceptions potentielles lors de la lecture des fichiers JSON pour éviter les erreurs inattendues.
+<details>
+<summary>🤔 Testez votre compréhension - Indexation</summary>
+
+<MultipleChoiceTabs>
+
+<MultipleChoice>
+Quel module Python permet de lire un fichier JSON ?
+<MultipleChoiceOption isCorrect>
+json
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+csv
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+yaml
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est le rôle de la fonction `json.load(f)` ?
+<MultipleChoiceOption isCorrect>
+Elle lit un fichier JSON ouvert et le convertit en objet Python.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Elle lit une chaîne de caractères contenant du JSON.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Elle convertit un dictionnaire Python en fichier JSON.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+
+<MultipleChoice>
+Quel est le type Python retourné par `json.load(f)` si le fichier contient `{ "nom": "Alice", "age": 20 }` ?
+<MultipleChoiceOption isCorrect>
+dict
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+str
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+list
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle commande faut-il utiliser pour ouvrir correctement un fichier JSON nommé `data.json` ?
+<MultipleChoiceOption isCorrect>
+`with open("data.json", encoding="utf-8") as f:`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`with json.open("data.json") as f:`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`with open("data.json", "json") as f:`
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que se passe-t-il si le fichier JSON est mal formé ?
+<MultipleChoiceOption isCorrect>
+Python lève une exception `json.JSONDecodeError`.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+La fonction `json.load()` retourne `None`.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Le fichier est ignoré.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+
+<MultipleChoice>
+Quel format de données JSON est valide ?
+<MultipleChoiceOption isCorrect>
+`{ "nom": "Alice", "age": 30 }`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`{ nom: "Alice", age: 30 }`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`[nom = "Alice", age = 30]`
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est l’intérêt principal du format JSON ?
+<MultipleChoiceOption isCorrect>
+Il permet d’échanger des données de manière structurée entre applications.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Il est plus rapide que le CSV.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Il est conçu uniquement pour Python.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que contient la variable `data` après cet extrait ?
+```python
+with open("info.json", encoding="utf-8") as f:
+    data = json.load(f)
+```
+
+<MultipleChoiceOption isCorrect>
+Un objet Python (souvent un dictionnaire ou une liste).
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Le contenu brut du fichier sous forme de texte.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Un fichier JSON compressé.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+
+</MultipleChoiceTabs>
+</details>
+
+
