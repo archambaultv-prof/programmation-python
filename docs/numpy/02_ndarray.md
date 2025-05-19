@@ -1,6 +1,6 @@
 ---
 sidebar_label: Ndarray
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # Tableaux NumPy (ndarray)
@@ -369,3 +369,271 @@ Dans cet exemple, `mask_2d` est un tableau de booléens de la même forme que
 `arr_2d`, où chaque élément est `True` si l'élément correspondant dans `arr_2d`
 est supérieur à 4. En utilisant `arr_2d[mask_2d]`, nous obtenons un tableau
 *unidimensionnel* contenant tous les éléments de `arr_2d` qui sont supérieurs à 4.
+
+
+## Testez votre compréhension
+
+<details>
+<summary>🤔 Testez votre compréhension - Dimensions et forme</summary>
+
+<MultipleChoiceTabs>
+
+<MultipleChoice>
+Quelle est la différence entre `np.array()` et `np.asarray()` ?
+<MultipleChoiceOption isCorrect>
+`np.array()` crée toujours une copie, tandis que `np.asarray()` renvoie l'objet d'origine s'il est déjà un ndarray.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`np.asarray()` crée toujours une copie, tandis que `np.array()` renvoie l'objet d'origine s'il est déjà un ndarray.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que retourne `np.ndim(x)` ?
+<MultipleChoiceOption isCorrect>
+Le nombre de dimensions de `x`.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+La taille de la première dimension de `x`.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Le nombre d’éléments dans `x`.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est le résultat de `np.array([[1, 2], [3, 4]]).shape` ?
+<MultipleChoiceOption>
+(4,)
+</MultipleChoiceOption>
+<MultipleChoiceOption isCorrect>
+(2, 2)
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+(1, 4)
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que fait `x.reshape(3, 2)` si `x` contient 6 éléments ?
+<MultipleChoiceOption>
+Crée une copie 1D avec 3 lignes et 2 colonnes.
+</MultipleChoiceOption>
+<MultipleChoiceOption isCorrect>
+Crée une nouvelle vue (nouveau tableau) avec forme (3, 2) si possible.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Supprime les dimensions inutiles.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est l'effet de `x.flatten()` ?
+<MultipleChoiceOption isCorrect>
+Renvoie une copie aplatie de `x`.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Transforme `x` en liste Python.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Modifie `x` sur place.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est le type retourné par `np.array([1, 2, 3])` ?
+<MultipleChoiceOption>
+list
+</MultipleChoiceOption>
+<MultipleChoiceOption isCorrect>
+ndarray
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+tuple
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que vaut `np.asarray([1, 2, 3]).ndim` ?
+<MultipleChoiceOption isCorrect>
+1
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+2
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+0
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle opération convertit un tableau 2D en 1D ?
+<MultipleChoiceOption>
+`x.reshape(1)`
+</MultipleChoiceOption>
+<MultipleChoiceOption isCorrect>
+`x.flatten()`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`x.shape()`
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle propriété peut-on utiliser pour connaître la forme d’un tableau ?
+<MultipleChoiceOption isCorrect>
+`.shape`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`.size()`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`.length`
+</MultipleChoiceOption>
+</MultipleChoice>
+
+
+</MultipleChoiceTabs>
+
+</details>
+
+
+<details>
+<summary>🤔 Testez votre compréhension - Indexation</summary>
+
+<MultipleChoiceTabs>
+
+<MultipleChoice>
+Que retourne `x[1]` si `x = np.array([10, 20, 30])` ?
+<MultipleChoiceOption isCorrect>
+20
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+[20]
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+10
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que retourne `x[1:3]` si `x = np.array([0, 1, 2, 3, 4])` ?
+<MultipleChoiceOption>
+[1, 2, 3]
+</MultipleChoiceOption>
+<MultipleChoiceOption isCorrect>
+[1, 2]
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+[2, 3]
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle syntaxe extrait la première colonne d’un tableau `x` de forme (3, 2) ?
+<MultipleChoiceOption isCorrect>
+`x[:, 0]`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`x[0, :]`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`x[:, 1]`
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que retourne `x[x > 0]` si `x = np.array([-1, 0, 1, 2])` ?
+<MultipleChoiceOption isCorrect>
+[1, 2]
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+[0, 1, 2]
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+[False, False, True, True]
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est le type de `x > 3` si `x` est un tableau NumPy ?
+<MultipleChoiceOption isCorrect>
+Un tableau booléen
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Une valeur booléenne unique
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Une liste de booléens
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que fait `x[::2]` ?
+<MultipleChoiceOption isCorrect>
+Prend un élément sur deux, en commençant par le premier.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Prend les deux premiers éléments.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Prend un élément sur deux, en commençant par le deuxième.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que fait `x[::-1]` ?
+<MultipleChoiceOption isCorrect>
+Renverse l’ordre des éléments de `x`.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Inverse le signe des éléments.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Supprime le dernier élément.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que retourne `x[[0, 2]]` si `x = np.array([10, 20, 30, 40])` ?
+<MultipleChoiceOption isCorrect>
+[10, 30]
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+[0, 2]
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+[20, 40]
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle instruction sélectionne tous les éléments pairs d’un tableau `x` ?
+<MultipleChoiceOption isCorrect>
+`x[x % 2 == 0]`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`x % 2 == 0`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`x[2]`
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est l'effet de `x[x < 0] = 0` ?
+<MultipleChoiceOption isCorrect>
+Les éléments négatifs de `x` sont remplacés par 0.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Tous les éléments de `x` sont mis à 0.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Les indices négatifs sont supprimés.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+
+</MultipleChoiceTabs>
+
+</details>

@@ -143,3 +143,149 @@ manipulation des fichiers CSV :
   correctement les caractères spéciaux.
 - Préférer l'utilisation de `DictReader` et `DictWriter` pour simplifier
   l'accès et la gestion des données en fonction des noms de colonnes.
+
+
+## Testez votre compréhension
+
+<details>
+<summary>🤔 Testez votre compréhension - Indexation</summary>
+
+<MultipleChoiceTabs>
+
+<MultipleChoice>
+Quel module standard est utilisé pour lire un fichier CSV en Python ?
+<MultipleChoiceOption isCorrect>
+csv
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+json
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+pandas
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est l'effet de l'instruction `with open("data.csv") as f:` ?
+<MultipleChoiceOption isCorrect>
+Elle ouvre le fichier et le referme automatiquement à la fin du bloc.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Elle lit tout le fichier ligne par ligne dans une liste.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Elle supprime le fichier après lecture.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que retourne `csv.reader(f)` ?
+<MultipleChoiceOption>
+Un dictionnaire avec les noms de colonnes.
+</MultipleChoiceOption>
+<MultipleChoiceOption isCorrect>
+Un itérateur où chaque ligne est une liste de chaînes de caractères.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Une seule liste contenant tout le contenu du fichier.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est l’intérêt de `csv.DictReader(f)` ?
+<MultipleChoiceOption isCorrect>
+Il lit chaque ligne comme un dictionnaire avec les noms de colonnes comme clés.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Il retourne le fichier entier comme une seule chaîne de caractères.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Il ignore la première ligne du fichier.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que faut-il ajouter à `open()` pour bien lire les accents dans un fichier CSV ?
+<MultipleChoiceOption isCorrect>
+`encoding="utf-8"`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`delimiter=";"`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`mode="binary"`
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quel est le séparateur par défaut utilisé par `csv.reader()` ?
+<MultipleChoiceOption isCorrect>
+La virgule (`,`)
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Le point-virgule (`;`)
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Le tabulateur (`\t`)
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle méthode permet de transformer un objet `csv.reader` en liste ?
+<MultipleChoiceOption isCorrect>
+`list(reader)`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`reader.to_list()`
+</MultipleChoiceOption>
+<MultipleChoiceOption isCorrect>
+Une boucle for ou un appel à `list()`
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Comment accéder à la valeur d’une colonne nommée `"nom"` avec `csv.DictReader` ?
+<MultipleChoiceOption isCorrect>
+`ligne["nom"]`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`ligne.nom`
+</MultipleChoiceOption>
+
+</MultipleChoice>
+
+<MultipleChoice>
+Pourquoi utilise-t-on `newline=""` dans `open("fichier.csv", newline="")` ?
+<MultipleChoiceOption isCorrect>
+Pour éviter des lignes vides entre les lignes lues sous Windows.
+</MultipleChoiceOption>
+<MultipleChoiceOption isCorrect>
+Pour que `csv.reader` gère correctement les retours à la ligne.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Pour supprimer tous les caractères `\n` du fichier.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que fait cette séquence ?
+```python
+import csv
+with open("f.csv", encoding="utf-8") as f:
+    for ligne in csv.reader(f):
+        print(ligne)
+```
+
+<MultipleChoiceOption isCorrect>
+Elle lit chaque ligne du fichier CSV et l'affiche comme une liste de chaînes.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Elle lit tout le fichier et retourne un dictionnaire par ligne.
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Elle enregistre chaque ligne dans un fichier différent.
+</MultipleChoiceOption>
+</MultipleChoice>
+
+</MultipleChoiceTabs>
+</details>

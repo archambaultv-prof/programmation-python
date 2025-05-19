@@ -1,0 +1,59 @@
+---
+sidebar_label: Héros et Compétences
+sidebar_position: 3
+description: Héritage multiple en Python (sans super)
+---
+
+# 🧙‍♂️ Héros et Compétences
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont :
+
+- Comprendre l’héritage multiple en Python.
+- Comprendre l’appel direct aux constructeurs des classes parentes.
+- Manipuler des attributs et méthodes venant de plusieurs sources.
+- Structurer du code orienté objet avec plusieurs responsabilités.
+
+## 📜 Énoncé
+
+Vous travaillez sur un petit jeu de rôle où chaque personnage peut avoir
+plusieurs types de capacités. On veut créer une classe `Hero` qui hérite de
+deux classes indépendantes :
+
+### 1. `Personnage`  
+Cette classe a :
+- un attribut `nom` (chaîne de caractères),
+- un attribut `pv` (points de vie, entier),
+- une méthode `afficher_statut()` qui affiche le nom et les points de vie.
+
+### 2. `Traits`  
+Cette classe a :
+- un attribut `competences` (liste de chaînes de caractères),
+- une méthode `ajouter_competence(nom)` qui ajoute une compétence à la liste,
+- une méthode `lister_competences()` qui affiche les compétences.
+
+### 3. `Hero`  
+Cette classe hérite **à la fois** de `Personnage` et de `Traits`. Son constructeur doit :
+- appeler explicitement les deux constructeurs des classes parentes (ne pas utiliser `super()`),
+- permettre d’initialiser `nom`, `pv` et la liste initiale de compétences.
+
+Vous devez également ajouter une méthode `presentation()` qui appelle `afficher_statut()` **et** `lister_competences()`.
+
+## 🧪 Exemple attendu
+
+```python
+h = Hero("Aragorn", 100, ["épée", "stratégie"])
+h.presentation()
+h.ajouter_competence("leadership")
+h.lister_competences()
+```
+
+### Sortie attendue :
+
+```
+Nom : Aragorn
+PV : 100
+Compétences : épée, stratégie
+Compétences : épée, stratégie, leadership
+```

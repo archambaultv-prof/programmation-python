@@ -1,0 +1,39 @@
+---
+sidebar_label: Classes de véhicules
+sidebar_position: 2
+description: Classes de véhicules
+---
+
+# 🚗 Classes de véhicule
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont :
+
+- Comprendre l'héritage en Python.
+- Comprendre la surcharge de méthodes.
+- Comprendre les classes abstraites.
+- Traduire un énoncé en code Python.
+
+## 📜 Énoncé
+
+Un client vous demande de créer des classes qui représentent des véhicules. Voici sa
+demande :
+
+1. Tous les véhicules ont un attribut vitesse qui est un float et un attribut marque qui
+est une chaîne de caractères.
+2. Les véhicules peuvent être de deux types : des voitures et des camions.
+3. Les voitures ont un attribut supplémentaire couleur qui est une chaîne de caractères.
+4. Les camions ont un attribut supplémentaire capacite qui est un entier.
+5. Il doit y avoir une classe mère Vehicule qui contient les attributs communs à tous les
+véhicules. Toutefois, il ne faut pas pouvoir créer d’instance de cette classe.
+6. Tous les véhicules doivent avoir une méthode accelerer qui prend en paramètre un
+nombre et augmente la vitesse du véhicule de ce nombre. Si la valeur du paramètre
+est négative, cela signifie que le véhicule ralentit. Par contre, la vitesse du véhicule ne
+peut pas être négative.
+7. La méthode accelerer sur les camions, puisqu’ils sont plus lourds, ne peut pas faire
+en sorte que la vitesse du camion dépasse 100 km/h. Il n’y a aucune limite pour les
+voitures.
+
+Écrire les classes Vehicule, Voiture et Camion avec les attributs et méthodes demandés
+et l’héritage nécessaire.
