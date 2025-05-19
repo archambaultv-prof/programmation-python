@@ -109,6 +109,28 @@ const config = {
           },
         ],
       },
+      algolia: {
+        // The application ID provided by Algolia
+        appId: 'OFDO0N9JNE',
+
+        // Public API key: it is safe to commit it
+        apiKey: 'f3e897b1b4e29c658640473b4c5a7452',
+
+        indexName: 'archambaultv-profio',
+
+        // Optional: see doc section below
+        contextualSearch: true,
+
+        // Optional: Algolia search parameters
+        searchParameters: {},
+
+        // Optional: path for search page that enabled by default (`false` to disable it)
+        searchPagePath: 'search',
+
+        // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
+        insights: false,
+
+      },
       footer: {
         style: 'dark',
         // links: [
@@ -153,6 +175,7 @@ const config = {
         //   },
         // ],
         copyright: `Cette œuvre est placée sous licence <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Creative Commons Attribution 4.0 International</a>. Construit avec Docusaurus.`,
+      
       },
       prism: {
         theme: prismThemes.github,
