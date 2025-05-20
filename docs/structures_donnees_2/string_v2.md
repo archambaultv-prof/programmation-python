@@ -8,7 +8,10 @@ description: Les chaînes de caractères (partie 2)
 
 
 ## f-strings
-Les f-strings (formatted string literals) sont une manière moderne et pratique de formater des chaînes de caractères en Python. Elles permettent d'incorporer des expressions à l'intérieur de chaînes en les précédant de la lettre `f`.
+
+Les f-strings (formatted string literals) sont une manière moderne et pratique
+de formater des chaînes de caractères en Python. Elles permettent d'incorporer
+des expressions à l'intérieur de chaînes en les précédant de la lettre `f`.
 
 
 ```python
@@ -19,7 +22,10 @@ print(nom_complet)  # Affiche "Jean Dupont"
 ```
 
 ## Méthode `format`
-Avant l'introduction des f-strings, la méthode `format` était couramment utilisée pour formater des chaînes de caractères. Elle permet d'insérer des valeurs dans une chaîne en utilisant des accolades `{}` comme espaces réservés.
+
+Avant l'introduction des f-strings, la méthode `format` était couramment
+utilisée pour formater des chaînes de caractères. Elle permet d'insérer des
+valeurs dans une chaîne en utilisant des accolades `{}` comme espaces réservés.
 
 
 ```python
@@ -27,78 +33,6 @@ prenom = "Jean"
 nom = "Dupont"
 nom_complet = "{} {}".format(prenom, nom)
 print(nom_complet)  # Affiche "Jean Dupont"
-```
-
-## Indexation
-L'indexation permet d'accéder à des caractères spécifiques dans une chaîne de caractères en utilisant des indices. En Python, comme c'est souvent le cas en informatique, les indices commencent à 0.
-
-
-```python
-chaine = "Bonjour"
-premiere_lettre = chaine[0]
-print(premiere_lettre)  # Affiche "B"
-```
-
-Les indices négatifs peuvent être utilisés pour accéder aux caractères en partant de la fin de la chaîne.
-
-
-```python
-chaine = "Bonjour"
-derniere_lettre = chaine[-1]
-print(derniere_lettre)  # Affiche "r"
-```
-
-Il est également possible d'extraire des sous-chaînes en utilisant la notation de tranches (slicing).
-
-
-```python
-chaine = "Bonjour"
-sous_chaine = chaine[1:4]
-print(sous_chaine)  # Affiche "onj"
-```
-
-### Cas spéciaux de l'indexation
-
-#### Indices identiques
-Lorsque les deux indices sont identiques, la sous-chaîne résultante est vide.
-
-
-```python
-chaine = "Bonjour"
-sous_chaine = chaine[2:2]
-print(sous_chaine)  # Affiche ""
-```
-
-#### Omission d'un indice
-Si l'on omet le premier indice, la tranche commence au début de la chaîne. Si
-l'on omet le deuxième indice, la tranche s'étend jusqu'à la fin de la chaîne.
-
-```python
-chaine = "Bonjour"
-sous_chaine = chaine[:3]
-print(sous_chaine)  # Affiche "Bon"
-
-sous_chaine = chaine[3:]
-print(sous_chaine)  # Affiche "jour"
-```
-
-#### Utilisation d'un troisième indice pour le pas
-Le troisième indice spécifie le pas (ou l'incrément) entre les indices de début
-et de fin.
-
-```python
-chaine = "Bonjour"
-sous_chaine = chaine[1:6:2]
-print(sous_chaine)  # Affiche "oju"
-```
-
-Il peut même être négatif ! Dans ce cas, la tranche est retournée en ordre
-inverse.
-
-```python
-chaine = "Bonjour"
-sous_chaine = chaine[::-1]
-print(sous_chaine)  # Affiche "ruojnoB"
 ```
 
 ## Méthodes de chaînes de caractères

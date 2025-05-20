@@ -1,0 +1,207 @@
+---
+sidebar_label: Les listes
+sidebar_position: 1
+description: Listes partie 2
+---
+
+# Les listes (partie 2)
+
+## Le cas spéciaux de l’indexation des listes
+
+L’indexation des listes en Python présente certains cas particuliers qu’il est
+important de maîtriser.
+
+### Indexation négative
+
+Les listes acceptent une **indexation négative**. Cela vous permet d'accéder
+facilement aux éléments à partir de la fin :
+
+```python
+fruits = ['pomme', 'banane', 'orange', 'kiwi']
+
+print(fruits[-1])  # kiwi (dernier élément)
+print(fruits[-2])  # orange (avant-dernier élément)
+```
+
+### Tranches (*slices*) sans borne
+
+Les listes permettent également l'utilisation de « tranches » (*slices*) :
+
+* Si la borne **initiale** n’est pas indiquée, la tranche commencera au premier élément (indice `0`).
+* Si la borne **finale** n’est pas indiquée, la tranche s'étendra jusqu’au dernier élément.
+
+Exemples :
+
+```python
+nombres = [10, 20, 30, 40, 50]
+
+print(nombres[:3])  # [10, 20, 30]
+print(nombres[2:])  # [30, 40, 50]
+print(nombres[:])   # [10, 20, 30, 40, 50] (copie complète de la liste)
+```
+
+### Slicing avec un pas (*step*)
+
+Il est possible d'ajouter un **pas** dans une tranche afin d'obtenir des éléments à intervalles réguliers :
+
+Syntaxe : `liste[début:fin:pas]`
+
+* Si le **pas** est positif, la liste est parcourue de gauche à droite.
+* Si le **pas** est négatif, la liste est parcourue en sens inverse.
+
+Exemples :
+
+```python
+lettres = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+
+print(lettres[::2])    # ['a', 'c', 'e', 'g'] (éléments avec un saut de 2)
+print(lettres[::-1])   # ['g', 'f', 'e', 'd', 'c', 'b', 'a'] (inverse la liste)
+print(lettres[5:1:-1]) # ['f', 'e', 'd', 'c'] (parcourt en arrière de l'indice 5 à 2)
+```
+
+:::warning
+
+Mise à part pour le cas d'inversion de la liste (`lettres[::-1]`), les tranches avec un pas négatif sont difficiles à
+interpréter. Utilisez les avec parcimonie.
+
+:::
+
+### Gestion des erreurs d’indexation
+
+Si vous tentez d’accéder à un élément hors des indices disponibles dans une
+liste, Python déclenchera une erreur de type `IndexError` :
+
+```python
+couleurs = ['rouge', 'bleu', 'vert']
+
+print(couleurs[3])  # IndexError: list index out of range
+```
+
+Cependant, si vous utilisez des tranches, aucune erreur ne sera déclenchée.
+Python retournera simplement une liste vide si la tranche dépasse les indices
+existants :
+
+```python
+print(couleurs[5:10])  # []
+```
+
+## Testez votre compréhension
+
+<details>
+<summary>🤔 Testez votre compréhension</summary>
+
+<MultipleChoiceTabs>
+
+<MultipleChoice>
+Que retourne l'instruction suivante ?
+
+```python
+lst = ['a', 'b', 'c', 'd']
+print(lst[-2])
+```
+
+<MultipleChoiceOption isCorrect>
+`c`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`b`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`d`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Erreur d'indexation
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle liste est obtenue avec ce slicing ?
+
+```python
+lst = [1, 2, 3, 4, 5]
+print(lst[:3])
+```
+
+<MultipleChoiceOption isCorrect>
+`[1, 2, 3]`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`[1, 2]`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`[2, 3, 4]`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`[3, 4, 5]`
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Que produit l'instruction suivante ?
+
+```python
+lst = [10, 20, 30, 40]
+print(lst[::-1])
+```
+
+<MultipleChoiceOption>
+`[20, 30, 40, 10]`
+</MultipleChoiceOption>
+<MultipleChoiceOption isCorrect>
+`[40, 30, 20, 10]`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`[10, 20, 30, 40]`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`[30, 20, 10]`
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quel résultat sera affiché par ce code ?
+
+```python
+lst = ['x', 'y', 'z']
+print(lst[5:])
+```
+
+<MultipleChoiceOption>
+`['z']`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`['y', 'z']`
+</MultipleChoiceOption>
+<MultipleChoiceOption isCorrect>
+`[]`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+Erreur d'indexation
+</MultipleChoiceOption>
+</MultipleChoice>
+
+<MultipleChoice>
+Quelle est la sortie du slicing suivant ?
+
+```python
+lst = ['a', 'b', 'c', 'd', 'e', 'f']
+print(lst[1:5:2])
+```
+
+<MultipleChoiceOption>
+`['a', 'c', 'e']`
+</MultipleChoiceOption>
+<MultipleChoiceOption isCorrect>
+`['b', 'd']`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`['b', 'd', 'f']`
+</MultipleChoiceOption>
+<MultipleChoiceOption>
+`['c', 'e']`
+</MultipleChoiceOption>
+</MultipleChoice>
+
+</MultipleChoiceTabs>
+</details>
+
