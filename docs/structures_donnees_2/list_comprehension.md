@@ -1,6 +1,7 @@
 ---
 sidebar_label: Compréhension de liste
 sidebar_position: 2
+description: Compréhension de liste
 ---
 
 # Compréhension de liste
