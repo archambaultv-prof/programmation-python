@@ -1,20 +1,11 @@
 ---
-sidebar_label: Chaines de caractères
-sidebar_position: 4
+sidebar_label: Les chaînes de caractères
+sidebar_position: 2
+description: Les chaînes de caractères (partie 2)
 ---
 
-# Les chaînes de caractères
+# Les chaînes de caractères (partie 2)
 
-## Concaténation
-La concaténation est l'opération qui consiste à joindre deux chaînes de caractères. En Python, cela peut être fait en utilisant l'opérateur `+`.
-
-
-```python
-prenom = "Jean"
-nom = "Dupont"
-nom_complet = prenom + " " + nom
-print(nom_complet)  # Affiche "Jean Dupont"
-```
 
 ## f-strings
 Les f-strings (formatted string literals) sont une manière moderne et pratique de formater des chaînes de caractères en Python. Elles permettent d'incorporer des expressions à l'intérieur de chaînes en les précédant de la lettre `f`.

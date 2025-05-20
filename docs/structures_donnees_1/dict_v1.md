@@ -1,6 +1,6 @@
 ---
-sidebar_label: Les dictionnaires (partie 1)
-sidebar_position: 51
+sidebar_label: Les dictionnaires
+sidebar_position: 3
 description: Introduction aux dictionnaires
 ---
 # Les dictionnaires (partie 1)

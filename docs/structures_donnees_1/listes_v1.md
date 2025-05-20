@@ -1,6 +1,6 @@
 ---
-sidebar_label: Les listes (partie 1)
-sidebar_position: 50
+sidebar_label: Les listes
+sidebar_position: 1
 description: Introduction aux listes
 ---
 
