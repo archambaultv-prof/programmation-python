@@ -38,6 +38,7 @@ print(nom_complet)  # Affiche "Jean Dupont"
 ## Méthodes de chaînes de caractères
 
 ### `upper()`
+
 La méthode `upper()` renvoie une copie de la chaîne avec tous les caractères en majuscules.
 
 ```python
@@ -47,6 +48,7 @@ print(chaine_majuscule)  # Affiche "BONJOUR"
 ```
 
 ### `lower()`
+
 La méthode `lower()` renvoie une copie de la chaîne avec tous les caractères en minuscules.
 
 ```python
@@ -56,6 +58,7 @@ print(chaine_minuscule)  # Affiche "bonjour"
 ```
 
 ### `strip()`
+
 La méthode `strip()` renvoie une copie de la chaîne avec les espaces en début et en fin de chaîne supprimés.
 
 ```python
@@ -65,6 +68,7 @@ print(chaine_strippee)  # Affiche "bonjour"
 ```
 
 ### `find()`
+
 La méthode `find()` renvoie l'indice de la première occurrence d'une sous-chaîne dans une chaîne. Si la sous-chaîne n'est pas trouvée, la méthode renvoie `-1`.
 
 ```python
@@ -74,6 +78,7 @@ print(indice)  # Affiche 8
 ```
 
 ### `replace()`
+
 La méthode `replace()` renvoie une copie de la chaîne avec toutes les occurrences d'une sous-chaîne remplacées par une autre sous-chaîne.
 
 ```python
@@ -83,6 +88,7 @@ print(chaine_remplacee)  # Affiche "salut tout le monde"
 ```
 
 ### `split()`
+
 La méthode `split()` divise la chaîne en une liste de sous-chaînes en utilisant un séparateur spécifié.
 
 ```python
@@ -92,6 +98,7 @@ print(liste_mots)  # Affiche ['bonjour', 'tout', 'le', 'monde']
 ```
 
 ### `join()`
+
 La méthode `join()` renvoie une chaîne qui est la concaténation des éléments d'une liste, séparés par une chaîne spécifiée.
 
 ```python
@@ -101,6 +108,7 @@ print(chaine)  # Affiche "bonjour tout le monde"
 ```
 
 ### `count()`
+
 La méthode `count()` renvoie le nombre d'occurrences d'une sous-chaîne dans une chaîne.
 
 ```python
@@ -115,7 +123,10 @@ print(occurrences)  # Affiche 5
 La comparaison de chaînes de caractères se fait en utilisant les opérateurs de
 comparaison habituels (`==`, `!=`, `<`, `>`, `<=`, `>=`). Les chaînes de
 caractères sont comparées lexicographiquement, c'est-à-dire en fonction de
-l'ordre des caractères dans la table [Unicode](https://fr.wikipedia.org/wiki/Unicode). Notez que la table [ASCII](https://fr.wikipedia.org/wiki/American_Standard_Code_for_Information_Interchange) est un sous-ensemble de la table Unicode.
+l'ordre des caractères dans la table
+[Unicode](https://fr.wikipedia.org/wiki/Unicode). Notez que la table
+[ASCII](https://fr.wikipedia.org/wiki/American_Standard_Code_for_Information_Interchange)
+est un sous-ensemble de la table Unicode.
 
 Voici un exemple d'utilisation des opérateurs de comparaison avec des chaînes de caractères :
 
