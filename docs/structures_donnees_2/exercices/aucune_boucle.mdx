@@ -1,0 +1,51 @@
+---
+sidebar_label: Aucune boucle
+sidebar_position: 1
+description: Aucune boucle
+---
+
+# 🚫 Aucune boucle
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont :
+
+- Mettre en pratique les compréhensions de listes et le slicing.
+
+## 📜 Énoncé
+
+Écrire un programme **en utilisant uniquement des compréhensions de liste et
+des tranches** (slicing), sans boucles (`for`, `while`) ni fonctions intégrées
+comme `map`, `filter`, etc.
+
+On travaille avec une liste d'entiers de 1 à 20.
+
+```python
+nombres = list(range(1, 21))
+```
+
+Vous devez créer et imprimer plusieurs nouvelles listes à partir de cette liste originale
+en utilisant des compréhensions de liste. Voici les tâches à réaliser :
+
+1. **Carrés pairs** : Créez une nouvelle liste contenant le carré des nombres
+   **pairs** de la liste.
+2. **Inversé par 3** : Créez une nouvelle liste qui contient un élément sur
+   trois de la liste originale, **en commençant par la fin**.
+3. **Pairs inversés** : Extrayez les éléments **pairs**, puis **inversez-les**.
+4. **Matrice** : En utilisant une compréhension de liste imbriquée, créez une
+   **matrice 4x5** (4 lignes, 5 colonnes) avec les éléments de la liste.
+5. **Sommes des lignes** : Créez une nouvelle liste contenant la **somme de chaque
+   ligne** de la matrice.
+
+#### 📝 Exemple de sortie attendue
+
+```python
+[4, 16, 36, 64, 100, 144, 196, 256, 324, 400]
+[19, 16, 13, 10, 7, 4, 1]
+[20, 18, 16, 14, 12, 10, 8, 6, 4, 2]
+[[1, 2, 3, 4, 5],
+ [6, 7, 8, 9, 10],
+ [11, 12, 13, 14, 15],
+ [16, 17, 18, 19, 20]]
+[15, 40, 65, 90]
+```

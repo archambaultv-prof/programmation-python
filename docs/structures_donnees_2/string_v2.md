@@ -116,7 +116,55 @@ chaine = "bonjour tout le monde"
 occurrences = chaine.count("o")
 print(occurrences)  # Affiche 5
 ```
+## Encodage des chaînes de caractères
 
+Un chaîne de caractères est une séquence de caractères. Or, qu'est-ce qu'un
+caractère et comment est-il représenté en mémoire ? Le plus simple est d'associer
+chaque [graphème](https://fr.wikipedia.org/wiki/Graph%C3%A8me) à un nombre entier. Par exemple, le caractère `a` pourrait être associé au nombre 1, le caractère `b` au nombre 2, etc.
+
+On établie ainsi une correspondance entre les caractères et les entiers. Cette
+correspondance est appelée un **encodage**. Il existe plusieurs encodages, mais
+le plus courant est l'encodage [ASCII](https://fr.wikipedia.org/wiki/American_Standard_Code_for_Information_Interchange) et [UTF-8](https://fr.wikipedia.org/wiki/UTF-8).
+
+### Table ASCII
+
+La table ASCII est un encodage de caractères qui associe chaque caractère à un
+nombre entier compris entre 0 et 127. Par exemple, le caractère `A` est
+associé au nombre 65, le caractère `B` au nombre 66, etc. La table ASCII
+comprend également des caractères de contrôle, tels que le retour à la ligne
+(`\n`) et la tabulation (`\t`). Historiquement, la table ASCII a été conçue pour
+représenter les caractères de l'alphabet anglais, mais elle est maintenant
+utilisée dans de nombreux systèmes informatiques.
+
+![Formulaire d'inscription](/img/ASCII-Table-wide.png)
+
+Source : [wikimedia](https://commons.wikimedia.org/wiki/File:ASCII-Table-wide.svg) 
+
+### Unicode et UTF-8
+
+Unicode est un standard qui vise à représenter tous les caractères de toutes
+les langues du monde. Il associe chaque caractère à un nombre entier unique,
+appelé **code point**. Par exemple, le caractère `A` est associé au code point
+U+0041, le caractère `é` au code point U+00E9, etc. Unicode comprend également
+des caractères spéciaux, tels que les symboles mathématiques et les emojis.
+
+UTF-8 est un encodage de caractères qui permet de représenter tous les
+caractères Unicode en utilisant un nombre variable d'octets. Les caractères ASCII
+sont représentés par un seul octet, tandis que les caractères Unicode plus
+complexes peuvent être représentés par plusieurs octets. Il existe aussi d'autres
+encodages, tels que UTF-16 et UTF-32, mais UTF-8 est le plus couramment utilisé
+dans les applications web et les systèmes modernes.
+
+L'important à retenir est unicode est un standard qui vise à représenter tous les
+caractères de toutes les langues du monde, tandis que UTF-8 est un encodage qui
+permet de représenter ces caractères en mémoire.
+
+### Encodage et décodage en Python
+
+En Python, les chaînes de caractères sont représentées en mémoire sous forme
+d'objets Unicode. Cela signifie que vous pouvez manipuler des chaînes de
+caractères sans vous soucier de l'encodage sous-jacent. Cependant, lorsque vous
+lisez ou écrivez des fichiers, vous devez spécifier l'encodage à utiliser.
 
 ## Comparaison de chaînes de caractères
 

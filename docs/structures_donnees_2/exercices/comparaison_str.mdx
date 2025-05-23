@@ -1,0 +1,45 @@
+---
+sidebar_label: Comparaison de chaînes Unicode
+sidebar_position: 2
+description: Comparaison de chaînes Unicode
+---
+
+# 🌍 Exercice : Comparaison de chaînes Unicode
+
+## 🎯 Objectif pédagogique
+
+L’objectif est de montrer que **deux chaînes peuvent paraître identiques** mais
+être **différentes en mémoire** selon leur forme de composition.
+
+## 📜 Énoncé
+
+Démarrer avec le code suivant :
+
+```python
+import unicodedata
+
+# Deux versions du même mot : "café"
+s1 = "café"                      # caractère é accent aigu (U+00E9)
+s2 = "cafe\u0301"               # 'e' suivi d'un accent aigu combinant (U+0301)
+
+# Liste de mots à normaliser
+mots = ["café", "cafe\u0301", "naïve", "nai\u0308ve", "résumé"]
+```
+
+Ensuite, vous devez créer un programme qui effectue les opérations suivantes :
+
+1. Créer une liste `mots_normaux` contenant tous les mots de la liste
+   `mots`, **normalisés en forme NFC**.
+2. Créer une liste `comparaison` contenant des booléens indiquant si le mot
+   d’origine est **identique (==)** à sa version NFC normalisée.
+3. Créer une liste `paires_égales` contenant toutes les **paires de mots**
+   dans `mots` qui **semblent identiques visuellement**, mais qui ne sont **pas
+   égales (`!=`)**, alors que leurs versions normalisées **le sont**.
+4. Créer une liste des **longueurs des chaînes Unicode** avant et après
+   normalisation (sous forme de tuples).
+
+#### 🛑 Contraintes
+
+* Aucun `for` ni `while`
+* Utiliser uniquement des **compréhensions de liste** et des **fonctions de
+  `unicodedata`** (`normalize`)
