@@ -1,0 +1,123 @@
+---
+sidebar_label: Les projets Python
+sidebar_position: 2
+description: Introduction aux projets Python
+---
+
+# Structure d’un projet Python moderne
+
+## Organisation typique
+
+Pour bien structurer un projet Python, il est recommandé d’utiliser un dossier
+`src` pour contenir le code source, un dossier `tests` pour les tests de
+développement, un environnement virtuel (`venv`) pour isoler les dépendances,
+et un fichier `pyproject.toml` pour la configuration.
+
+### Exemple :
+
+```
+mon_projet/
+├── src/
+│   └── mon_paquet/
+│       ├── __init__.py
+│       └── utils.py
+├── tests/
+│   └── test_utils.py
+├── pyproject.toml
+└── README.md
+```
+
+## Pourquoi un dossier `src` ?
+
+Placer le code dans un dossier `src/` :
+
+* **Évite les erreurs d'importation involontaire** pendant les tests
+* Clarifie la séparation entre le **code source**, les **tests** et autres fichiers
+
+
+## Le fichier `pyproject.toml`
+
+Le fichier `pyproject.toml` est un **standard moderne** pour configurer un
+projet Python. Il remplace les anciens `setup.py` et `setup.cfg`. Son rôle est
+de décrire le projet, ses dépendances et les outils de construction permettant
+de l'installer.
+
+### Exemple :
+
+```toml
+[project]
+name = "mon-paquet"
+version = "0.1.0"
+description = "Un exemple de projet Python avec hatchling"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Jean Dupont", email = "jean@example.com" }]
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+```
+
+La documentation complète de `pyproject.toml` est disponible sur
+[python.org](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
+
+
+## Environnement virtuel (`venv`)
+
+Un **environnement virtuel** permet d’installer les dépendances du projet
+localement, sans affecter le reste du système. En effet, au fur et à mesure
+qu'on installe des paquets, il est important de les isoler pour éviter les
+conflits de versions. Un conflit de versions peut survenir si deux
+projets nécessitent des versions différentes d'un même paquet.
+
+Ainsi, s'il n'y avait qu'un seul environnement Python global, l'installation
+d'un paquet pour un projet pourrait casser un autre projet qui dépend d'une
+version différente de ce même paquet.
+
+On utilise donc souvent `venv` pour créer un environnement virtuel. Un
+environnement virtuel est simplement un dossier qui contient une copie de
+l'interpréteur Python et des bibliothèques nécessaires au projet. Ce dossier
+est généralement nommé `.venv` ou `venv` et se trouve à la racine du projet.
+
+### Création :
+
+```bash
+python -m venv .venv
+```
+
+### Activation :
+
+* **Windows** :
+
+  ```bash
+  .venv\Scripts\activate
+  ```
+
+* **macOS / Linux** :
+
+  ```bash
+  source .venv/bin/activate
+  ```
+
+### Installation des dépendances (exemple avec `pip`) :
+
+Une fois l'environnement virtuel activé, on peut installer les
+dépendances du projet et le projet lui-même en mode "editable" :
+
+```bash
+pip install -e .
+```
+
+> L'option `-e` (editable) permet de développer le paquet sans avoir à le
+> réinstaller après chaque modification.
+
+
+## Résumé
+
+| Élément          | Rôle                                               |
+| ---------------- | -------------------------------------------------- |
+| `src/`           | Contient le code source du projet                  |
+| `tests/`         | Contient les tests (unitaires, fonctionnels…)      |
+| `pyproject.toml` | Décrit le projet et ses dépendances                |
+| `.venv/`         | Environnement virtuel pour les dépendances isolées |

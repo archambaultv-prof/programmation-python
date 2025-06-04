@@ -1,0 +1,109 @@
+---
+sidebar_label: Les tests unitaires
+sidebar_position: 3
+description: Les tests unitaires en Python
+---
+
+# Tests unitaires avec Pytest
+
+## Pourquoi écrire des tests ?
+
+Les tests unitaires permettent de :
+
+* Vérifier que le code fonctionne comme prévu
+* Vérifier que le code gère correctement les erreurs
+* Prévenir les régressions lors de modifications
+* Documenter le comportement attendu du code
+* Gagner du temps à long terme
+
+
+## Pytest : un outil simple et puissant
+
+[Pytest](https://docs.pytest.org/) est un framework de test moderne, facile à
+
+utiliser et très populaire dans l’écosystème Python.
+
+### Installation
+
+Après avoir créé un environnement virtuel pour votre projet, installez Pytest :
+
+```bash
+pip install pytest
+```
+
+## Exemple de test unitaire
+
+Supposons le code suivant dans `src/mon_paquet/utils.py` :
+
+```python
+def carre(x: int) -> int:
+    return x * x
+```
+
+Créons un fichier de test dans `tests/test_utils.py` :
+
+```python
+from mon_paquet.utils import carre
+
+def test_carre_valeur_positive():
+    assert carre(3) == 9
+
+def test_carre_zero():
+    assert carre(0) == 0
+
+def test_carre_valeur_negative():
+    assert carre(-4) == 16
+```
+
+## Exécuter les tests
+
+Depuis la racine du projet (là où se trouve `pyproject.toml`), il suffit de lancer :
+
+```bash
+pytest
+```
+
+Pytest va :
+
+* **Découvrir automatiquement** tous les fichiers commençant par `test_`
+* Exécuter toutes les fonctions dont le nom commence par `test_`
+* Afficher un rapport clair
+
+:::info
+
+Pour que Pytest trouve le paquet `mon_paquet` qui est dans le dossier `src/`,
+il faut l'installer dans son environnement virtuel.
+
+```bash
+pip install -e .
+```
+
+:::
+
+## Tests paramétrés
+
+Pour tester plusieurs cas sans dupliquer le code, on peut utiliser
+`@pytest.mark.parametrize`. Par exemple, pour tester la fonction `carre` avec
+plusieurs entrées, le code précédent peut être réécrit comme suit :
+
+```python
+import pytest
+from mon_paquet.utils import carre
+
+@pytest.mark.parametrize("entrée, attendu", [
+    (3, 9),
+    (0, 0),
+    (-4, 16),
+])
+def test_carre(entrée, attendu):
+    assert carre(entrée) == attendu
+```
+
+:::info
+
+Pytest offre énormément de fonctionnalités avancées, comme les fixtures pour
+initialiser des objets, la couverture de test avec `pytest-cov`, et l'exécution
+sélective de tests avec les options `-k` et `-m`. N'hésitez pas à consulter la
+[documentation officielle](https://docs.pytest.org/en/stable/) pour en savoir plus.
+
+:::
