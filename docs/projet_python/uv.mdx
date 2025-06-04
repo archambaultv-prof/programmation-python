@@ -30,16 +30,20 @@ Pour installer `uv`, voir le site officiel :
 
 * Un fichier `pyproject.toml`
 * Un environnement virtuel local (`.venv`)
-* Une structure propre (`src/`, `tests/`, etc.)
+* Une structure propre (`src/`, etc.)
 
-Le site officiel propose un guide complet pour démarrer :
-[astral.sh/uv](https://docs.astral.sh/uv/guides/projects/). En gros, la fonction
+Le site officiel [astral.sh/uv](https://docs.astral.sh/uv/guides/projects/)
+propose un guide complet pour démarrer, mais en gros, la commande
 
 ```bash
-uv init monprojet
+uv init --package monprojet
 ```
 
-permet de créer un projet.
+permet de créer un projet. L'option `--package` est importante, car elle
+indique de mettre en place un projet Python avec un dossier `src/` et un fichier
+`pyproject.toml` qui contient un script principal. Sans cette option,
+la structure du projet ressemblera plus à un projet classique comme vu à la page sur
+les [paquets Python](./paquet_python.mdx).
 
 
 ## Gérer les dépendances
@@ -57,13 +61,47 @@ Certaines dépendances peuvent être ajoutées en mode développement avec l'opt
 ```bash
 uv add --dev pytest
 ```
+L'option `--dev` permet de l'installer dans l'environnement virtuel
+local, sans l'ajouter aux dépendances principales du projet.
 
+## Lancement du projet
 
-## Lancement de tests
+Si vous avez utilisé la commande `uv init --package monprojet`, uv a configuré pour vous
+un script de lancement appelé `monprojet` dans le fichier `pyproject.toml`.
 
-La commande `uv run` permet d'exécuter des scripts ou des tests dans
-l'environnement virtuel du projet. Par exemple, pour lancer les tests avec
-`pytest`, il suffit de faire :
+```toml
+[project.scripts]
+monprojet = "monprojet:main"
+```
+
+Vous pouvez exécuter ce script directement avec :
+
+```bash
+uv run monprojet
+```
+
+Notez qu'il est possible de lancer d'autres scripts définis dans
+`pyproject.toml` en utilisant la même commande `uv run`. Pour définir un script,
+il suffit de l'ajouter dans la section `[project.scripts]` du fichier
+`pyproject.toml`. Par exemple :
+
+```toml
+[project.scripts]
+monprojet = "monprojet:main"
+script1 = "monprojet.dossierA.fichierB:fonction"
+script2 = "monprojet.dossierA:fonction_dans___init__py"
+```
+
+## Lancement des tests
+
+La commande `uv run` permet aussi d'exécuter `pytest`. Celui-ci doit être
+installé au préalable avec :
+
+```bash
+uv add --dev pytest
+```
+
+Une fois installé, vous pouvez lancer les tests avec :
 
 ```bash
 uv run pytest
@@ -71,9 +109,7 @@ uv run pytest
 
 :::info
 
-Il existe bien d'autres fonctionnalités avancées, comme la gestion des
-dépendances optionnelles, la configuration des scripts de démarrage, ou encore
-la gestion des environnements de développement. Pour en savoir plus, consultez la
+Il existe bien d'autres fonctionnalités avancées. Pour en savoir plus, consultez la
 [documentation officielle de `uv`](https://docs.astral.sh/uv/).
 
 :::
