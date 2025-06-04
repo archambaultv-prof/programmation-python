@@ -1,0 +1,70 @@
+---
+sidebar_label: Les paquets
+sidebar_position: 1
+description: Introduction aux paquets
+---
+
+
+# Introduction aux paquets en Python
+
+## Qu'est-ce qu'un paquet ?
+
+En Python, un paquet (package) est un dossier contenant un ensemble de
+modules (fichiers `.py`) qui sont liés logiquement. Il permet d’organiser
+et de structurer le code en le divisant en sous-parties réutilisables.
+
+## Structure d’un paquet
+
+Un paquet Python est simplement un **répertoire contenant un fichier spécial**
+nommé `__init__.py`. Ce fichier peut être vide ou contenir du code
+d'initialisation pour le paquet.
+
+### Exemple :
+
+```
+mon_projet/
+├── mon_paquet/
+│   ├── __init__.py
+│   ├── module1.py
+│   └── module2.py
+└── main.py
+```
+
+## À quoi sert `__init__.py` ?
+
+Le fichier `__init__.py` indique à Python que le dossier doit être traité comme un paquet.
+Il peut aussi servir à :
+
+* Initialiser certaines variables ou configurations du paquet
+* Rendre certains sous-modules accessibles directement à l'importation
+
+## Importer un module d’un paquet
+
+Supposons qu’on ait la structure précédente. Voici comment importer et utiliser un module :
+
+```python
+# Dans main.py
+from mon_paquet import module1
+
+module1.ma_fonction()
+```
+
+Ou bien :
+
+```python
+import mon_paquet.module2 as m2
+
+m2.autre_fonction()
+```
+
+## Avantages des paquets
+
+* **Organisation** : facilite la maintenance d’un projet de grande taille
+* **Réutilisabilité** : permet de réutiliser des parties du code dans plusieurs projets
+* **Lisibilité** : rend le projet plus clair pour les autres développeurs
+
+## Bonnes pratiques
+
+* Utiliser des **noms explicites** pour les dossiers et modules
+* Garder les **fonctions liées ensemble** dans le même module
+* Bien **documenter** le contenu de `__init__.py` si utilisé

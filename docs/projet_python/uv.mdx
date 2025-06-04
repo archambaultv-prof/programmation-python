@@ -1,0 +1,79 @@
+---
+sidebar_label: Gestionnaire de projets uv
+sidebar_position: 4
+description: Gestionnaire de projets uv
+---
+
+
+#  uv : un gestionnaire de projets Python
+
+## Qu’est-ce que `uv` ?
+
+[`uv`](https://docs.astral.sh/uv/) est un outil ultra-rapide pour :
+
+* Installer les dépendances listées dans `pyproject.toml`
+* Créer et gérer un environnement virtuel
+* Exécuter des commandes dans cet environnement
+
+Il remplace efficacement des outils comme `pip` et `venv`, tout
+en restant compatible avec les standards Python modernes comme `pyproject.toml`.
+
+## Installation
+
+Pour installer `uv`, voir le site officiel :
+[astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv).
+
+
+## Initialiser un nouveau projet Python
+
+`uv` permet de **créer un squelette de projet moderne** rapidement, avec :
+
+* Un fichier `pyproject.toml`
+* Un environnement virtuel local (`.venv`)
+* Une structure propre (`src/`, `tests/`, etc.)
+
+Le site officiel propose un guide complet pour démarrer :
+[astral.sh/uv](https://docs.astral.sh/uv/guides/projects/). En gros, la fonction
+
+```bash
+uv init monprojet
+```
+
+permet de créer un projet.
+
+
+## Gérer les dépendances
+
+Si le projet a besoin de dépendances, `uv` permet de les [installer
+facilement](https://docs.astral.sh/uv/concepts/projects/dependencies/). Par
+exemple, pour ajouter le paquet `numpy` :
+
+```bash
+uv add numpy
+```
+
+Certaines dépendances peuvent être ajoutées en mode développement avec l'option `--dev` :
+
+```bash
+uv add --dev pytest
+```
+
+
+## Lancement de tests
+
+La commande `uv run` permet d'exécuter des scripts ou des tests dans
+l'environnement virtuel du projet. Par exemple, pour lancer les tests avec
+`pytest`, il suffit de faire :
+
+```bash
+uv run pytest
+```
+
+:::info
+
+Il existe bien d'autres fonctionnalités avancées, comme la gestion des
+dépendances optionnelles, la configuration des scripts de démarrage, ou encore
+la gestion des environnements de développement. Pour en savoir plus, consultez la
+[documentation officielle de `uv`](https://docs.astral.sh/uv/).
+
+:::
