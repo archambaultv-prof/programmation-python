@@ -97,7 +97,28 @@ with open('exemple.txt', 'a') as fichier:
 ## Traitement de fichier texte : exemple pratique
 
 Voici un exemple concret de lecture d'un fichier, traitement des données, puis
-écriture dans un nouveau fichier :
+écriture dans un nouveau fichier. Cet exemple assume que nous avons un fichier
+`notes.txt` contenant des noms et des notes sour le format suivant :
+
+```
+nom1:75
+nom2:45
+nom3:88
+nom4:60
+```
+
+Nous allons lire ce fichier, déterminer si chaque élève a réussi ou échoué
+en fonction de sa note, et écrire les résultats
+dans un nouveau fichier `resultats.txt` au format suivant :
+
+```
+nom1: 75 (Réussi)
+nom2: 45 (Échoué)
+nom3: 88 (Réussi)
+nom4: 60 (Réussi)
+```
+
+Voici le code pour réaliser cette tâche :
 
 ```python
 # Lire et traiter le fichier d'entrée
