@@ -20,7 +20,7 @@ les opérations terminées, même en cas d'erreur ou d'exception. Voici un exemp
 simple d'ouverture et de fermeture automatique :
 
 ```python
-with open('exemple.txt', 'r') as fichier:
+with open('exemple.txt', 'r', encoding='utf-8') as fichier:
     contenu = fichier.read()
     print(contenu)
 ```
@@ -45,7 +45,7 @@ La méthode `read()` permet de lire tout le contenu du fichier en une seule
 chaîne de caractères :
 
 ```python
-with open('exemple.txt', 'r') as fichier:
+with open('exemple.txt', 'r', encoding='utf-8') as fichier:
     contenu = fichier.read()
     print(contenu)
 ```
@@ -55,7 +55,7 @@ with open('exemple.txt', 'r') as fichier:
 La méthode `readline()` permet de lire une ligne à la fois :
 
 ```python
-with open('exemple.txt', 'r') as fichier:
+with open('exemple.txt', 'r', encoding='utf-8') as fichier:
     ligne = fichier.readline()
     while ligne:
         print(ligne.strip())  # strip() enlève les sauts de ligne
@@ -80,7 +80,7 @@ with open('exemple.txt', 'r') as fichier:
 ### Écriture simple (écraser le contenu existant)
 
 ```python
-with open('exemple.txt', 'w') as fichier:
+with open('exemple.txt', 'w', encoding='utf-8') as fichier:
     fichier.write('Bonjour, Python!\n')
     fichier.write('Ceci est une nouvelle ligne.')
 ```
@@ -88,7 +88,7 @@ with open('exemple.txt', 'w') as fichier:
 ### Écriture à la fin du fichier (ajouter du contenu)
 
 ```python
-with open('exemple.txt', 'a') as fichier:
+with open('exemple.txt', 'a', encoding='utf-8') as fichier:
     fichier.write('\nUne autre ligne ajoutée à la fin du fichier.')
 ```
 
@@ -122,7 +122,7 @@ Voici le code pour réaliser cette tâche :
 
 ```python
 # Lire et traiter le fichier d'entrée
-with open('notes.txt', 'r') as fichier_entree:
+with open('notes.txt', 'r', encoding='utf-8') as fichier_entree:
     lignes = fichier_entree.readlines()
 
 notes_traitées = []
@@ -148,7 +148,7 @@ manipulation de fichiers :
 
 ```python
 try:
-    with open('exemple.txt', 'r') as fichier:
+    with open('exemple.txt', 'r', encoding='utf-8') as fichier:
         contenu = fichier.read()
 except FileNotFoundError:
     print("Le fichier n'existe pas.")

@@ -33,7 +33,19 @@ with open('donnees.csv', 'r', newline='', encoding='utf-8') as fichier:
         print(ligne)
 ```
 
-Dans cet exemple, chaque ligne du fichier est affichée comme une liste Python.
+Dans cet exemple, chaque ligne du fichier est affichée comme une liste Python. Si vous voulez
+sautez la première ligne (souvent utilisée pour les en-têtes), vous pouvez
+ajouter une instruction `next(lecteur)` avant la boucle :
+
+```python
+import csv
+
+with open('donnees.csv', 'r', newline='', encoding='utf-8') as fichier:
+    lecteur = csv.reader(fichier, delimiter=',')
+    next(lecteur)  # Ignore la première ligne
+    for ligne in lecteur:
+        print(ligne)
+```
 
 ### Lecture avec `DictReader`
 
