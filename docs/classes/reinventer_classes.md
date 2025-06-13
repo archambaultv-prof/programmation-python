@@ -1,9 +1,59 @@
 ---
 sidebar_label: Réinventer les classes
-sidebar_position: 5
+sidebar_position: 50
 ---
 
 # Réinventer les classes
+
+:::warning
+
+Page en construction.
+
+:::
+
+## En Python, tout est un dictionnaire
+
+On entend souvent dire que "tout est un dictionnaire" en Python. En effet, pour
+les classes et objets, les attributs et méthodes d'une classe sont bel et bien
+stockés dans des dictionnaires. Il est possible d'accéder à tous les attributs
+d'un objet en utilisant l'attribut spécial `__dict__` de l'objet.
+
+```python
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def distance(self, other):
+        return ((self.x - other.x) ** 2 + (self.y - other.y) ** 2) ** 0.5
+
+p = Point(0, 0)
+print(p.__dict__)  # {'x': 0, 'y': 0}
+```
+
+Pour les méthodes, elles sont stockées dans le dictionnaire
+`__dict__` de la classe. Ce dictionnaire contient toutes les méthodes de la
+classe, y compris les méthodes spéciales mais pas méthodes héritées sauf si elles
+ont été redéfinies dans la classe fille. Bref ce que le programmeur a défini
+dans la classe et les méthodes spéciales par défaut.
+
+Il est possible d'obtenir la classe d'un objet en utilisant l'attribut spécial `__class__`.
+Ainsi le code suivant affiche le dictionnaire des méthodes de la classe `Point`
+pour l'objet `p`.
+
+```python
+print(p.__class__.__dict__)
+```
+
+### La fonction `dir`
+
+Il y a beaucoup à dire sur la façon dont Python gère les attributs et les
+méthodes des objets et les possibilités pour les manipuler. Nous allons néanmoins
+simplement présenter une dernière fonction qui est très utile pour inspecter
+les objets : la fonction `dir`. Elle combine en une seule liste les attributs et méthodes d'un objet
+ou d'une classe et parcours la chaîne d'héritage pour afficher tous les attributs
+et méthodes accessibles. Cela évite de devoir utiliser `__dict__` et `__class__`
+pour inspecter les objets.
 
 Dans la section précédente, nous avons décris le concept de classe. Dans cette
 section, nous allons revoir ce même concept, mais en le réinventant.
