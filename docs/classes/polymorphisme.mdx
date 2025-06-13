@@ -13,7 +13,7 @@ dérivée d'être traité comme un objet de la classe de base, mais avec un
 comportement spécifique à la classe dérivée. Ce type de polymorphisme
 est appelé polymorphisme d'inclusion ou de sous-typage.
 
-## Surchage de méthodes
+## Surcharge de méthodes
 
 En Python, le polymorphisme est généralement réalisé par la *surcharge de
 méthodes*. Cela signifie que vous pouvez définir une méthode dans une classe
@@ -41,7 +41,7 @@ for el in [animal, chien]:
 
 Comme on peut le voir, la méthode `parler` de la classe `Chien` remplace
 celle de la classe `Animal`. De plus, dans ce code la liste contient des objets de
-type `Animal` et `Chien`, mais la méthode `parler` est appelée est commune aux deux
+type `Animal` et `Chien`, mais la méthode `parler` appelée est commune aux deux
 objets et donc le code fonctionne correctement.
 
 ## Extension de méthodes
@@ -66,7 +66,7 @@ chien.parler()  # Affiche : L'animal parle. puis Le chien aboie.
 
 ## Polymorphisme et typage canard
 
-Puisque c'est comme si tout est un dictionnaire en Python, le polymorphisme est très facile à
+Puisque tout est comme un dictionnaire en Python, le polymorphisme est très facile à
 mettre en œuvre. Lorsque vous appelez une méthode sur un objet, Python cherche d'abord la
 méthode dans le dictionnaire de l'objet. Si la *signature* de la méthode est
 trouvée, Python appelle la méthode. Sinon, Python remonte la chaîne d'héritage
@@ -81,7 +81,7 @@ class Animal:
     def parler(self):
         print("L'animal parle.")
 
-class Chien():
+class Chien:
     def parler(self):
         print("Le chien aboie.")
 
@@ -106,12 +106,12 @@ Néanmoins, l'utilisation du typage canard permet de ne pas avoir à utiliser
 l'héritage pour obtenir du polymorphisme. Vous pouvez simplement ajouter des
 méthodes à des objets existants pour obtenir le même effet. Cela est très utile
 lorsque vous devez interagir avec des objets qui ne sont pas sous votre contrôle,
-comme ceux provenant de bibliothèques tierces ou de la librairie standard.
+comme ceux provenant de bibliothèques tierces ou de la bibliothèque standard.
 
 Par exemple, la fonction `open` de Python retourne un objet qui représente un
 fichier. L'objet retourné par `open` a plusieurs méthodes, mais si votre code n'a besoin
 que de la méthode `read`, vous pouvez simplement ajouter cette méthode à un objet
-existante pour obtenir le même effet.
+existant pour obtenir le même effet.
 
 ```python
 class MonFichier:
@@ -126,7 +126,7 @@ f = MonFichier("Hello, world!")
 print(f.read())  # Affiche : Hello, world!
 ```
 
-Ainsi, chaque fois qu'une fonction dans votre code à besoin d'un fichier et
+Ainsi, chaque fois qu'une fonction dans votre code a besoin d'un fichier et
 utilise uniquement la méthode `read`, vous pouvez simplement lui passer un
 objet `MonFichier`. Ceci est beaucoup plus flexible et bien plus simple que
 d'utiliser l'héritage.

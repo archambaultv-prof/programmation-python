@@ -1,0 +1,48 @@
+---
+sidebar_label: Attributs et méthodes
+sidebar_position: 1
+description: Attributs et méthodes
+---
+
+# Attributs et méthodes
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont :
+
+- Comprendre comment encapsuler des données et des méthodes dans une classe.
+- Comprendre comment créer des instances de classe et interagir avec elles.
+
+## 📜 Énoncé
+
+Au lieu de représenter des dates avec des tuples, créez une classe `Date` qui
+encapsule les attributs et méthodes nécessaires pour manipuler des dates et
+réécrivez l'exemple suivant :
+
+```python
+date1 = (2025, 6, 13)
+date2 = (2024, 12, 25)
+
+def is_same_year(date_a, date_b):
+    return date_a[0] == date_b[0]
+
+def format_date(date):
+    return f"{date[0]}-{date[1]}-{date[2]}"
+
+def add_days(date, days):
+    year, month, day = date
+    return (year, month, day + days)  # Valide ???
+
+print(is_same_year(date1, date2))  # False
+print(format_date(date1))  # 2025-6-13
+print(format_date(date2))  # 2024-12-25
+print(format_date(add_days(date1, 5)))  # 2025-6-18
+```
+
+### 💪 Bonus
+
+1. Corrigez le code de la fonction `add_days` pour qu'elle gère correctement
+le passage d'un mois à l'autre et les années bissextiles.
+
+2. Modifiez `format_date` pour qu'elle affiche les mois et les jours avec deux chiffres
+(01, 02, ..., 12).
