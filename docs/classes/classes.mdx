@@ -1,6 +1,7 @@
 ---
 sidebar_label: Les classes en Python
 sidebar_position: 0
+description: Les classes en Python
 ---
 
 # Les classes en Python
@@ -14,13 +15,10 @@ orientée objet remonte aux [années 1960](https://fr.wikipedia.org/wiki/Program
 ## Distinction entre classe et objet
 
 Une classe est un modèle pour créer des objets. Elle définit les attributs et
-les méthodes que les objets de la classe auront. Il s'agit d'une structure
-abstraite qui ne contient pas de données réelles. En Python, une classe est
-définie à l'aide du mot-clé `class`. Un objet est une instance d'une classe et
-il est créé à l'aide du constructeur de la classe.
-
-Autrement dit, la classe est le plan pour construire des objets. Avec un même plan,
-vous pouvez construire plusieurs objets.
+les méthodes que les objets de la classe auront. Un objet est une instance d'une classe et
+il est créé à l'aide du constructeur de la classe. Autrement dit, la classe est
+le plan pour construire des objets. Avec un même plan, vous pouvez construire
+plusieurs objets.
 
 ## Définir une classe
 
@@ -57,7 +55,8 @@ Le constructeur d'une classe est une méthode spéciale appelée `__init__`. Cet
 méthode est appelée lors de la création d'une instance de la classe. Elle est
 utilisée pour initialiser les attributs de la classe. Le premier argument de
 la méthode `__init__` est `self`, qui est une référence à l'instance de la classe
-elle-même.
+qui est en cours de création. Les autres arguments sont les valeurs que vous
+souhaitez utiliser pour initialiser les attributs de la classe.
 
 Il n'est pas nécessaire de déclarer explicitement le constructeur dans une classe
 Python. Si vous ne le faites pas, Python crée un constructeur par défaut qui ne
@@ -79,19 +78,16 @@ Dans cet exemple, si vous ne fournissez pas d'arguments lors de la création d'u
 instance de la classe `Point`, les valeurs par défaut `0` seront utilisées pour
 les attributs `x` et `y`.
 
-De façon générale, l'ensemble des attributs d'une classe est initialisé dans le
-constructeur. Cela permet de garantir que chaque instance de la classe a un état
-cohérent.
-
 ## Attributs et méthodes
 
-On appelle attributs les variables qui appartiennent à une classe. Les attributs
+On appelle attributs les variables qui appartiennent à un objet. Les attributs
 sont accessibles à l'aide de la notation pointée (`.`). Par exemple, pour accéder
 à l'attribut `x` d'une instance de la classe `Point`, vous pouvez utiliser `p.x`.
 
-Les méthodes sont des fonctions qui appartiennent à une classe. Elles sont définies
+Les méthodes sont des fonctions qui appartiennent à un objet. Elles sont définies
 de la même manière que les fonctions, mais elles prennent toujours `self` comme
-premier argument. `self` est une référence à l'instance de la classe elle-même.
+premier argument. `self` est une référence à l'instance de la classe elle-même, c'est-à-dire
+l'objet sur lequel la méthode est appelée. 
 Par exemple, pour appeler la méthode `distance` de la classe `Point`, vous pouvez
 utiliser `p1.distance(p2)`. Notez que vous n'avez pas besoin de passer `self` en
 argument, Python le fait automatiquement pour vous.
@@ -155,6 +151,91 @@ class Point:
         self.y = y
         self.couleur = couleur
 ```
+
+## Méthodes de classe et méthodes statiques
+
+Tout comme les attributs, les méthodes peuvent être de classe, statiques ou d'instance.
+Les méthodes d'instance sont les plus courantes et sont définies à l'intérieur
+de la classe avec `self` comme premier argument. Elles agissent sur les données
+de l'instance de la classe comme dans les exemples précédents.
+
+### Méthodes statiques
+
+Les méthodes statiques sont définies avec le décorateur `@staticmethod`.
+Elles n'ont pas accès à l'instance de la classe (`self`) et ne peuvent pas
+modifier les attributs de l'instance. Elles sont utilisées pour des fonctions
+qui n'ont pas besoin d'accéder aux données de l'instance, mais qui sont
+liées à la classe. Voici un exemple de méthode statique :
+
+```python
+class Conversion:
+    
+    @staticmethod
+    def celsius_to_fahrenheit(celsius):
+        return (celsius * 9/5) + 32
+```
+
+Souvent, les méthodes statiques auraient pu être des fonctions
+indépendantes, mais elles sont définies à l'intérieur de la classe pour
+montrer qu'elles sont liées à la classe ou pour regrouper des
+fonctions similaires.
+
+:::info
+
+Dans certains langages de programmation, tout doit être un objet. Les méthodes
+statiques sont alors les seules façons de définir des fonctions. Java,
+particulièrement avant Java 8 et les fonctions lambda, est un exemple de
+langage où les méthodes statiques sont courantes.
+
+:::
+
+### Méthodes de classe
+
+En Python, les classes sont également des objets. Il y a donc l'objet `Point`
+qui est une instance de la classe `type`. Ensuite il y a des objets `p1` qui
+sont des instances de la classe `Point`. Les méthodes de classe sont définies
+avec le décorateur `@classmethod`. Elles prennent *l'objet de la classe elle-même* comme
+premier argument, généralement nommé `cls`. Elles sont utilisées pour des
+fonctions qui agissent sur la classe plutôt que sur une instance spécifique.
+
+Voici un exemple de méthode de classe qui fournit un constructeur alternatif
+pour créer une instance de la classe `Point` à partir d'un dictionnaire :
+
+```python
+class Point:
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    @classmethod
+    from_dict(cls, data: dict):
+        return cls(data['x'], data['y'])
+
+d = {'x': 1, 'y': 2}
+p = Point.from_dict(d)
+```
+
+Remarquez que dans cet exemple, lorsque nous appelons la méthode de classe
+`from_dict`, il n'y a pas besoin de fournir l'argument `cls`. Python le
+passe automatiquement comme pour les méthodes d'instance.
+
+Un autre usage courant des méthodes de classe est la manipulation des
+attributs de classe. Par exemple, vous pouvez définir une méthode de classe
+qui incrémente un compteur d'instances de la classe :
+
+```python
+class Compteur:
+    compte = 0
+
+    @classmethod
+    def increment(cls):
+        cls.compte += 1
+
+Compteur.increment()
+print(Compteur.compte)  # Affiche 1
+```
+
 
 ## Méthodes spéciales
 

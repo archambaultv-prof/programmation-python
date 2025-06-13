@@ -1,6 +1,6 @@
 ---
 sidebar_label: Classe abstraite et interface
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 Nous avons vu qu'avec la notion d'héritage, il est possible de définir des
@@ -19,7 +19,7 @@ les implémentera de manière différente. En effet, il n'existe pas dans la nat
 d'animal qui soit simplement un `Animal`, mais plutôt des chiens, des chats, des
 oiseaux, etc. qui sont des types d'animaux.
 
-Dans une premier temps, on peut implenter le concept d'une classe abstraite en
+Dans un premier temps, on peut implémenter le concept d'une classe abstraite en
 Python en utilisant le mot-clé `pass` dans les méthodes abstraites. Par exemple :
 
 ```python
@@ -50,12 +50,12 @@ il ne se passera rien car les méthodes sont vides.
 
 Cette solution n'est pas optimale car elle ne permet pas de s'assurer que
 toutes les méthodes de la classe `Animal` sont redéfinies dans les classes
-filles. De plus, il est possible d'instancier un objet de type `Animal` ce qui
+filles. De plus, il est possible d'instancier un objet de type `Animal`, ce qui
 n'a pas de sens dans notre exemple.
 
 ## Les classes abstraites en Python
 
-Pour pallier à ces problèmes, Python propose un module nommé `abc` (pour
+Pour pallier ces problèmes, Python propose un module nommé `abc` (pour
 *Abstract Base Classes*) qui permet de définir des classes abstraites.
 
 Voici comment on pourrait réécrire notre exemple en utilisant le module `abc` :
@@ -90,7 +90,7 @@ class Chien(Animal):
 La classe `Animal` hérite de la classe `ABC` et on utilise le décorateur
 `@abstractmethod` pour indiquer que les méthodes de la classe `Animal` sont
 abstraites. Ainsi, si un programmeur oublie de redéfinir une méthode abstraite
-dans une classe fille, Python lèvera une exception. De même si on tente
+dans une classe fille, Python lèvera une exception. De même, si on tente
 d'instancier un objet de type `Animal`, Python lèvera une exception.
 
 ```python
@@ -117,7 +117,7 @@ définit en quelque sorte un contrat que les classes qui l'implémentent doivent
 respecter. Ainsi, le programmeur peut être sûr que les classes qui implémentent
 l'interface possèdent les méthodes définies dans l'interface.
 
-## Classes abstractes avec des attributs
+## Classes abstraites avec des attributs
 
 Il est tout à fait possible de définir des attributs dans une classe abstraite et certaines
 méthodes concrètes. Par exemple :

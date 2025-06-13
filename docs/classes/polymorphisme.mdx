@@ -1,61 +1,68 @@
 ---
 sidebar_label: Polymorphisme
-sidebar_position: 4
+sidebar_position: 3
+description: Polymorphisme en Python
 ---
+
+# Polymorphisme
 
 Le polymorphisme est un concept fondamental en programmation orientée objet. Il
 permet de définir des méthodes dans une classe de base qui peuvent être
 *redéfinies* dans les classes dérivées. Cela permet à un objet d'une classe
-dérivée d'être traité comme un objet de la classe de base. Ce type de polymorphisme
-est appelé *polymorphisme d'inclusion*.
+dérivée d'être traité comme un objet de la classe de base, mais avec un
+comportement spécifique à la classe dérivée. Ce type de polymorphisme
+est appelé polymorphisme d'inclusion ou de sous-typage.
 
-Nous avons déjà vu des exemples de polymorphisme dans les sections précédentes.
-À chaque fois que nous avons redéfini une méthode dans une classe fille, nous
-avons utilisé le polymorphisme.
+## Surchage de méthodes
 
-## En Python, tout est un dictionnaire
+En Python, le polymorphisme est généralement réalisé par la *surcharge de
+méthodes*. Cela signifie que vous pouvez définir une méthode dans une classe
+de base, puis la redéfinir dans une classe dérivée.
 
-On entend souvent dire que "tout est un dictionnaire" en Python. En effet, pour
-les classes et objets, les attributs et méthodes d'une classe sont bel et bien
-stockés dans des dictionnaires. Il est possible d'accéder à tous les attributs
-d'un objet en utilisant l'attribut spécial `__dict__` de l'objet.
-
-```python
-class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def distance(self, other):
-        return ((self.x - other.x) ** 2 + (self.y - other.y) ** 2) ** 0.5
-
-p = Point(0, 0)
-print(p.__dict__)  # {'x': 0, 'y': 0}
-```
-
-Pour les méthodes, elles sont stockées dans le dictionnaire
-`__dict__` de la classe. Ce dictionnaire contient toutes les méthodes de la
-classe, y compris les méthodes spéciales mais pas méthodes héritées sauf si elles
-ont été redéfinies dans la classe fille. Bref ce que le programmeur a défini
-dans la classe et les méthodes spéciales par défaut.
-
-Il est possible d'obtenir la classe d'un objet en utilisant l'attribut spécial `__class__`.
-Ainsi le code suivant affiche le dictionnaire des méthodes de la classe `Point`
-pour l'objet `p`.
+Par exemple, vous pouvez définir une classe `Animal` avec une méthode `parler`, puis
+définir une classe `Chien` qui hérite de `Animal` et redéfinit la méthode `parler` pour
+qu'elle affiche "Le chien aboie". Voici un exemple :
 
 ```python
-print(p.__class__.__dict__)
+class Animal:
+    def parler(self):
+        print("L'animal parle.")
+
+class Chien(Animal):
+    def parler(self):
+        print("Le chien aboie.")
+
+animal = Animal()
+chien = Chien()
+
+for el in [animal, chien]:
+    el.parler()  # Affiche : L'animal parle. puis Le chien aboie.
 ```
 
-### La fonction `dir`
+Comme on peut le voir, la méthode `parler` de la classe `Chien` remplace
+celle de la classe `Animal`. De plus, dans ce code la liste contient des objets de
+type `Animal` et `Chien`, mais la méthode `parler` est appelée est commune aux deux
+objets et donc le code fonctionne correctement.
 
-Il y a beaucoup à dire sur la façon dont Python gère les attributs et les
-méthodes des objets et les possibilités pour les manipuler. Nous allons néanmoins
-simplement présenter une dernière fonction qui est très utile pour inspecter
-les objets : la fonction `dir`. Elle combine en une seule liste les attributs et méthodes d'un objet
-ou d'une classe et parcours la chaîne d'héritage pour afficher tous les attributs
-et méthodes accessibles. Cela évite de devoir utiliser `__dict__` et `__class__`
-pour inspecter les objets.
+## Extension de méthodes
+
+Si l'on souhaite que la méthode de la classe dérivée appelle la méthode de la
+classe de base, on peut utiliser le mot-clé `super()`. Cela permet d'appeler la
+méthode de la classe de base depuis la classe dérivée. Voici un exemple :
+
+```python
+class Animal:
+    def parler(self):
+        print("L'animal parle.")
+
+class Chien(Animal):
+    def parler(self):
+        super().parler()  # Appelle la méthode de la classe de base
+        print("Le chien aboie.")
+
+chien = Chien()
+chien.parler()  # Affiche : L'animal parle. puis Le chien aboie.
+```
 
 ## Polymorphisme et typage canard
 
