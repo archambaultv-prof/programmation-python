@@ -29,20 +29,17 @@ def is_same_year(date_a, date_b):
 def format_date(date):
     return f"{date[0]}-{date[1]}-{date[2]}"
 
-def add_days(date, days):
+def add_years(date, years):
     year, month, day = date
-    return (year, month, day + days)  # Valide ???
+    return (year + years, month, day)
 
 print(is_same_year(date1, date2))  # False
 print(format_date(date1))  # 2025-6-13
 print(format_date(date2))  # 2024-12-25
-print(format_date(add_days(date1, 5)))  # 2025-6-18
+print(format_date(add_years(date1, 2)))  # 2027-6-13
 ```
 
 ### 💪 Bonus
 
-1. Corrigez le code de la fonction `add_days` pour qu'elle gère correctement
-le passage d'un mois à l'autre et les années bissextiles.
-
-2. Modifiez `format_date` pour qu'elle affiche les mois et les jours avec deux chiffres
+1. Modifiez `format_date` pour qu'elle affiche les mois et les jours avec deux chiffres
 (01, 02, ..., 12).
