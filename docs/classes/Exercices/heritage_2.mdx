@@ -1,0 +1,65 @@
+---
+sidebar_label: Héritage - 2
+sidebar_position: 5
+description: Exercices sur l'héritage
+---
+
+# Héritage 2
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont :
+
+- Comprendre le principe de l'héritage en Python.
+- Savoir créer des classes dérivées et surcharger des méthodes.
+
+## 📜 Énoncé
+
+Vous allez modéliser un système simple de recettes.
+
+### Partie 1 – Classe de base : Recette
+
+Créez une classe `Recette` qui contient :
+
+- un attribut `nom` (str),
+- un attribut `ingredients` (liste de chaînes),
+- une méthode `afficher()` qui affiche le nom de la recette et la liste des ingrédients.
+
+### Partie 2 – Sous-classe : RecetteChauffee
+
+Créez une classe `RecetteChauffee` qui hérite de `Recette` et qui ajoute :
+
+- un attribut `temperature` (int, en degrés Celsius),
+- un attribut `duree` (int, en minutes),
+- une redéfinition de `afficher()` qui affiche aussi la température et la durée.
+
+### Partie 3 – Sous-classe : RecetteSansCuisson
+
+Créez une classe `RecetteSansCuisson` qui hérite de `Recette` et qui ajoute :
+
+- un attribut `temps_repos` (int, en minutes),
+- une redéfinition de `afficher()` qui affiche aussi le temps de repos.
+
+### Partie 4 – Utilisation
+
+1. Créez une recette chauffée : "Lasagnes", avec les ingrédients `["pâtes",
+   "sauce tomate", "fromage"]`, température : 180°C, durée : 45 minutes.
+2. Créez une recette sans cuisson : "Tiramisu", avec les ingrédients
+   `["mascarpone", "biscuits", "café"]`, temps de repos : 120 minutes.
+3. Stockez-les dans une liste.
+4. Parcourez la liste et appelez la méthode `afficher()` sur chaque élément.
+
+
+### Affichage attendu (exemple)
+
+```
+
+Recette : Lasagnes
+Ingrédients : pâtes, sauce tomate, fromage
+→ Cuisson à 180°C pendant 45 minutes
+
+Recette : Tiramisu
+Ingrédients : mascarpone, biscuits, café
+→ Repos de 120 minutes (sans cuisson)
+
+```
