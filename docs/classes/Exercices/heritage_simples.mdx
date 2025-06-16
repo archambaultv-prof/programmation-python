@@ -1,0 +1,69 @@
+---
+sidebar_label: Héritage simple
+sidebar_position: 5
+description: Exercices simples sur l'héritage
+---
+
+# Héritage simple
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont :
+
+- Comprendre le principe de l'héritage en Python.
+- Savoir créer des classes dérivées et surcharger des méthodes.
+
+## 📜 Énoncé
+
+Créez une classe `Personne` avec les attributs `prenom`, `nom` et `age`. 
+Implémentez la méthode `__init__` pour initialiser ces attributs et la méthode `dire_bonjour` 
+qui affiche :
+
+> Bonjour, je m'appelle [prenom] [nom] et j'ai [age] ans.
+
+Voici un exemple de code pour commencer :
+
+```python
+class Personne:
+    def __init__(self, prenom, nom, age):
+        print("Initialisation de la classe Personne")
+        # À compléter
+
+    def dire_bonjour(self):
+        # À compléter
+        pass
+```
+
+---
+
+Ensuite, créez une classe `Etudiant` qui hérite de la classe `Personne`. La classe `Etudiant`
+aura un attribut supplémentaire `liste_des_cours`.
+
+```python
+class Etudiant(Personne):
+    def __init__(self, prenom, nom, age, liste_des_cours):
+        print("Initialisation de la classe Etudiant")
+        # À compléter
+```
+
+---
+
+Créez aussi une classe `Professeur` qui hérite de la classe
+`Personne` avec en plus un attribut `discipline`. La classe `Professeur` surcharge la méthode `dire_bonjour` pour afficher :
+
+> Bonjour, je suis le professeur [prenom] [nom], j'enseigne [discipline].
+
+```python
+class Professeur(Personne):
+    def __init__(self, prenom, nom, age, discipline):
+        print("Initialisation de la classe Professeur")
+        # À compléter
+
+    def dire_bonjour(self):
+        # À compléter
+        pass
+```
+
+### 💡 Remarque
+
+Les `print` sont là pour vous aider à comprendre l'ordre d'initialisation des classes.
