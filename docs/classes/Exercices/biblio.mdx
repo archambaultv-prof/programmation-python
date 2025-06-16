@@ -1,0 +1,127 @@
+---
+sidebar_label: Classes pour bibliothèque
+sidebar_position: 12
+description: Classes pour bibliothèque
+---
+
+# 📚 Classes pour bibliothèque
+
+## 🎯 Objectif pédagogique
+
+- Comprendre l'héritage en Python.
+- Comprendre les classes abstraites.
+- Traduire un énoncé en code Python.
+
+
+## 📜 Énoncé
+
+Vous devez créer des classes pour le bon fonctionnement logiciel d'une
+bibliothèque de votre quartier.
+
+### Interface
+
+- Les livres vont tous avoir un identifiant unique. Or ceci est très fréquent
+  dans les bases de données. Vous devez donc créer une **interface** `AvecID`
+  qui contient une seule méthode *abstraite* `get_id(self)`.
+- Certains types de livres auront des mots-clés. Vous devez créer une
+  **interface** `AvecMotsCles` qui contient une seule méthode *abstraite*
+  `contient_mot_cle(self)`. L'objectif de cette méthode est de vérifier si un
+  mot-clé est présent dans une classe qui implémente cette interface. Lors de
+    l'implémentation de cette méthode, vous devez retourner `True` si le mot-clé
+    est présent et `False` sinon.
+
+### Classe mère
+
+Tous les livres ont des attributs communs. Vous devez créer une classe mère
+`Livre` qui contient les attributs suivants:
+
+- `id`
+- `titre`
+- `auteur`
+- `nb_pages`
+
+Cette classe hérite de `AvecID` et implémente la méthode `get_id(self)`.
+
+Cette classe doit aussi contenir la méthode *abstraite* `description(self)`.
+L'objectif de cette méthode est de retourner une chaîne de caractères qui
+décrit le livre. Puisque c'est une méthode abstraite, vous ne devez pas fournir
+une implémentation et la classe `Livre` doit être déclarée comme abstraite.
+
+L'ordre des classes mères est important. Vous devez déclarer `AvecID` en premier
+dans la liste des classes mères et ensuite `ABC` pour déclarer la classe comme
+abstraite.
+
+### Classes filles
+
+Vous devez créer les classes filles suivantes. Ces classes ne sont **pas** des
+classes abstraites, vous devez donc fournir une implémentation de toutes les
+méthodes abstraites héritées.
+
+- `Roman` qui hérite de `Livre` et qui implémente l'interface `AvecMotsCles`.
+  Les mots-clés sont stockés dans un attribut `mots_cles` qui est une liste de
+  chaînes de caractères. Prenez soin de bien déclarer `Livre` en premier dans
+  la liste des classes mères. Ainsi, vous n'avez pas besoin d'utiliser
+  l'héritage coopératif.
+
+- `BandeDessinee` qui hérite de `Livre`. Elle possède un attribut
+  `dessinateur`.
+
+- `LivreAudio` qui hérite de `Livre`. Elle possède un attribut `narrateur`.
+
+Pour faciliter la vie des développeurs, implémentez la méthode `__str__(self)` pour toutes les classes.
+Cette méthode doit retourner la même chose que la méthode `description(self)`.
+
+### Classe Bibliothèque
+
+Vous devez créer une classe `Bibliotheque` avec les caractéristiques suivantes:
+
+- Son constructeur ne prend aucun argument. Toutefois, il initialise un
+  attribut `livres` qui est une liste vide.
+- Elle possède une méthode `ajouter_livre(self, livre)` qui ajoute un livre à la
+  liste des livres. Attention, cette méthode doit vérifier si le livre est une
+  instance de `Livre`. Elle lance une erreur si ce n'est pas le cas.
+  Vous pouvez vous inspirer du code suivant pour vérifier si un objet est une
+  instance d'une classe:
+
+  ```python
+  class MaClasse:
+      pass
+
+  if isinstance(objet, MaClasse):
+      # Faire quelque chose
+  else:
+      raise ValueError("Message d'erreur")
+  ```
+
+- Elle possède une méthode `supprimer_livre(self, id_livre)` qui supprime un
+  livre de la liste des livres. L'argument est un identifiant, pas un objet de
+  la classe livre. Chaque livre est identifié par son identifiant unique.
+- Elle possède une méthode `lister_livres(self)` qui retourne une liste de chaînes
+  de caractères qui décrivent les livres de la bibliothèque. Vous devez utiliser
+  la méthode `description(self)` pour obtenir la description de chaque livre.
+- Elle possède une méthode `rechercher_livre_par_mot_cle(self, mot_cle)` qui retourne
+  une liste de livres qui contiennent le mot-clé
+  passé en argument. Vous devez utiliser la méthode `contient_mot_cle(self)` pour
+  vérifier si un livre contient le mot-clé.
+
+  Toutefois, seulement les romans contiennent des mots-clés. Vous devez donc
+  vérifier si le livre est une instance de `Roman` avant d'appeler la méthode
+  `contient_mot_cle(self)`. Utilisez encore la méthode `isinstance` pour vérifier
+    si un objet est une instance d'une classe.
+- Elle possède une méthode `rechercher_auteur(self, auteur)` qui retourne une liste
+  de livres de l'auteur passé en argument.
+
+## Conseils
+
+- Vous pouvez ajouter du code à la fin du fichier pour tester. Par exemple :
+
+    ```python
+    r1 = Roman(...)
+    bd1 = BandeDessinee(...)
+    la1 = LivreAudio(...)
+    biblio = Bibliotheque()
+    biblio.ajouter_livre(r1)
+    biblio.ajouter_livre(bd1)
+    biblio.ajouter_livre(la1)
+    print(biblio.lister_livres())
+    ```
