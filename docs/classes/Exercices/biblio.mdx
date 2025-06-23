@@ -25,7 +25,7 @@ bibliothèque de votre quartier.
   qui contient une seule méthode *abstraite* `get_id(self)`.
 - Certains types de livres auront des mots-clés. Vous devez créer une
   **interface** `AvecMotsCles` qui contient une seule méthode *abstraite*
-  `contient_mot_cle(self)`. L'objectif de cette méthode est de vérifier si un
+  `contient_mot_cle(self, mot_cle)`. L'objectif de cette méthode est de vérifier si un
   mot-clé est présent dans une classe qui implémente cette interface. Lors de
     l'implémentation de cette méthode, vous devez retourner `True` si le mot-clé
     est présent et `False` sinon.
@@ -101,12 +101,12 @@ Vous devez créer une classe `Bibliotheque` avec les caractéristiques suivantes
   la méthode `description(self)` pour obtenir la description de chaque livre.
 - Elle possède une méthode `rechercher_livre_par_mot_cle(self, mot_cle)` qui retourne
   une liste de livres qui contiennent le mot-clé
-  passé en argument. Vous devez utiliser la méthode `contient_mot_cle(self)` pour
+  passé en argument. Vous devez utiliser la méthode `contient_mot_cle(self, mot_cle)` pour
   vérifier si un livre contient le mot-clé.
 
   Toutefois, seulement les romans contiennent des mots-clés. Vous devez donc
   vérifier si le livre est une instance de `Roman` avant d'appeler la méthode
-  `contient_mot_cle(self)`. Utilisez encore la méthode `isinstance` pour vérifier
+  `contient_mot_cle(self, mot_cle)`. Utilisez encore la méthode `isinstance` pour vérifier
     si un objet est une instance d'une classe.
 - Elle possède une méthode `rechercher_auteur(self, auteur)` qui retourne une liste
   de livres de l'auteur passé en argument.
