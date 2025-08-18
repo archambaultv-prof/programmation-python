@@ -1,0 +1,60 @@
+---
+sidebar_label: Attention à la mémoire
+sidebar_position: 2
+description: Attention à la mémoire
+---
+
+# 🧠 Attention à la mémoire
+
+## 🎯 Objectif pédagogique
+
+Les objectifs de cet exercice sont :
+
+- Mettre en pratique les itérateurs.
+- Mettre en pratique la composition des itérateurs.
+
+## 📜 Énoncé
+
+Le code ci-dessous n'utilise pas les itérateurs et, par conséquent, doit stocker en
+mémoire de longues listes. Réécrivez-le en utilisant des itérateurs.
+
+```python
+import math
+
+def main():
+	# Étape 1 : matérialiser toute la plage (grosse liste inutile)
+	numbers = list(range(50_000_000))
+
+	# Étape 2 : filtrer les multiples de 7 (liste intermédiaire)
+	multiples_de_7 = [n for n in numbers if n % 7 == 0]
+
+	# Étape 3 : sélectionner les carrés parfaits dont la racine est paire (liste intermédiaire)
+	carres_sqrt_pair = []
+	for n in multiples_de_7:
+		r = math.isqrt(n)
+		if r * r == n and r % 2 == 0:
+			carres_sqrt_pair.append(n)
+
+	# Étape 4 : transformer (liste intermédiaire)
+	transformes = [(n // 7) ** 2 for n in carres_sqrt_pair]
+
+	# Étape 5 : ignorer les 100 premiers
+	apres_saut = transformes[100:]
+
+	# Étape 6 : prendre les 100 suivants
+	selection = apres_saut[:100]
+
+	# Étape 7 : agrégations
+	total = sum(selection)
+	mini = min(selection) if selection else None
+	maxi = max(selection) if selection else None
+	moyenne = total / len(selection) if selection else None
+
+	print(f"Somme : {total}")
+	print(f"Min/Max : {mini}/{maxi}")
+	print(f"Moyenne : {moyenne}")
+
+if __name__ == "__main__":
+	main()
+```
+
