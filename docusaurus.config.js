@@ -44,27 +44,15 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
+          // Make the documentation the site homepage
+          routeBasePath: '/',
+          
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/archambaultv-prof/programmation-python/tree/main/',
         },
         blog: false,
-        // blog: {
-        //   showReadingTime: true,
-        //   feedOptions: {
-        //     type: ['rss', 'atom'],
-        //     xslt: true,
-        //   },
-        //   // Please change this to your repo.
-        //   // Remove this to remove the "edit this page" links.
-        //   editUrl:
-        //     'https://github.com/archambaultv-prof/programmation-python/tree/main/',
-        //   // Useful options to enforce blogging best practices
-        //   onInlineTags: 'warn',
-        //   onInlineAuthors: 'warn',
-        //   onUntruncatedBlogPosts: 'warn',
-        // },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -95,12 +83,6 @@ const config = {
           src: 'img/PY.svg',
         },
         items: [
-          {
-            type: 'docSidebar',
-            sidebarId: 'courseSidebar',
-            position: 'left',
-            label: 'Notes de cours',
-          },
           // {to: '/blog', label: 'Blog', position: 'left'},
           {
             href: 'https://github.com/archambaultv-prof/programmation-python',
@@ -109,79 +91,21 @@ const config = {
           },
         ],
       },
-      algolia: {
-        // The application ID provided by Algolia
-        appId: 'OFDO0N9JNE',
-
-        // Public API key: it is safe to commit it
-        apiKey: 'f3e897b1b4e29c658640473b4c5a7452',
-
-        indexName: 'archambaultv-profio',
-
-        // Optional: see doc section below
-        contextualSearch: true,
-
-        // Optional: Algolia search parameters
-        searchParameters: {},
-
-        // Optional: path for search page that enabled by default (`false` to disable it)
-        searchPagePath: 'search',
-
-        // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
-        insights: false,
-
-      },
       footer: {
         style: 'dark',
-        // links: [
-        //   {
-        //     title: 'Docs',
-        //     items: [
-        //       {
-        //         label: 'Tutorial',
-        //         to: '/docs/intro',
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     title: 'Community',
-        //     items: [
-        //       {
-        //         label: 'Stack Overflow',
-        //         href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-        //       },
-        //       {
-        //         label: 'Discord',
-        //         href: 'https://discordapp.com/invite/docusaurus',
-        //       },
-        //       {
-        //         label: 'X',
-        //         href: 'https://x.com/docusaurus',
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     title: 'More',
-        //     items: [
-        //       {
-        //         label: 'Blog',
-        //         to: '/blog',
-        //       },
-        //       {
-        //         label: 'GitHub',
-        //         href: 'https://github.com/facebook/docusaurus',
-        //       },
-        //     ],
-        //   },
-        // ],
-        copyright: `Cette œuvre est placée sous licence <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Creative Commons Attribution 4.0 International</a>. Construit avec Docusaurus.`,
-      
+        copyright: `Cette œuvre est placée sous licence <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Creative Commons Attribution 4.0 International</a>. Construit avec <a href="https://docusaurus.io/" target="_blank" rel="noopener noreferrer">Docusaurus</a>.`,
+
       },
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
       }
     }),
+    plugins: [
+    [require.resolve('docusaurus-lunr-search'), {
+      languages: ['fr'],
+    }]
+  ]
 };
 
 export default config;
