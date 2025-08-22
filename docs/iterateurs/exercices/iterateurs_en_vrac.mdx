@@ -14,8 +14,15 @@ L'objectif de ces exercices est :
 
 ## 📜 Énoncé
 
-1. Écrire un itérateur qui parcourt une chaîne en ne renvoyant qu’un caractère sur deux.
-2. Créer un générateur qui lit un fichier JSON contenant une liste d'objets et qui renvoie chaque objet un par un.
-3. Implémenter un itérateur `FenetreGlissante(iterable, taille)` qui renvoie des tuples représentant des fenêtres successives.
+1. Écrire un itérateur qui parcourt une chaîne en ne renvoyant qu’un caractère
+   sur deux.
+2. Créer un générateur qui lit un fichier CSV contenant une liste d'objets et
+   qui renvoie chaque objet un par un.
+3. Implémenter un itérateur `FenetreGlissante(iterable, taille)` qui renvoie
+   des tuples représentant des fenêtres successives. Par exemple, pour
+   l'itérateur `FenetreGlissante([1, 2, 3, 4], 2)`, les tuples renvoyés seront
+   `(1, 2)`, `(2, 3)`, `(3, 4)`.
 4. Écrire un générateur infini de nombres premiers.
-5. Reproduire `range(debut, fin, pas)` au moyen d'une classe personnalisée.
+5. Reproduire l'objet standard de Python `range(debut, fin, pas)` au moyen
+   d'une classe personnalisée. Vous pouvez considérer que les paramètres `debut`,
+   `fin` et `pas` sont des entiers et que `pas` est toujours positif.
