@@ -44,8 +44,6 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Make the documentation the site homepage
-          routeBasePath: '/',
           
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -83,7 +81,12 @@ const config = {
           src: 'img/PY.svg',
         },
         items: [
-          // {to: '/blog', label: 'Blog', position: 'left'},
+          {
+            type: 'docSidebar',
+            sidebarId: 'courseSidebar',
+            position: 'left',
+            label: 'Notes de cours',
+          },
           {
             href: 'https://github.com/archambaultv-prof/programmation-python',
             label: 'GitHub',
@@ -104,7 +107,7 @@ const config = {
     plugins: [
     [require.resolve('docusaurus-lunr-search'), {
       languages: ['fr'],
-    }]
+    }],
   ]
 };
 
