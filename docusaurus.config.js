@@ -44,8 +44,6 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Make the documentation the site homepage
-          routeBasePath: '/',
           
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -104,7 +102,20 @@ const config = {
     plugins: [
     [require.resolve('docusaurus-lunr-search'), {
       languages: ['fr'],
-    }]
+    }],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        fromExtensions: ['html', 'htm'],
+        toExtensions: ['exe', 'zip'],
+        redirects: [
+          {
+            to: '/docs/',
+            from: '/',
+          },
+        ],
+      },
+    ],
   ]
 };
 
