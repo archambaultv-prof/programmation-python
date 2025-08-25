@@ -81,7 +81,12 @@ const config = {
           src: 'img/PY.svg',
         },
         items: [
-          // {to: '/blog', label: 'Blog', position: 'left'},
+          {
+            type: 'docSidebar',
+            sidebarId: 'courseSidebar',
+            position: 'left',
+            label: 'Notes de cours',
+          },
           {
             href: 'https://github.com/archambaultv-prof/programmation-python',
             label: 'GitHub',
@@ -103,19 +108,6 @@ const config = {
     [require.resolve('docusaurus-lunr-search'), {
       languages: ['fr'],
     }],
-    [
-      '@docusaurus/plugin-client-redirects',
-      {
-        fromExtensions: ['html', 'htm'],
-        toExtensions: ['exe', 'zip'],
-        redirects: [
-          {
-            to: '/docs/',
-            from: '/',
-          },
-        ],
-      },
-    ],
   ]
 };
 
