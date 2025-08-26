@@ -83,9 +83,15 @@ const config = {
         items: [
           {
             type: 'docSidebar',
-            sidebarId: 'courseSidebar',
+            sidebarId: 'basic',
             position: 'left',
-            label: 'Notes de cours',
+            label: 'Les bases',
+          },
+          {
+            type: 'docSidebar',
+            sidebarId: 'advanced',
+            position: 'left',
+            label: 'Sujets avancés',
           },
           {
             href: 'https://github.com/archambaultv-prof/programmation-python',
