@@ -1,0 +1,273 @@
+---
+sidebar_label: Décorateurs
+sidebar_position: 1
+description: Les décorateurs en Python
+---
+
+# Les décorateurs en Python
+
+Les décorateurs permettent de modifier ou d'étendre le comportement d'une
+fonction ou d'une classe sans modifier directement leur code source. Un
+décorateur est essentiellement une fonction qui prend une autre fonction en
+paramètre et retourne une fonction modifiée. C'est une application pratique du
+concept de fonction d'ordre supérieur (higher-order function).
+
+### Syntaxe de base
+
+La syntaxe suivante
+
+```python
+@decorateur
+def ma_fonction():
+    pass
+```
+
+est équivalente à celle-ci
+
+```python
+def ma_fonction():
+    pass
+
+ma_fonction = decorateur(ma_fonction)
+```
+
+Il s'agit donc vraiment d'un simple sucre syntaxique pour une fonction qui en
+accepte une autre en argument. 
+
+Commençons par un exemple basique pour comprendre le concept. Voici le même
+code avec et sans l'usage de `@mon_decorateur` :
+
+<Tabs>
+<TabItem value="avec" label="Avec décorateur">
+```python
+def mon_decorateur(func):
+    def wrapper():
+        print("Quelque chose avant l'exécution de la fonction")
+        func()
+        print("Quelque chose après l'exécution de la fonction")
+    return wrapper
+
+@mon_decorateur
+def dire_bonjour():
+    print("Bonjour !")
+
+# Utilisation
+dire_bonjour()
+```
+</TabItem>
+<TabItem value="sans" label="Sans décorateur">
+```python
+def mon_decorateur(func):
+    def wrapper():
+        print("Quelque chose avant l'exécution de la fonction")
+        func()
+        print("Quelque chose après l'exécution de la fonction")
+    return wrapper
+
+def dire_bonjour():
+    print("Bonjour !")
+
+# Utilisation
+dire_bonjour = mon_decorateur(dire_bonjour)
+dire_bonjour()
+```
+</TabItem>
+</Tabs>
+
+**Sortie :**
+```
+Quelque chose avant l'exécution de la fonction
+Bonjour !
+Quelque chose après l'exécution de la fonction
+```
+
+Ici, la fonction `dire_bonjour` a été modifiée par le décorateur
+`mon_decorateur`. On note que `mon_decorateur` prend `dire_bonjour` comme
+argument (une fonction) et retourne une autre fonction qui est la fonction `wrapper`.
+La syntaxe `@mon_decorateur` est simplement un moyen d'appliquer ce décorateur
+sans avoir à le faire manuellement.
+
+## Décorateurs pour fonctions avec arguments
+
+Pour créer des décorateurs qui fonctionnent avec des fonctions ayant des
+paramètres, nous utilisons `*args` et `**kwargs` :
+
+```python
+def mon_decorateur(func):
+    def wrapper(*args, **kwargs):
+        print(f"Appel de la fonction {func.__name__}")
+        resultat = func(*args, **kwargs)
+        print(f"Fin de l'exécution de {func.__name__}")
+        return resultat
+    return wrapper
+
+@mon_decorateur
+def additionner(a, b):
+    return a + b
+
+@mon_decorateur
+def saluer(nom, message="Bonjour"):
+    return f"{message}, {nom} !"
+
+# Utilisation
+print(additionner(3, 5))
+print(saluer("Alice", message="Salut"))
+```
+
+## Décorateurs configurables
+
+Pour créer des décorateurs configurables, nous utilisons une fonction qui
+retourne un décorateur. Il y a donc trois niveaux de fonctions imbriquées !
+
+```python
+def repeter(nombre_fois):
+    def decorateur(func):
+        def wrapper(*args, **kwargs):
+            for i in range(nombre_fois):
+                resultat = func(*args, **kwargs)
+                if i == nombre_fois - 1:  # Retourner le résultat de la dernière exécution
+                    return resultat
+        return wrapper
+    return decorateur
+
+# Utilisation
+@repeter(3)
+def dire_merci():
+    print("Merci !")
+
+# Test
+dire_merci()
+```
+
+## Exemples pratiques
+
+### 1. Décorateur pour le chronométrage
+
+Un décorateur très utile pour mesurer le temps d'exécution d'une fonction :
+
+```python
+import time
+import functools
+
+def mesurer_temps(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        debut = time.time()
+        resultat = func(*args, **kwargs)
+        fin = time.time()
+        print(f"{func.__name__} a pris {fin - debut:.4f} seconde(s)")
+        return resultat
+    return wrapper
+
+@mesurer_temps
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+
+fib_5 = fibonacci(5)
+print(f"Fibonacci(5) = {fib_5}")
+```
+
+### 2. Décorateur de validation
+
+Très utile pour valider les types et valeurs des paramètres :
+
+```python
+def valider_positif(func):
+    def wrapper(*args, **kwargs):
+        for arg in args:
+            if isinstance(arg, (int, float)) and arg < 0:
+                raise ValueError(f"Les arguments de {func.__name__} doivent être positifs")
+        return func(*args, **kwargs)
+    return wrapper
+
+@valider_positif
+def aire_rectangle(a, b):
+    return a * b
+
+# Exemples d'utilisation
+try:
+    print(aire_rectangle(10, 2))  # OK
+    print(aire_rectangle(10, -2))  # Erreur : nombre négatif
+except ValueError as e:
+    print(f"Erreur de validation : {e}")
+```
+
+## Utilisation de `functools.lru_cache`
+
+Un autre exemple de l'usage des décorateurs est l'optimisation des fonctions
+par la mise en cache des résultats. Python fournit un décorateur de cache très
+efficace dans le module `functools` :
+
+```python
+from functools import lru_cache
+import time
+
+@lru_cache(maxsize=128)
+def fibonacci_optimise(n):
+    if n <= 1:
+        return n
+    return fibonacci_optimise(n-1) + fibonacci_optimise(n-2)
+
+# Comparaison avec version non-optimisée
+def fibonacci_normal(n):
+    if n <= 1:
+        return n
+    return fibonacci_normal(n-1) + fibonacci_normal(n-2)
+
+# Test de performance
+@mesurer_temps
+def test_fibonacci_normal():
+    return fibonacci_normal(30)
+
+@mesurer_temps 
+def test_fibonacci_optimise():
+    return fibonacci_optimise(30)
+
+print("Version normale :")
+resultat_normal = test_fibonacci_normal()
+
+print("\nVersion avec cache :")
+resultat_optimise = test_fibonacci_optimise()
+
+print(f"\nRésultats identiques : {resultat_normal == resultat_optimise}")
+
+# Informations sur le cache
+print(f"Infos sur le cache : {fibonacci_optimise.cache_info()}")
+```
+
+## Composition de décorateurs
+
+L'ordre d'application des décorateurs est important :
+
+```python
+@decorateur_a
+@decorateur_b
+@decorateur_c
+def ma_fonction():
+    pass
+```
+
+est équivalent à :
+
+```python
+def ma_fonction():
+    pass
+
+ma_fonction = decorateur_a(decorateur_b(decorateur_c(ma_fonction)))
+```
+
+## Autres cas d'utilisation
+
+Les décorateurs sont un outil puissant qui permet d'écrire du code plus propre,
+plus modulaire et plus réutilisable. Ils sont particulièrement utiles pour :
+
+- **Journalisation et débogage** : Tracer l'exécution des fonctions
+- **Validation** : Vérifier les types et valeurs des paramètres
+- **Mise en cache** : Optimiser les performances avec `lru_cache`
+- **Gestion des erreurs** : Centraliser la gestion des exceptions
+- **Authentification** : Contrôler l'accès aux fonctions
+- **Mesure de performance** : Profiler le code
+- **Limitation de débit** : Limiter le nombre d'appels

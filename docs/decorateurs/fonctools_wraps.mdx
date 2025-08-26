@@ -1,0 +1,73 @@
+---
+sidebar_label: Le décorateur functools.wraps
+sidebar_position: 2
+description: Le décorateur functools.wraps
+---
+
+
+# Le décorateur `functools.wraps`
+
+Les décorateurs que nous avons présentés jusqu'à présent ont un défaut
+important : ils ne conservent pas les métadonnées de la fonction originale.
+Cela peut poser problème, par exemple, si nous voulons accéder à la docstring
+ou au nom de la fonction décorée.
+
+En effet, les métadonnées de la fonction originale sont perdues :
+
+```python
+def decorateur_sans_wraps(func):
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    return wrapper
+
+@decorateur_sans_wraps
+def fonction_sans_wraps():
+    """Documentation de la fonction originale."""
+    pass
+
+
+print("Sans functools.wraps :")
+print(f"Nom : {fonction_sans_wraps.__name__}")  #  wrapper
+print(f"Doc : {fonction_sans_wraps.__doc__}")   #  None
+print(f"Module : {fonction_sans_wraps.__module__}")  #  __main__
+```
+
+### Métadonnées préservées par `functools.wraps`
+
+Pour éviter de perdre ces informations, on peut utiliser `functools.wraps`.
+Ce décorateur copie plusieurs attributs importants :
+
+- `__name__` : le nom de la fonction
+- `__doc__` : la docstring
+- `__module__` : le module d'origine
+- `__qualname__` : le nom qualifié de la fonction
+- `__annotations__` : les annotations de type
+- `__dict__` : le dictionnaire d'attributs
+
+```python
+import functools
+
+def decorateur_avec_wraps(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    return wrapper
+
+@decorateur_avec_wraps
+def fonction_avec_wraps():
+    """Documentation de la fonction originale."""
+    pass
+
+
+print("Avec functools.wraps :")
+print(f"Nom : {fonction_avec_wraps.__name__}")  #  fonction_avec_wraps
+print(f"Doc : {fonction_avec_wraps.__doc__}")   #  Documentation de la fonction originale.
+print(f"Module : {fonction_avec_wraps.__module__}")  #  __main__
+```
+
+:::note
+
+Le décorateur `functools.wraps` s'utilise sur la fonction interne (le wrapper)
+pour copier les métadonnées de la fonction originale.
+
+:::

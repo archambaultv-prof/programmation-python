@@ -1,0 +1,60 @@
+---
+sidebar_label: Décorateurs et classes
+sidebar_position: 3
+description: Décorateurs appliqués aux classes
+---
+
+# Décorateurs appliqués aux classes
+
+Il est possible d'appliquer des décorateurs aux classes et à leurs méthodes.
+
+## Décorateurs de méthode
+
+Très similaire à un décorateur de fonction, un décorateur de méthode prend une
+méthode et retourne une méthode. Nous avons déjà vu des exemples de décorateurs
+de méthode dans les sections précédentes comme `@classmethod`,
+`@staticmethod` et `@property`.
+
+## Décorateurs de classe
+
+Les décorateurs peuvent aussi être appliqués aux classes. Au lieu de prendre
+une fonction et de retourner une fonction, ils prennent une classe et
+retournent une classe. Nous avons déjà vu des exemples de décorateurs
+de classe dans les sections précédentes comme `@dataclass`.
+
+Techniquement, un décorateur de classe peut modifier la classe reçue en
+paramètre, par exemple en ajoutant des méthodes ou des attributs. Mais
+modifier les méthodes d'une classe de cette façon est déconseillé, car cela
+peut rendre le code plus difficile à comprendre et à maintenir, et perturber
+les outils d'analyse de code statique. Préférez l'héritage ou la composition.
+
+Voici un exemple d'utilisation d'un décorateur de classe qui rend une classe "figée" (frozen) en
+interdisant la modification de ses attributs après l'initialisation.
+
+```python
+def frozen(cls):
+    orig_init = getattr(cls, "__init__", None)
+
+    def __init__(self, *a, **k):
+        if orig_init:
+            orig_init(self, *a, **k)
+        object.__setattr__(self, "_frozen", True)
+
+    def __setattr__(self, name, value):
+        if getattr(self, "_frozen", False):
+            raise AttributeError("Objet figé : lecture seule après __init__")
+        object.__setattr__(self, name, value)
+
+    cls.__init__ = __init__
+    cls.__setattr__ = __setattr__
+    return cls
+
+@frozen 
+class Money:
+    def __init__(self, amount: int, currency: str):
+        self.amount = amount
+        self.currency = currency
+
+m = Money(10, "CAD")
+m.amount = 20 # AttributeError
+```

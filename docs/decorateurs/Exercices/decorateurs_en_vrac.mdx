@@ -1,0 +1,45 @@
+---
+sidebar_label: Exercices en vrac
+sidebar_position: 1
+description: Exercices en vrac
+---
+
+# 🧺 Exercices en vrac
+
+## 🎯 Objectif pédagogique
+
+L'objectif de ces exercices est de mettre en pratique les décorateurs.
+
+## 📜 Énoncé
+
+1. **Décorateur de mesure de temps** : Écrire un décorateur `@mesure_temps` qui
+   affiche le temps d'exécution d'une fonction en millisecondes.
+
+2. **Décorateur de cache simple** : Créer un décorateur `@cache` qui mémorise
+   les résultats des appels de fonction pour éviter les recalculs avec les
+   mêmes arguments.
+
+3. **Décorateur de validation des types** : Implémenter un décorateur
+   `@valide_types(*types)` qui vérifie que les arguments passés à une fonction
+   correspondent aux types spécifiés.
+
+4. **Décorateur de retry** : Écrire un décorateur `@retry(nb_tentatives=3)` qui
+   relance automatiquement une fonction en cas d'exception, jusqu'à un nombre
+   maximum de tentatives.
+
+5. **Décorateur de limitation d'appels** : Créer un décorateur
+   `@limite_appels(max_appels)` qui limite le nombre de fois qu'une fonction
+   peut être appelée.
+
+6. **Décorateur de logging** : Implémenter un décorateur `@log_appels` qui
+   enregistre dans un fichier log chaque appel de fonction avec ses arguments
+   et sa valeur de retour.
+
+7. **Décorateur de dépréciation** : Implémenter un décorateur
+   `@deprecated(message="")` qui affiche un avertissement lorsqu'une fonction
+   dépréciée est appelée.
+
+8. **Décorateur de limitation de fréquence** : Écrire un décorateur
+    `@limite_frequence(appels_par_seconde)` qui limite le nombre d'appels d'une
+    fonction par seconde.
+
