@@ -1,0 +1,395 @@
+---
+sidebar_label: Concepts de base
+sidebar_position: 1
+description: Concepts fondamentaux du multithreading
+---
+
+# Threading - Concepts de base
+
+## Introduction
+
+Le **multithreading** (ou threading) est une technique de programmation qui
+permet d'exécuter plusieurs tâches de manière apparemment simultanée dans un
+même programme. Contrairement aux processus qui ont leur propre espace mémoire,
+les threads partagent le même espace mémoire, ce qui facilite le partage de
+données mais introduit aussi des défis de synchronisation.
+
+En Python, le module `threading` offre une interface de haut niveau et
+conviviale pour créer et gérer des threads. Ce module abstrait la complexité
+des threads système et fournit des outils pour la synchronisation et la
+communication entre threads.
+
+### Le GIL et ses implications
+
+Python utilise le **GIL (Global Interpreter Lock)**, un mécanisme qui empêche
+l'exécution simultanée de bytecode Python par plusieurs threads. Cela peut
+sembler contradictoire avec l'idée du multithreading, mais le threading reste
+très utile dans plusieurs cas :
+
+- **Opérations I/O** : Quand un thread attend une lecture de fichier ou une
+  réponse réseau, le GIL est libéré, permettant aux autres threads de
+  s'exécuter
+- **Extensions C** : Les bibliothèques écrites en C peuvent libérer le GIL
+  pendant leurs calculs
+- **Interface utilisateur** : Le threading permet de maintenir une interface
+  réactive pendant des opérations longues
+- **Amélioration perçue** : Même si les tâches ne sont pas parallèles,
+  l'utilisateur peut avoir l'impression d'une meilleure réactivité
+
+### Quand utiliser le threading
+
+Le threading est particulièrement adapté pour :
+- Téléchargements multiples (web scraping, APIs)
+- Lecture/écriture de fichiers multiples
+- Opérations réseau concurrentes
+- Interfaces utilisateur réactives
+- Tâches d'arrière-plan non critiques
+
+## Le module threading
+
+Le module `threading` de Python fournit une interface élégante pour créer et
+gérer des threads. Avant de voir comment créer des threads, examinons d'abord
+la différence fondamentale entre l'exécution séquentielle et l'exécution avec
+threading.
+
+### Comparaison : séquentiel vs threading
+
+L'exemple suivant illustre parfaitement pourquoi le threading peut être
+avantageux, même avec le GIL de Python. Nous simulons deux tâches qui prennent
+chacune 2 secondes à s'exécuter :
+
+```python
+import threading
+import time
+
+def tache_simple(nom, duree):
+    """Fonction qui simule une tâche I/O (ex: téléchargement, lecture fichier)
+    
+    Args:
+        nom (str): Nom de la tâche pour identification
+        duree (int): Durée de la tâche en secondes
+    """
+    print(f"Démarrage de {nom}")
+    time.sleep(duree)  # Simule une opération I/O bloquante
+    print(f"Fin de {nom}")
+
+# Exécution séquentielle - les tâches s'exécutent l'une après l'autre
+print("=== Exécution séquentielle ===")
+start = time.time()
+tache_simple("Tâche 1", 2)  # Première tâche : 2 secondes
+tache_simple("Tâche 2", 2)  # Deuxième tâche : encore 2 secondes
+print(f"Temps total: {time.time() - start:.2f} secondes")  # Résultat : ~4 secondes
+
+# Exécution avec threading - les tâches s'exécutent en parallèle
+print("\n=== Exécution avec threading ===")
+start = time.time()
+
+# Création des threads avec les paramètres target (fonction) et args (arguments)
+thread1 = threading.Thread(target=tache_simple, args=("Tâche 1", 2))
+thread2 = threading.Thread(target=tache_simple, args=("Tâche 2", 2))
+
+# Démarrage des threads - ils commencent à s'exécuter immédiatement
+thread1.start()
+thread2.start()
+
+# Attendre la fin des threads - crucial pour s'assurer qu'ils terminent
+thread1.join()  # Le thread principal attend que thread1 se termine
+thread2.join()  # Le thread principal attend que thread2 se termine
+
+print(f"Temps total: {time.time() - start:.2f} secondes")  # Résultat : ~2 secondes
+```
+
+Dans cet exemple, nous passons de 4 à 2 secondes grâce au parallélisme
+
+## Création de threads
+
+Il existe plusieurs façons de créer des threads en Python. Nous allons explorer
+les deux méthodes principales : en utilisant une fonction avec la classe
+`Thread`, et en héritant de la classe `Thread`.
+
+### Méthode 1 : Avec une fonction
+
+Cette méthode est la plus directe et la plus couramment utilisée. Vous
+définissez une fonction normale, puis vous la passez comme `target` à un objet
+`Thread`.
+
+```python
+import threading
+import time
+
+def worker(nom, iterations):
+    """Fonction worker qui effectue du travail répétitif
+    
+    Cette fonction simule un worker qui traite des tâches.
+    En pratique, cela pourrait être :
+    - Traitement de fichiers
+    - Requêtes vers une API
+    - Calculs sur des données
+    
+    Args:
+        nom (str): Identifiant du worker
+        iterations (int): Nombre de tâches à traiter
+    """
+    for i in range(iterations):
+        print(f"{nom}: itération {i+1}")
+        time.sleep(0.5)  # Simule le temps de traitement d'une tâche
+    print(f"{nom} terminé")
+
+# Création et lancement de plusieurs threads
+threads = []
+
+# Créer 3 workers qui font chacun 3 itérations
+for i in range(3):
+    # Paramètres du thread :
+    # - target : la fonction à exécuter
+    # - args : arguments de la fonction (tuple)
+    # - name : nom du thread pour le debugging
+    t = threading.Thread(
+        target=worker, 
+        args=(f"Worker-{i+1}", 3),
+        name=f"Thread-{i+1}"
+    )
+    threads.append(t)
+    t.start()  # Démarrer immédiatement le thread
+
+# Attendre que tous les threads se terminent
+for t in threads:
+    t.join()  # Bloque jusqu'à ce que le thread 't' se termine
+
+print("Tous les threads sont terminés")
+```
+
+**Avantages de cette méthode :**
+- Simple et directe
+- Réutilise des fonctions existantes
+- Pas besoin de créer une nouvelle classe
+- Idéale pour des tâches simples ou ponctuelles
+
+### Méthode 2 : En héritant de Thread
+
+Cette méthode est plus orientée objet et convient mieux quand vous avez besoin
+d'une logique plus complexe ou quand vous voulez maintenir un état dans votre
+thread.
+
+```python
+import threading
+import time
+import random
+
+class MonThread(threading.Thread):
+    """Classe personnalisée qui hérite de threading.Thread
+    
+    Cette approche est utile quand :
+    - Vous avez besoin de maintenir un état complexe
+    - Vous voulez encapsuler la logique du thread
+    - Vous devez surcharger des méthodes spécifiques
+    """
+    
+    def __init__(self, nom, max_iterations):
+        """Initialisation du thread personnalisé
+        
+        IMPORTANT: Toujours appeler super().__init__() pour initialiser
+        correctement la classe Thread parente.
+        """
+        super().__init__()  # Initialise la classe Thread parente
+        self.nom = nom
+        self.max_iterations = max_iterations
+        self.daemon = False  # Thread non-daemon par défaut (voir section suivante)
+        self.resultats = []  # On peut maintenir un état interne
+    
+    def run(self):
+        """Méthode appelée automatiquement quand le thread démarre
+        
+        Cette méthode DOIT être surchargée et contient la logique
+        principale du thread. Elle est appelée automatiquement
+        quand vous faites thread.start().
+        """
+        for i in range(self.max_iterations):
+            duree = random.uniform(0.1, 0.5)  # Durée aléatoire pour simuler des tâches variables
+            print(f"{self.nom}: Traitement {i+1}/{self.max_iterations}")
+            
+            # Simuler du travail avec une durée variable
+            time.sleep(duree)
+            
+            # Stocker le résultat (exemple d'état interne)
+            self.resultats.append(f"Résultat_{i+1}")
+            
+        print(f"{self.nom}: Travail terminé - {len(self.resultats)} résultats produits")
+    
+    def get_resultats(self):
+        """Méthode pour récupérer les résultats après exécution"""
+        return self.resultats.copy()
+
+# Utilisation de la classe personnalisée
+threads = []
+for i in range(3):
+    thread = MonThread(f"CustomThread-{i+1}", 4)
+    threads.append(thread)
+    thread.start()  # Appelle automatiquement la méthode run()
+
+# Attendre la fin et récupérer les résultats
+for thread in threads:
+    thread.join()
+    resultats = thread.get_resultats()
+    print(f"{thread.nom} a produit: {resultats}")
+```
+
+**Avantages de cette méthode :**
+- **Encapsulation** : Toute la logique du thread est dans une classe
+- **État interne** : Vous pouvez maintenir des variables d'instance
+- **Méthodes supplémentaires** : Ajout facile de méthodes utilitaires
+- **Héritage** : Possibilité de créer une hiérarchie de classes de threads
+- **Réutilisabilité** : La classe peut être réutilisée avec différents paramètres
+
+**Inconvénients :**
+- Plus de code à écrire
+- Plus complexe pour des tâches simples
+
+## Propriétés importantes des threads
+
+Comprendre les propriétés et caractéristiques des threads est essentiel pour
+les utiliser efficacement. Python fournit plusieurs fonctions et attributs pour
+inspecter et contrôler les threads.
+
+
+### Threads daemon
+
+Les threads daemon sont une fonctionnalité importante qui détermine le
+comportement du programme à la fermeture. Comprendre leur fonctionnement est
+crucial pour éviter que votre programme ne reste "bloqué".
+
+#### Qu'est-ce qu'un thread daemon ?
+
+Un **thread daemon** est un thread qui s'exécute en arrière-plan et ne empêche
+pas le programme de se terminer. Quand tous les threads non-daemon se
+terminent, le programme se ferme automatiquement, même si des threads daemon
+sont encore en cours d'exécution.
+
+#### Différences principales :
+- **Thread normal** : Le programme attend qu'il se termine avant de fermer
+- **Thread daemon** : Le programme peut se fermer sans l'attendre
+
+```python
+import threading
+import time
+
+def tache_longue(nom):
+    """Tâche normale qui prend du temps à s'exécuter
+    
+    Cette fonction simule une tâche importante qui doit absolument
+    se terminer avant la fermeture du programme.
+    """
+    for i in range(10):
+        print(f"{nom}: {i+1}/10")
+        time.sleep(1)  # Travail qui prend 1 seconde
+    print(f"{nom} terminé")
+
+def tache_daemon(nom):
+    """Tâche daemon qui s'exécute indéfiniment en arrière-plan
+    
+    Cette fonction simule un service d'arrière-plan comme :
+    - Monitoring de système
+    - Nettoyage périodique
+    - Heartbeat vers un serveur
+    """
+    compteur = 0
+    while True:  # Boucle infinie
+        compteur += 1
+        print(f"{nom}: Je travaille en arrière-plan... (cycle {compteur})")
+        time.sleep(2)
+
+# Thread normal - le programme attendra qu'il se termine
+thread_normal = threading.Thread(target=tache_longue, args=("Thread-Normal",))
+
+# Thread daemon - se termine automatiquement quand le programme se ferme
+thread_daemon = threading.Thread(target=tache_daemon, args=("Thread-Daemon",))
+thread_daemon.daemon = True  # Marquer comme daemon AVANT start()
+
+print("Démarrage des threads...")
+thread_normal.start()
+thread_daemon.start()
+
+# Le programme attend seulement le thread normal
+# Le thread daemon continue en arrière-plan mais n'empêche pas la fermeture
+thread_normal.join()
+
+print("Programme terminé (thread daemon arrêté automatiquement)")
+```
+
+#### Cas d'usage typiques pour les threads daemon :
+
+1. **Services de monitoring** : Surveillance de l'état du système
+2. **Nettoyage automatique** : Suppression de fichiers temporaires
+3. **Heartbeat** : Signaler la présence à un serveur
+4. **Logging en arrière-plan** : Écriture asynchrone de logs
+5. **Cache maintenance** : Nettoyage périodique du cache
+
+#### Points importants :
+- **Définir avant start()** : La propriété `daemon` doit être définie avant d'appeler `start()`
+- **Pas de join() nécessaire** : Ne pas faire `join()` sur un daemon si vous voulez qu'il se termine automatiquement
+- **Attention aux ressources** : Les daemon threads peuvent être coupés brutalement, attention aux fichiers ouverts ou connexions réseau
+
+### Thread principal et threads secondaires
+
+Chaque programme Python commence avec un thread principal (main thread). Quand
+vous créez d'autres threads, ils deviennent des threads secondaires. Il est
+important de comprendre leurs relations et leurs propriétés.
+
+:::note
+
+Il est possible que les `print` s'affichent dans un ordre inattendu en raison
+de la nature concurrente des threads. Nous allons voir plus loin dans les
+notes de cours comment gérer cette concurrence.
+
+:::
+
+```python
+import threading
+import time
+
+def info_thread():
+    """Affiche des informations détaillées sur le thread courant
+    
+    Cette fonction utilitaire montre comment inspecter un thread
+    et obtenir des informations sur son état actuel.
+    """
+    current = threading.current_thread()
+    print(f"Thread: {current.name}")           # Nom du thread
+    print(f"ID: {current.ident}")              # Identifiant système unique
+    print(f"Est vivant: {current.is_alive()}")  # True si le thread s'exécute
+    print(f"Est daemon: {current.daemon}")      # True si c'est un thread daemon
+
+print("=== Thread principal ===")
+info_thread()  # Informations sur le thread principal
+
+def worker_avec_info(nom):
+    """Worker qui affiche ses informations avant de travailler"""
+    print(f"\n=== {nom} ===")
+    info_thread()  # Chaque thread peut inspecter ses propres propriétés
+    time.sleep(1)  # Simule du travail
+    print(f"{nom} terminé")
+
+# Créer deux types de threads pour comparer
+thread1 = threading.Thread(target=worker_avec_info, args=("Thread-Normal",))
+thread2 = threading.Thread(target=worker_avec_info, args=("Thread-Daemon",))
+thread2.daemon = True  # Marquer le second thread comme daemon
+
+thread1.start()
+thread2.start()
+
+# Fonctions utiles pour surveiller les threads
+print(f"\nThreads actifs: {threading.active_count()}")        # Nombre total de threads
+print(f"Thread principal vivant: {threading.main_thread().is_alive()}")  # État du thread principal
+
+# Attendre seulement le thread normal (pas le daemon)
+thread1.join()
+# Note: on n'attend pas thread2 car c'est un daemon qui se terminera automatiquement
+print("Programme terminé")
+```
+
+**Informations importantes :**
+- **`current_thread()`** : Retourne le thread qui exécute actuellement le code
+- **`ident`** : Identifiant unique attribué par le système d'exploitation
+- **`is_alive()`** : Indique si le thread est en cours d'exécution
+- **`active_count()`** : Nombre total de threads actifs dans le programme
+- **`main_thread()`** : Référence au thread principal du programme
