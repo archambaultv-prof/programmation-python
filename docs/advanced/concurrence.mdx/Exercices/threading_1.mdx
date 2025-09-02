@@ -1,0 +1,39 @@
+---
+sidebar_label: Threading 1
+sidebar_position: 1
+description: Threading 1
+---
+
+# 🧶 Exercices en vrac
+
+## 🎯 Objectif pédagogique
+
+- Vous familiariser avec la création et la gestion de threads en Python.
+- Être confronté à des problèmes de synchronisation entre threads.
+
+## 📜 Énoncé
+
+Écrire un programme qui démarre deux threads, exécutant la même fonction
+`plus_un()`, qui incrémente une variable globale `compteur` dix milles fois.
+Le programme affiche ensuite la valeur finale de `compteur`. Voici un bout de 
+code pour vous aider.
+
+```python
+import threading
+
+compteur = 0
+
+def plus_un():
+    global compteur
+    for _ in range(10000):
+        compteur += 1
+
+# Démarrage des threads
+# ... votre code ici ...
+
+print(compteur)
+```
+
+Exécutez plusieurs fois le programme et répondez à la question suivante :
+
+- Est-ce que le programme affiche toujours 20000 ? Pourquoi ?
