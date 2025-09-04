@@ -1,0 +1,62 @@
+---
+sidebar_label: Coût d'un Lock
+sidebar_position: 3
+description: Coût d'un Lock
+---
+
+# 🔒💸 Coût d'un Lock
+
+## 🎯 Objectif pédagogique
+
+- Comprendre le coût de la synchronisation avec des verrous (Locks).
+- Analyser l'impact des Locks sur les performances dans un contexte de
+  concurrence.
+
+## 📜 Énoncé
+
+Lisez le code ci-dessous qui compare le temps d'exécution d'une fonction
+effectuant un grand nombre d'incrémentations sur une variable partagée, avec et
+sans verrouillage. Selon vous, quel est le ratio de temps entre les deux
+approches ? Exécutez le code pour vérifier votre hypothèse. Pourquoi y a-t-il une
+différence de performance ?
+
+```python
+import threading
+import time
+
+n = 0
+lock = threading.Lock()
+
+def with_lock():
+    global n
+    with lock:
+        n += 1
+
+def without_lock():
+    global n
+    n += 1
+
+def many_iterations(func, iterations=1_000_000):
+    for _ in range(iterations):
+        func()
+
+start = time.perf_counter()
+thread = threading.Thread(target=lambda: many_iterations(with_lock))
+thread.start()
+thread.join()
+end = time.perf_counter()
+duration_with_lock = end - start
+print(f"With lock: n={n}, time={end - start:.6f}s")
+
+n = 0  # Reset n
+start = time.perf_counter()
+thread = threading.Thread(target=lambda: many_iterations(without_lock))
+thread.start()
+thread.join()
+end = time.perf_counter()
+duration_without_lock = end - start
+print(f"Without lock: n={n}, time={end - start:.6f}s")
+
+print(f"Lock duration: {duration_with_lock:.6f}s, Without lock duration: {duration_without_lock:.6f}s")
+print(f"Ratio (with_lock / without_lock): {duration_with_lock / duration_without_lock:.2f}")
+```
