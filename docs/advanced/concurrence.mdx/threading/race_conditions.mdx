@@ -1,0 +1,201 @@
+---
+sidebar_label: Conditions de course - Intro
+sidebar_position: 2
+description: Conditions de course
+---
+
+# Conditions de course
+
+## Introduction
+
+Les **conditions de course** (race conditions) représentent l'un des défis les
+plus subtils et dangereux de la programmation concurrente. Elles surviennent
+quand plusieurs threads accèdent simultanément à des ressources partagées
+(variables, fichiers, connexions réseau) sans coordination appropriée, causant
+des comportements imprévisibles et des bugs difficiles à reproduire.
+
+### Pourquoi les conditions de course sont-elles problématiques ?
+
+1. **Imprévisibilité** : Le résultat dépend de l'ordre d'exécution des threads, qui varie à chaque exécution
+2. **Difficulté de debugging** : Les bugs peuvent ne pas apparaître en développement mais survenir en production
+3. **Corruption de données** : Les données partagées peuvent finir dans un état incohérent
+4. **Comportement non déterministe** : Le même code peut produire des résultats différents
+
+### Contexte et enjeux
+
+Dans un environnement multi-threadé, les threads partagent le même espace
+mémoire. Cela signifie qu'ils peuvent tous accéder aux mêmes variables
+globales, objets partagés, et autres ressources. Sans mécanismes de
+synchronisation, plusieurs problèmes peuvent survenir :
+
+- **Lecture/écriture simultanées** : Un thread lit une valeur pendant qu'un autre la modifie
+- **États intermédiaires** : Un thread voit des données dans un état incohérent temporaire
+- **Pertes de données** : Des modifications sont écrasées par d'autres threads
+- **Violations d'invariants** : Les règles métier ne sont plus respectées
+
+Ce chapitre explore ces problèmes en détail et présente les solutions robustes
+pour les résoudre.
+
+## Qu'est-ce qu'une condition de course ?
+
+Une condition de course se produit quand le résultat d'un programme dépend de
+l'ordre d'exécution des threads, qui est imprévisible et contrôlé par le
+planificateur du système d'exploitation. Le nom "course" vient du fait que les
+threads sont en "course" pour accéder à la ressource partagée.
+
+### Anatomie d'une condition de course
+
+Pour qu'une condition de course se produise, trois conditions doivent être réunies :
+
+1. **Ressource partagée** : Plusieurs threads accèdent à la même donnée
+2. **Modification de données** : Au moins un thread modifie la ressource
+3. **Absence de synchronisation** : Aucun mécanisme ne coordonne les accès
+
+### Pourquoi cela pose-t-il problème ?
+
+Les opérations qui nous semblent "atomiques" en Python ne le sont souvent pas
+au niveau du processeur. Par exemple, l'instruction `compteur += 1` se
+décompose en réalité en plusieurs étapes :
+
+1. **LOAD** : Charger la valeur de `compteur` dans un registre
+2. **ADD** : Ajouter 1 à cette valeur
+3. **STORE** : Sauvegarder le résultat dans `compteur`
+
+Si deux threads exécutent ces étapes en même temps, ils peuvent lire la même
+valeur initiale et produire un résultat incorrect.
+
+### Exemple simple de condition de course
+
+Cet exemple démontre concrètement comment une condition de course peut se produire
+avec un cas simple mais révélateur : l'incrémentation d'un compteur par
+plusieurs threads.
+
+```python
+import threading
+import time
+
+# Variable globale partagée - source potentielle de race condition
+compteur = 0
+
+def incrementer_compteur(nb_iterations):
+    """Fonction qui incrémente le compteur - CONTIENT UNE CONDITION DE COURSE
+
+    Cette fonction illustre parfaitement le problème des conditions de course.
+    Chaque thread tente d'incrémenter le compteur global, mais sans
+    synchronisation, les résultats sont imprévisibles.
+    
+    Args:
+        nb_iterations (int): Nombre d'incrémentations à effectuer
+    """
+    global compteur
+    nom_thread = threading.current_thread().name
+    
+    for i in range(nb_iterations):
+        # ❌ RACE CONDITION ICI - SECTION CRITIQUE NON PROTÉGÉE
+        # Cette opération simple se décompose en réalité en 3 étapes :
+        # 1. Lire la valeur actuelle de 'compteur'
+        # 2. Calculer la nouvelle valeur (valeur_actuelle + 1)  
+        # 3. Écrire la nouvelle valeur dans 'compteur'
+        
+        valeur_actuelle = compteur                    # Étape 1: LECTURE
+        time.sleep(0.000001)                         # Simule une opération qui prend du temps
+        compteur = valeur_actuelle + 1               # Étapes 2 & 3: CALCUL et ÉCRITURE
+        
+        # Affichage périodique pour suivre le progrès
+        if i % 1000 == 0:
+            print(f"{nom_thread}: {i}/{nb_iterations} (compteur = {compteur})")
+
+def demonstration_condition_de_course():
+    """Démontre de manière reproductible une condition de course
+    
+    Cette fonction orchestre plusieurs threads pour créer les conditions
+    nécessaires à l'apparition d'une condition de course et mesure l'impact
+    sur le résultat final.
+    """
+    global compteur
+
+    print("=== Démonstration Condition de Course ===")
+    print("Chaque thread va incrémenter le compteur plusieurs fois...")
+    print("Sans synchronisation, le résultat final sera incorrect.\n")
+    
+    # Réinitialiser le compteur
+    compteur = 0
+    
+    # Paramètres de test
+    nb_iterations = 5000     # Assez grand pour voir l'effet
+    nb_threads = 3           # Plusieurs threads en compétition
+    
+    threads = []
+    start_time = time.time()
+    
+    print(f"Configuration: {nb_threads} threads, {nb_iterations} incréments chacun")
+    print(f"Résultat attendu: {nb_threads * nb_iterations}\n")
+    
+    # Créer et lancer tous les threads simultanément
+    for i in range(nb_threads):
+        thread = threading.Thread(
+            target=incrementer_compteur,
+            args=(nb_iterations,),
+            name=f"Thread-{i+1}"
+        )
+        threads.append(thread)
+        thread.start()
+        print(f"Démarrage de {thread.name}")
+    
+    # Attendre que tous les threads se terminent
+    for thread in threads:
+        thread.join()
+        print(f"{thread.name} terminé")
+    
+    duree = time.time() - start_time
+    resultat_attendu = nb_threads * nb_iterations
+    
+    # Analyser les résultats
+    print(f"\n=== Résultats ===")
+    print(f"Résultat attendu: {resultat_attendu:,}")
+    print(f"Résultat obtenu:  {compteur:,}")
+    print(f"Différence:       {resultat_attendu - compteur:,}")
+    print(f"Pourcentage d'erreur: {((resultat_attendu - compteur) / resultat_attendu * 100):.1f}%")
+    print(f"Temps d'exécution: {duree:.2f}s")
+    
+    if compteur != resultat_attendu:
+        print("\n❌ RACE CONDITION DÉTECTÉE!")
+        print("Les threads ont interféré les uns avec les autres.")
+        print("Certaines incrémentations ont été perdues.")
+    else:
+        print("\n✅ Pas de race condition détectée (par chance rare)")
+        print("Relancez le programme plusieurs fois pour voir l'effet.")
+
+# Exécuter la démonstration
+if __name__ == "__main__":
+    print("Ce programme démontre une race condition classique.")
+    print("Exécutez-le plusieurs fois pour voir des résultats différents.\n")
+    
+    demonstration_condition_de_course()
+    
+    print("\n💡 Observation:")
+    print("À chaque exécution, vous devriez obtenir un résultat différent.")
+    print("C'est le signe caractéristique d'une condition de course.")
+```
+
+**Que se passe-t-il exactement ?**
+
+Imaginons deux threads (A et B) qui exécutent `compteur += 1` en même temps quand `compteur = 5` :
+
+```
+Temps | Thread A          | Thread B          | Valeur compteur
+------|-------------------|-------------------|----------------
+1     | Lit compteur (5)  |                   | 5
+2     |                   | Lit compteur (5)  | 5  
+3     | Calcule 5 + 1 = 6 |                   | 5
+4     |                   | Calcule 5 + 1 = 6 | 5
+5     | Écrit 6           |                   | 6
+6     |                   | Écrit 6           | 6
+```
+
+**Résultat :** Au lieu d'avoir `compteur = 7` (deux incréments), nous avons `compteur = 6`. Un incrément a été "perdu" !
+
+**Facteurs qui aggravent le problème :**
+- Plus de threads = plus de conflits
+- Plus d'opérations = plus d'opportunités de conflit
+- Opérations plus lentes = plus de chances d'entrelacement

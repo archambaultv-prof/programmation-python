@@ -1,0 +1,234 @@
+---
+sidebar_label: Conditions de course - Lock
+sidebar_position: 3
+description: Conditions de course et solution Lock
+---
+
+# Conditions de course et solution avec Lock
+
+Le `Lock` (verrou) est le mécanisme de synchronisation le plus fondamental pour
+résoudre les conditions de course. Il garantit qu'une seule thread peut
+exécuter une section critique à la fois, transformant les accès concurrents en
+accès séquentiels contrôlés.
+
+## Principe de fonctionnement
+
+Un lock fonctionne comme un verrou physique :
+1. **Acquisition** : Un thread "prend" le verrou avant d'entrer dans la section critique
+2. **Section critique** : Seul le thread qui détient le verrou peut exécuter le code protégé
+3. **Libération** : Le thread "libère" le verrou après avoir terminé
+4. **Attente** : Les autres threads attendent que le verrou soit libre
+
+## Implémentation avec Lock
+
+Voici le même exemple que précédemment, mais cette fois avec un `Lock` pour
+protéger l'accès au compteur.
+
+```python
+import threading
+import time
+
+# Variable globale et son verrou de protection
+compteur_securise = 0
+lock_compteur = threading.Lock()  # Verrou dédié au compteur
+
+def incrementer_compteur_securise(nb_iterations):
+    """Version sécurisée de l'incrémentation avec Lock
+    
+    Cette fonction montre comment utiliser un lock pour éliminer
+    complètement les race conditions. Chaque accès au compteur
+    est protégé par le verrou.
+    
+    Args:
+        nb_iterations (int): Nombre d'incrémentations à effectuer
+    """
+    global compteur_securise
+    nom_thread = threading.current_thread().name
+    
+    for i in range(nb_iterations):
+        # ✅ SECTION CRITIQUE PROTÉGÉE PAR UN LOCK
+        with lock_compteur:  # Acquisition automatique du verrou
+            # Cette section est maintenant atomique :
+            # Un seul thread peut l'exécuter à la fois
+            valeur_actuelle = compteur_securise
+            time.sleep(0.000001)  # Même délai que dans l'exemple problématique
+            compteur_securise = valeur_actuelle + 1
+        # Le verrou est automatiquement libéré ici (grâce au 'with')
+        
+        # Affichage périodique (en dehors de la section critique)
+        if i % 1000 == 0:
+            # Attention: même la lecture pour l'affichage devrait être protégée
+            # pour une valeur totalement exacte, mais ce n'est pas critique ici
+            print(f"{nom_thread}: {i}/{nb_iterations} (compteur ≈ {compteur_securise})")
+
+def demonstration_avec_lock():
+    """Démontre l'efficacité d'un Lock pour résoudre les race conditions"""
+    global compteur_securise
+    
+    print("=== Démonstration avec Lock ===")
+    print("Même configuration que précédemment, mais avec synchronisation.\n")
+    
+    # Réinitialiser le compteur
+    compteur_securise = 0
+    
+    # Mêmes paramètres que dans l'exemple problématique
+    nb_iterations = 5000
+    nb_threads = 3
+    
+    threads = []
+    start_time = time.time()
+    
+    print(f"Configuration: {nb_threads} threads, {nb_iterations} incréments chacun")
+    print(f"Résultat attendu: {nb_threads * nb_iterations}")
+    print("Avec Lock: AUCUNE race condition ne devrait se produire.\n")
+    
+    # Créer et lancer les threads avec la version sécurisée
+    for i in range(nb_threads):
+        thread = threading.Thread(
+            target=incrementer_compteur_securise,
+            args=(nb_iterations,),
+            name=f"SecureThread-{i+1}"
+        )
+        threads.append(thread)
+        thread.start()
+        print(f"Démarrage de {thread.name}")
+    
+    # Attendre la fin de tous les threads
+    for thread in threads:
+        thread.join()
+        print(f"{thread.name} terminé")
+    
+    duree = time.time() - start_time
+    resultat_attendu = nb_threads * nb_iterations
+    
+    # Analyser les résultats
+    print(f"\n=== Résultats avec Lock ===")
+    print(f"Résultat attendu: {resultat_attendu:,}")
+    print(f"Résultat obtenu:  {compteur_securise:,}")
+    print(f"Différence:       {resultat_attendu - compteur_securise:,}")
+    print(f"Temps d'exécution: {duree:.2f}s")
+    
+    if compteur_securise == resultat_attendu:
+        print("\n✅ RACE CONDITION RÉSOLUE!")
+        print("Le Lock a parfaitement synchronisé les accès.")
+        print("Le résultat est maintenant déterministe et correct.")
+    else:
+        print("\n❌ Problème persistant (ne devrait pas arriver)")
+        print("Vérifiez l'implémentation du Lock.")
+
+# Exécuter la démonstration
+if __name__ == "__main__":
+    demonstration_avec_lock()
+```
+
+Cette fois, le programme affiche toujours la valeur correcte de 15000. On note
+aussi que sont exécution est un peu plus lente à cause de la synchronisation,
+mais le résultat est fiable.
+
+## Syntaxes alternatives pour les Locks
+
+La meilleure façon d'utiliser un `Lock` est avec un context manager (`with`),
+qui garantit que le verrou est libéré même en cas d'exception. Il est toutefois
+possible de gérer manuellement l'acquisition et la libération, mais c'est plus
+risqué et sujet à des erreurs.
+
+```python
+import threading
+import time
+
+lock = threading.Lock()
+data_partagee = 0
+
+# ✅ Méthode recommandée : Context manager (with)
+def methode_recommandee():
+    """Utilisation recommandée avec context manager"""
+    global data_partagee
+    
+    with lock:  # Acquisition automatique
+        # Section critique
+        data_partagee += 1
+        time.sleep(0.001)  # Simulation de travail
+    # Libération automatique même en cas d'exception
+
+# ⚠️ Méthode manuelle (plus risquée)
+def methode_manuelle():
+    """Méthode manuelle avec gestion explicite"""
+    global data_partagee
+    
+    lock.acquire()  # Acquisition manuelle
+    try:
+        # Section critique
+        data_partagee += 1
+        time.sleep(0.001)
+        # Possibilité d'exception ici
+    finally:
+        lock.release()  # Libération obligatoire même en cas d'exception
+
+# ❌ Méthode dangereuse (à éviter)
+def methode_dangereuse():
+    """ATTENTION: Cette méthode peut causer des deadlocks"""
+    global data_partagee
+    
+    lock.acquire()
+    data_partagee += 1
+    time.sleep(0.001)
+    # Si une exception se produit ici, le lock n'est jamais libéré!
+    lock.release()  # Cette ligne pourrait ne jamais être exécutée
+```
+
+## Problème des deadlocks
+
+Un deadlock (interblocage) se produit lorsque deux threads (ou plus) se bloquent
+mutuellement en attendant des ressources détenues par l'autre. Par exemple :
+
+```python
+import threading
+import time
+lock_a = threading.Lock()
+lock_b = threading.Lock()
+def thread1():
+    with lock_a:
+        time.sleep(0.1)  # Simuler du travail
+        with lock_b:
+            print("Thread 1 a acquis les deux locks")
+
+def thread2():
+    with lock_b:
+        time.sleep(0.1)  # Simuler du travail
+        with lock_a:
+            print("Thread 2 a acquis les deux locks")
+t1 = threading.Thread(target=thread1)
+t2 = threading.Thread(target=thread2)
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+```
+
+Dans cet exemple, `thread1` acquiert `lock_a` puis tente d'acquérir `lock_b`,
+tandis que `thread2` fait l'inverse. Si `thread1` acquiert `lock_a` et `thread2`
+acquiert `lock_b` en même temps, les deux threads se bloquent mutuellement.
+
+## Avantages et considérations du Lock
+
+**✅ Avantages :**
+- **Simplicité** : Facile à comprendre et implémenter
+- **Efficacité** : Overhead minimal quand pas de contention. La contention se
+  produit lorsque plusieurs threads tentent d'acquérir le même lock en même
+  temps. Alors, plusieurs threads sont mis en attente, ce qui peut ralentir
+  l'exécution globale.
+- **Fiabilité** : Garantit l'exclusion mutuelle
+- **Support natif** : Intégré dans Python
+
+**⚠️ Considérations :**
+- **Performance** : Peut ralentir l'exécution si la contention est élevée
+- **Granularité** : Trop de locks fins = complexité, trop peu = perte de parallélisme  
+- **Deadlocks** : Risque si plusieurs locks sont acquis dans des ordres différents
+- **Starvation** : Un thread peut attendre très longtemps si d'autres monopolisent le lock.
+
+**Bonnes pratiques avec les Locks :**
+1. **Toujours utiliser `with`** : Garantit la libération même en cas d'exception
+2. **Sections critiques courtes** : Minimiser le temps de détention du lock
+3. **Éviter les opérations bloquantes** : Pas de I/O ou de `sleep()` dans la section critique
+4. **Ordre d'acquisition cohérent** : Si plusieurs locks, toujours les acquérir dans le même ordre
+5. **Un lock par ressource** : Éviter de protéger plusieurs ressources non liées avec le même lock

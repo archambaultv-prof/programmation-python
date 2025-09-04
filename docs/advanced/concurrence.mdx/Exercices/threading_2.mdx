@@ -1,0 +1,64 @@
+---
+sidebar_label: Threading 2
+sidebar_position: 2
+description: Threading 2
+---
+
+# 🧶 Threading 2
+
+## 🎯 Objectif pédagogique
+
+- Identifier et reproduire différents types de conditions de course.
+- Comprendre l'impact des conditions de course sur l'intégrité des données.
+- Analyser les résultats imprévisibles causés par la concurrence.
+
+## 📜 Énoncé
+
+### Partie 1 : Compte bancaire défaillant
+
+Créez une classe `CompteBancaire` avec les méthodes suivantes en ajoutant des
+`time.sleep()` pour simuler des opérations lentes. **N'utilisez pas encore de
+synchronisation.**
+
+```python
+class CompteBancaire:
+    def __init__(self, solde_initial=1000):
+        self.solde = solde_initial
+    
+    def deposer(self, montant):
+        # Simulation d'une opération qui prend du temps
+        # (vérifications, communications avec la banque, etc.)
+        pass
+    
+    def retirer(self, montant):
+        # Vérifier si le solde est suffisant
+        # Effectuer le retrait si possible
+        pass
+    
+    def get_solde(self):
+        return self.solde
+```
+
+### Partie 2 : Simulation de transactions concurrentes
+
+Créez une fonction de test qui :
+   - Crée un compte avec 1000$
+   - Lance 5 threads qui font chacun 10 dépôts de 50$
+   - Lance 3 threads qui font chacun 5 retraits de 100$
+   - Affiche le solde final et l'historique
+
+
+### Partie 3 : Analyse des problèmes
+
+Exécutez vos tests plusieurs fois et documentez :
+
+1. **Problèmes observés** :
+   - Le solde final correspond-il au calcul attendu ?
+   - Que se passe-t-il si on autorise les soldes négatifs ?
+   - Peut-on retirer plus d'argent que disponible ?
+
+### Partie 4 : Synchronisation
+
+Ajoutez des mécanismes de synchronisation (comme des `Lock`) pour protéger les
+opérations critiques dans la classe `CompteBancaire`. Réexécutez les tests et
+comparez les résultats.

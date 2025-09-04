@@ -1,0 +1,131 @@
+---
+sidebar_label: Conditions de course - Semaphore
+sidebar_position: 5
+description: Conditions de course et solution Semaphore
+---
+
+# Semaphore
+
+## Introduction
+
+Le `Semaphore` est un mécanisme de synchronisation qui limite le nombre de
+threads qui peuvent accéder simultanément à une ressource partagée.
+Contrairement au `Lock` qui n'autorise qu'un seul thread à la fois, le
+semaphore permet à un nombre défini de threads d'accéder à la ressource.
+
+## Concept
+
+Un semaphore maintient un compteur interne qui représente le nombre de "permissions" disponibles :
+- Lorsqu'un thread appelle `acquire()`, le compteur diminue
+- Lorsqu'un thread appelle `release()`, le compteur augmente
+- Si le compteur atteint zéro, les threads suivants sont bloqués jusqu'à ce qu'une permission soit libérée
+
+## Cas d'usage typiques
+
+- **Pool de connexions** : Limiter le nombre de connexions simultanées à une base de données
+- **Limitation de bande passante** : Contrôler le nombre de téléchargements simultanés
+- **Gestion de ressources** : Limiter l'accès à des imprimantes, fichiers, ou autres ressources physiques
+
+## Exemple pratique : Pool de connexions
+
+Voici un exemple simple d'utilisation d'un `Semaphore` pour gérer un pool de
+connexions limitées.
+
+```python
+import threading
+import time
+import random
+
+class PoolConnexions:
+    """Simule un pool de connexions limitées"""
+    
+    def __init__(self, max_connexions=3):
+        self.max_connexions = max_connexions
+        self.semaphore = threading.Semaphore(max_connexions)
+        self.connexions_actives = 0
+        self.lock_stats = threading.Lock()
+    
+    def utiliser_connexion(self, duree_utilisation):
+        """Utilise une connexion du pool"""
+        nom_thread = threading.current_thread().name
+        
+        print(f"{nom_thread}: Demande de connexion...")
+        
+        # Acquérir une "connexion" (semaphore) avec context manager
+        with self.semaphore:
+            # Incrémenter le compteur de façon thread-safe
+            with self.lock_stats:
+                self.connexions_actives += 1
+                print(f"✅ {nom_thread}: Connexion obtenue ({self.connexions_actives}/{self.max_connexions} utilisées)")
+            
+            # Simuler l'utilisation de la connexion
+            time.sleep(duree_utilisation)
+            
+            print(f"🔄 {nom_thread}: Utilisation terminée")
+            
+            # Décrémenter le compteur de façon thread-safe
+            with self.lock_stats:
+                self.connexions_actives -= 1
+            print(f"🔓 {nom_thread}: Connexion libérée")
+
+def client_database(pool, client_id):
+    """Simule un client qui utilise la base de données"""
+    for i in range(2):
+        duree = random.uniform(1, 3)
+        pool.utiliser_connexion(duree)
+        
+        # Pause entre les utilisations
+        time.sleep(random.uniform(0.5, 1))
+
+# Test du pool de connexions
+print("=== Test Pool de Connexions avec Semaphore ===")
+pool = PoolConnexions(max_connexions=2)
+
+threads = []
+for i in range(4):  # Plus de clients que de connexions disponibles
+    thread = threading.Thread(
+        target=client_database,
+        args=(pool, i+1),
+        name=f"Client-{i+1}"
+    )
+    threads.append(thread)
+    thread.start()
+
+for thread in threads:
+    thread.join()
+
+print("Tous les clients ont terminé")
+```
+
+## Analyse du comportement
+
+Dans cet exemple :
+
+1. **Semaphore(2)** : Seules 2 connexions simultanées sont autorisées
+2. **4 clients** : Plus de demandes que de ressources disponibles
+3. **Gestion automatique** : Les threads en excès attendent automatiquement
+
+### Sortie attendue
+
+```
+=== Test Pool de Connexions avec Semaphore ===
+Client-1: Demande de connexion...
+✅ Client-1: Connexion obtenue (1/2 utilisées)
+Client-2: Demande de connexion...
+✅ Client-2: Connexion obtenue (2/2 utilisées)
+Client-3: Demande de connexion...
+Client-4: Demande de connexion...
+🔄 Client-1: Utilisation terminée
+🔓 Client-1: Connexion libérée
+✅ Client-3: Connexion obtenue (2/2 utilisées)
+...
+```
+
+## Semaphore vs Lock
+
+| Caractéristique | Lock | Semaphore |
+|------------------|------|-----------|
+| **Accès simultané** | 1 thread | N threads configurables |
+| **Usage typique** | Protection données critiques | Limitation de ressources |
+| **Blocage** | Exclusion mutuelle totale | Limitation contrôlée |
+
