@@ -14,8 +14,8 @@ description: Threading 1
 ## 📜 Énoncé
 
 Écrire un programme qui démarre deux threads, exécutant la même fonction
-`plus_un()`, qui incrémente une variable globale `compteur` dix milles fois.
-Le programme affiche ensuite la valeur finale de `compteur`. Voici un bout de 
+`plus_un()` définie ci-dessous. Cette fonction incrémente une variable globale `compteur` dix milles fois.
+Le programme affiche ensuite la valeur finale de `compteur`. Voici un bout de
 code pour vous aider.
 
 ```python
@@ -23,10 +23,13 @@ import threading
 
 compteur = 0
 
+def un():
+    return 1
+
 def plus_un():
     global compteur
-    for _ in range(10000):
-        compteur += 1
+    for _ in range(1_000_000):
+        compteur = compteur + un()
 
 # Démarrage des threads
 # ... votre code ici ...
