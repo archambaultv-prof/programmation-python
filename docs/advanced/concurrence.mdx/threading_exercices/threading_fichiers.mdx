@@ -1,0 +1,44 @@
+---
+sidebar_label: Traitement de fichiers
+sidebar_position: 5
+description: Exercice guidé de traitement de fichiers avec threads
+---
+
+# 📁 Traitement de fichiers en parallèle
+
+## 🎯 Objectif pédagogique
+
+- Lancer des tâches d’I/O disque en parallèle avec des threads.
+
+## 📜 Énoncé
+
+Vous allez créer un mini-outil qui analyse plusieurs fichiers texte et, en
+bonus, lit un gros CSV par morceaux.
+
+### Partie 1 — Mise en place
+
+1. Écrivez `creer_fichiers_test(dossier="test_fichiers")` qui crée 10 fichiers `.txt` avec quelques lignes de texte.
+2. Vérifiez que les fichiers sont bien créés.
+3. Écrivez `analyser_fichier_texte(chemin)` qui retourne un dictionnaire avec les champs suivants:
+   - `{'taille': bytes, 'lignes': n, 'caracteres': c}`.
+
+### Partie 2 — Analyse séquentielle
+
+Écrivez `traiter_fichiers_sequentiel(dossier)` qui:
+   - Parcourt tous les `.txt`, appelle `analyser_fichier_texte`.
+   - Mesure le temps total.
+
+### Partie 3 — Analyse en parallèle avec threads
+
+1. Écrivez `traiter_fichiers_threads(dossier)` qui:
+   - Utilise `threading.Thread` pour lancer l’analyse de chaque fichier avec la fonction `analyser_fichier_texte(chemin)`.
+   - Partage un dict `resultats` protégé par `threading.Lock` (écritures protégées).
+   - Mesure le temps total.
+2. Comparez les temps avec la baseline séquentielle.
+
+### Partie 4 — Analyse avec ThreadPoolExecutor
+
+1. Écrivez `traiter_fichiers_threadpool(dossier, max_workers=2)` qui:
+   - Utilise `concurrent.futures.ThreadPoolExecutor` pour gérer un pool de threads.
+   - Soumet les tâches d’analyse et collecte les résultats.
+2. Comparez les temps avec les versions précédentes.

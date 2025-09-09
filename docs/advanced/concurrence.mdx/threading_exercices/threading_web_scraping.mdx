@@ -1,0 +1,148 @@
+---
+sidebar_label: Web scraping
+sidebar_position: 4
+description: Exercice guidé de web scraping concurrent avec threads
+---
+
+# 🌐 Web scraping concurrent
+
+## 🎯 Objectif pédagogique
+
+- Comprendre pourquoi le threading est utile pour les I/O réseau.
+- Écrire un téléchargeur de pages web séquentiel puis concurrent.
+- Mesurer et comparer les performances.
+
+## 🔰 Démarrage rapide — Télécharger une page avec httpbin
+
+Avant d'aborder le threading, voici un mini-exemple très simple qui télécharge
+une page de test depuis https://httpbin.org. Ce service est conçu pour
+expérimenter les requêtes HTTP et renvoyer ce que vous lui envoyez.
+
+Exemple minimal:
+
+```python
+import time
+import urllib.request
+import urllib.parse
+import urllib.error
+
+def telecharger_page(url, params=None, headers=None, timeout=10):
+   """Télécharge une page et retourne des métriques de base.
+
+   Args:
+      url (str): URL à télécharger
+      params (dict|None): paramètres de requête (?a=b)
+      headers (dict|None): en-têtes HTTP
+      timeout (int|float): délai max en secondes
+
+   Returns:
+      dict: informations sur la réponse ou l'erreur
+   """
+   debut = time.time()
+   try:
+      # Construire l'URL avec les paramètres
+      if params:
+         query_string = urllib.parse.urlencode(params)
+         url = f"{url}?{query_string}"
+      
+      # Créer la requête avec User-Agent par défaut
+      req = urllib.request.Request(url)
+      
+      # Ajouter un User-Agent par défaut pour éviter les blocages
+      req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+      
+      # Ajouter les en-têtes personnalisés
+      if headers:
+         for key, value in headers.items():
+            req.add_header(key, value)
+      
+      # Effectuer la requête
+      with urllib.request.urlopen(req, timeout=timeout) as resp:
+         content = resp.read()
+         duree = time.time() - debut
+         return {
+            "url": url,
+            "url_finale": resp.url,
+            "status": resp.status,
+            "taille": len(content),
+            "duree": duree,
+            "content_type": resp.headers.get("Content-Type", ""),
+            "succes": True,
+         }
+   except urllib.error.HTTPError as e:
+      duree = time.time() - debut
+      return {"url": url, "erreur": "HTTPError", "details": f"Code {e.code}: {e.reason}",
+              "duree": duree, "succes": False}
+   except urllib.error.URLError as e:
+      duree = time.time() - debut
+      return {"url": url, "erreur": "URLError", "details": str(e.reason),
+              "duree": duree, "succes": False}
+   except Exception as e:
+      duree = time.time() - debut
+      return {"url": url, "erreur": "Exception", "details": str(e), "duree": duree, "succes": False}
+
+# 1) Appel simple: endpoint /get avec paramètres (renvoie les params envoyés)
+params = {"q": "python threading", "lang": "fr", "page": 1}
+resultat = telecharger_page("https://httpbin.org/get", params=params)
+print(resultat)
+
+# 2) Endpoint qui simule un délai réseau
+resultat_delay = telecharger_page("https://httpbin.org/delay/1")
+print(resultat_delay)
+
+# 3) Endpoint qui renvoie du HTML simple
+html_res = telecharger_page("https://httpbin.org/html")
+print(html_res)
+```
+
+Adresses utiles pour vos tests:
+- https://httpbin.org/get — renvoie les query params envoyés
+- https://httpbin.org/delay/1 — simule 1 seconde d'attente (essayez 2, 3…)
+- https://httpbin.org/status/200 — retourne un code HTTP précis (200, 404, 500…)
+- https://httpbin.org/json — renvoie un JSON
+- https://httpbin.org/html — renvoie une page HTML
+
+
+## 📜 Énoncé
+
+Vous allez construire pas à pas un petit scraper web, d'abord séquentiel puis
+avec threads.
+
+### Partie 1 — Téléchargement séquentiel (baseline)
+
+1. Créez un fichier `scraping_baseline.py`.
+3. Écrivez `scraping_sequentiel(urls)` qui:
+   - Boucle sur les URLs et appelle `telecharger_page`.
+   - Stocke les résultats dans une liste et mesure la durée totale.
+   - Affiche le nombre de succès/échecs et le temps total.
+4. Testez avec une boucle sur plusieurs URLs de `httpbin.org`.
+5. Mesurez le temps total.
+
+Attendu: fonctionnement correct mais temps total ≈ somme des délais.
+
+### Partie 2 — Version avec threads
+
+1. Créez une fonction `scraping_avec_threads(urls)` qui:
+   - Utilise `threading.Thread` pour lancer `telecharger_page` en parallèle, un thread par URL.
+   - Partage une structure `resultats` (liste ou dict).
+   - Mesure et affiche le temps total.
+2. Rejouez le même jeu d'URLs et comparez les temps avec la baseline.
+
+Attendu : fonctionnement correct et temps total ≪ somme des délais.
+
+:::note
+
+Il est souvent utile de limiter le nombre de threads actifs pour ne pas
+surcharger le système ou le serveur distant. Par exemple, si vous avez 100 URLs à
+télécharger, vous ne voulez peut-être pas lancer 100 threads en même temps. Dans 
+la partie 2, nous laissons cette optimisation de côté pour la simplicité.
+
+:::
+
+### Partie 3 — Avec ThreadPoolExecutor
+
+1. Créez une fonction `scraping_avec_threadpool(urls, max_workers=5)` qui:
+   - Utilise `concurrent.futures.ThreadPoolExecutor` pour gérer un pool de threads.
+   - Soumet les tâches de téléchargement et collecte les résultats.
+   - Mesure et affiche le temps total.
+2. Testez et comparez les performances.
