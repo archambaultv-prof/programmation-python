@@ -1,0 +1,172 @@
+---
+sidebar_label: Arguments et résultats
+sidebar_position: 7
+description: Gestion des arguments et des résultats dans les threads
+---
+
+# Passage d'arguments et récupération de résultats
+
+Un défi courant avec les threads est la communication : comment passer des
+données aux threads et comment récupérer leurs résultats ? Contrairement aux
+fonctions normales qui retournent directement des valeurs, les threads
+nécessitent des mécanismes spéciaux pour le partage de données.
+
+## Le problème des valeurs de retour
+
+Les threads ne peuvent pas retourner de valeurs comme les fonctions normales
+parce que `thread.start()` et `thread.join()` ne retournent que
+`None`. Nous devons donc utiliser des structures de données partagées.
+
+## Solution avec Queue
+
+Il est possible d'utiliser des variables globales ou des listes/dicts partagés,
+mais cela nécessite de gérer la synchronisation (verrous) pour éviter les
+conditions de course. Une meilleure approche est d'utiliser une `queue.Queue`,
+qui est thread-safe et gère la synchronisation automatiquement. C'est dans la
+plupart des cas, la solution la plus robuste et la plus sûre. Voici un exemple
+d'utilisation de `queue.Queue` pour récupérer des résultats
+dans des threads.
+
+```python
+import threading
+import time
+import queue
+
+def calculer_carre(nombre, resultat_queue):
+    """Calcule le carré d'un nombre et stocke le résultat dans une queue
+    
+    Cette fonction montre comment un thread peut "retourner" un résultat
+    en utilisant une queue thread-safe.
+    
+    Args:
+        nombre (int): Le nombre à mettre au carré
+        resultat_queue (queue.Queue): Queue pour stocker le résultat
+    """
+    print(f"Thread {threading.current_thread().name}: Calcul de {nombre}²")
+    
+    # Simuler un calcul qui prend du temps (ex: requête base de données)
+    time.sleep(1)
+    
+    resultat = nombre ** 2
+    
+    # Stocker le résultat avec l'input original pour pouvoir les associer
+    resultat_queue.put((nombre, resultat))
+    
+    print(f"Thread {threading.current_thread().name}: {nombre}² = {resultat}")
+
+# Exemple d'utilisation pratique
+print("=== Calcul parallèle de carrés ===")
+
+# Créer une queue thread-safe pour collecter les résultats
+resultats = queue.Queue()
+threads = []
+
+# Liste des nombres à traiter
+nombres = [1, 2, 3, 4, 5]
+print(f"Calcul de carrés pour: {nombres}")
+
+# Créer un thread pour chaque nombre
+for nombre in nombres:
+    t = threading.Thread(
+        target=calculer_carre, 
+        args=(nombre, resultats),
+        name=f"Calculator-{nombre}"
+    )
+    threads.append(t)
+    t.start()
+
+# Attendre que tous les calculs se terminent
+for t in threads:
+    t.join()
+
+# Récupérer et afficher tous les résultats
+print("\n=== Résultats ===")
+tous_les_resultats = []
+
+while not resultats.empty():
+    nombre, carre = resultats.get()
+    tous_les_resultats.append((nombre, carre))
+
+# Trier les résultats par nombre original pour un affichage ordonné
+tous_les_resultats.sort(key=lambda x: x[0])
+
+for nombre, carre in tous_les_resultats:
+    print(f"{nombre}² = {carre}")
+```
+
+Dans cet exemple, chaque thread calcule le carré d'un nombre et place le
+résultat dans une `queue.Queue`. Le thread principal attend que tous les threads
+se terminent avant de récupérer les résultats. La queue garantit que les
+opérations de mise en file d'attente et de retrait sont sûres entre les threads.
+
+Pour des tâches plus complexes, vous pouvez stocker des objets ou des
+dictionnaires dans la queue pour inclure plus d'informations.
+
+## Communication bidirectionnelle
+
+Pour une vraie communication bidirectionnelle, il est possible d'utiliser deux
+queues : une pour envoyer des demandes et une autre pour recevoir des réponses.
+Voici un exemple où deux threads collaborent en s'échangeant des données : un
+client qui fait des demandes et un serveur qui traite ces demandes et renvoie
+des réponses modifiées.
+
+```python
+import threading
+import queue
+import time
+
+def thread_client(demandes_queue, reponses_queue):
+    # 1. A → B : Envoyer une demande
+    print("[CLIENT] Envoi msg1")
+    demandes_queue.put("msg1")
+    
+    # 3. B → A : Recevoir la réponse
+    reponse = reponses_queue.get()
+    print(f"[CLIENT] Reçu: {reponse}")
+    
+    # 4. A → B : Envoyer un second message
+    print("[CLIENT] Envoi msg2")
+    demandes_queue.put("msg2")
+    
+    # 6. B → A : Recevoir la confirmation finale
+    confirmation = reponses_queue.get()
+    print(f"[CLIENT] Reçu: {confirmation}")
+
+def thread_serveur(demandes_queue, reponses_queue):
+    # 2. A → B : Recevoir le premier message
+    msg1 = demandes_queue.get()
+    print(f"[SERVEUR] Reçu: {msg1}")
+    
+    # 3. B agit et répond à A
+    time.sleep(0.2)  # Simuler du traitement
+    print("[SERVEUR] Envoi reponse1")
+    reponses_queue.put("reponse1")
+    
+    # 5. A → B : Recevoir le second message
+    msg2 = demandes_queue.get()
+    print(f"[SERVEUR] Reçu: {msg2}")
+    
+    # 6. B agit une dernière fois
+    time.sleep(0.1)  # Traitement final
+    print("[SERVEUR] Envoi reponse2")
+    reponses_queue.put("reponse2")
+
+# Créer deux queues pour la communication bidirectionnelle
+demandes_queue = queue.Queue()  # Client → Serveur
+reponses_queue = queue.Queue()  # Serveur → Client
+
+# Créer et démarrer les threads
+serveur = threading.Thread(target=thread_serveur, args=(demandes_queue, reponses_queue))
+client = threading.Thread(target=thread_client, args=(demandes_queue, reponses_queue))
+
+serveur.start()
+client.start()
+
+# Attendre la fin
+client.join()
+serveur.join()
+```
+
+Dans cet exemple, le thread client envoie des messages au thread serveur via
+une queue, et le serveur répond via une autre queue. Cela permet une communication
+bidirectionnelle efficace entre les threads.
