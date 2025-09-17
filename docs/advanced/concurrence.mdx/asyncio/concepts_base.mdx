@@ -1,0 +1,140 @@
+---
+sidebar_label: Concepts de base
+sidebar_position: 1
+description: Introduction aux coroutines, await, tâches et différences avec threading
+---
+
+# Asyncio - Concepts de base
+
+## Pourquoi l'asynchrone ?
+
+`asyncio` est une bibliothèque standard qui permet d'écrire du **code
+concurrent** principalement pour des tâches **I/O bound** (réseau, fichiers,
+bases de données, APIs). Contrairement au multithreading classique :
+
+- Un **seul thread** (souvent) exécute un **ensemble de coroutines**
+- Pas de préemption : une coroutine rend explicitement la main avec `await`
+- Moins de contention et pas besoin (la plupart du temps) de verrous (`Lock`)
+- Très efficace quand beaucoup d'attente (latence réseau) par rapport au temps CPU
+
+Pour du **CPU intensif**, `asyncio` n'apporte pas de parallélisme réel (GIL).
+On verra plus loin comment contourner.
+
+## Terminologie essentielle
+
+| Terme | Description |
+|-------|-------------|
+| Coroutine | Fonction définie avec `async def` qui peut être suspendue avec `await` |
+| `await` | Mot-clé qui suspend la coroutine jusqu'au résultat d'un awaitable |
+| Awaitable | Objet qu'on peut `await` (coroutine, `Task`, `Future`) |
+| Task | Enveloppe d'exécution planifiée d'une coroutine (`asyncio.create_task`) |
+| Event loop | Planificateur central qui orchestre les coroutines |
+
+## Première coroutine
+
+```python
+import asyncio
+
+async def dire_bonjour():
+    print("Bonjour...")
+    await asyncio.sleep(1)  # Simule une attente I/O non bloquante
+    print("...monde !")
+
+asyncio.run(dire_bonjour())
+```
+
+Points clés :
+- `asyncio.run()` crée et gère automatiquement une event loop
+- `asyncio.sleep()` est non bloquant (rend la main à la loop)
+
+## Concurrence : séquentiel vs asyncio
+
+```python
+import asyncio, time
+
+async def tache(nom, d):
+    print(f"Début {nom}")
+    await asyncio.sleep(d)  # Attente non bloquante
+    print(f"Fin {nom}")
+
+async def main():
+    start = time.perf_counter()
+
+    # Lancement concurrent (ordonnancement par la loop)
+    await asyncio.gather(
+        tache("A", 2),
+        tache("B", 2),
+        tache("C", 2),
+    )
+
+    print(f"Durée: {time.perf_counter() - start:.2f}s")  # ~2s
+
+asyncio.run(main())
+```
+
+Sans `gather` (en faisant 3 `await` successifs), on obtiendrait ~6s.
+
+## Coroutines vs Tasks
+
+Une **coroutine** n'exécute rien tant qu'on ne :
+
+- l'`await` directement
+- la transforme en **Task** avec `asyncio.create_task()` (exécution planifiée immédiatement)
+
+```python
+async def travail(n):
+    await asyncio.sleep(1)
+    return n * 2
+
+async def main():
+    c = travail(10)          # Coroutine (pas encore lancée)
+    t = asyncio.create_task(travail(20))  # Task (lancée)
+    r1 = await c
+    r2 = await t
+    print(r1, r2)
+
+asyncio.run(main())
+```
+
+## Ne pas oublier d'await
+
+Créer une task et ne jamais l'`await` peut :
+- masquer des exceptions
+- laisser des tâches orphelines en fin de programme
+
+```python
+async def erreur():
+    await asyncio.sleep(0.1)
+    raise RuntimeError("Oups")
+
+async def main():
+    # Mauvais : l'exception apparaîtra comme warning plus tard
+    asyncio.create_task(erreur())
+    await asyncio.sleep(0.2)
+
+asyncio.run(main())
+```
+
+Solution : conserver la task ou utiliser `asyncio.gather(..., return_exceptions=True)`.
+
+## Comparaison rapide avec threading
+
+| Aspect | Threading | Asyncio |
+|--------|-----------|---------|
+| Contexte d'exécution | Plusieurs OS threads | 1 thread (souvent) + event loop |
+| Commutation | Préemptive (OS) | Coopérative (via `await`) |
+| Synchronisation | Locks / RLocks | Rare (sémaphores, queues async) |
+| I/O | GIL libéré sur blocages | Natifs, non bloquants |
+| CPU intensif | Possible mais GIL limite | Bloque la loop (à éviter) |
+
+## Quand choisir asyncio ?
+
+- Beaucoup de connexions réseau simultanées
+- Latence élevée par requête (APIs, sockets, websockets)
+- Protocoles réseau personnalisés
+- Besoin de supervision centralisée des tâches
+
+À éviter pour :
+- Calculs scientifiques lourds (utiliser `multiprocessing` ou bibliothèques natives C/NumPy)
+- Code fortement CPU sur pure logique Python
+

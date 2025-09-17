@@ -1,0 +1,98 @@
+---
+sidebar_label: Blocage CPU
+sidebar_position: 4
+description: Pourquoi les calculs CPU bloquent l'event loop et solutions
+---
+
+# Blocage CPU et solutions
+
+`asyncio` excelle sur l'I/O, mais échoue si une coroutine exécute longtemps du **code Python pur** sans `await`. Pendant ce temps :
+- L'event loop ne peut pas planifier d'autres tasks
+- Latence et timeouts côté réseau
+- Perte de réactivité globale
+
+## Démonstration du blocage
+
+```python
+import asyncio
+import time
+
+async def cpu_lourd():
+    print("Début calcul lourd")
+    # Boucle CPU intensive sans await
+    s = 0
+    for i in range(100_000_000):
+        s += (i % 7) * (i % 13)
+    print("Fin calcul lourd:", s)
+
+async def heartbeat():
+    while True:
+        print("tick", time.strftime('%X'))
+        await asyncio.sleep(0.5)
+
+async def main():
+    task_tick = asyncio.create_task(heartbeat())
+    await asyncio.sleep(2)
+    await cpu_lourd()  # Bloque totalement le heartbeat
+    await asyncio.sleep(2)
+    task_tick.cancel()
+
+asyncio.run(main())
+```
+
+Observation : les `tick` s'arrêtent pendant le calcul.
+
+## Solution 1 : `asyncio.to_thread`
+
+Déporter le calcul dans un thread (libère le thread principal pour la loop).
+Utile si le calcul libère parfois le GIL (lib C). Sinon le GIL reste un goulot
+mais la loop respire pendant les I/O.
+
+## Solution 2 : `ProcessPoolExecutor`
+
+Pour du calcul Python pur, utiliser un pool de processus pour du vrai parallélisme.
+
+## Solution 3 : Découper le calcul (coopératif)
+
+Si vous contrôlez l'algorithme, insérer des points de cession réguliers.
+
+```python
+import asyncio
+import time
+
+async def cpu_lourd():
+    print("Début calcul lourd")
+    # Boucle CPU intensive sans await
+    s = 0
+    for i in range(100_000_000):
+        if i % 100_000 == 0:
+            await asyncio.sleep(0)  # Permet de libérer la main
+        s += (i % 7) * (i % 13)
+    print("Fin calcul lourd:", s)
+
+async def heartbeat():
+    while True:
+        print("tick", time.strftime('%X'))
+        await asyncio.sleep(0.5)
+
+async def main():
+    task_tick = asyncio.create_task(heartbeat())
+    await asyncio.sleep(2)
+    await cpu_lourd()  # Bloque totalement le heartbeat
+    await asyncio.sleep(2)
+    task_tick.cancel()
+
+asyncio.run(main())
+```
+
+`await asyncio.sleep(0)` force un yield au scheduler sans attendre réellement.
+
+## Choisir la bonne approche
+
+| Situation | Approche |
+|-----------|----------|
+| I/O intensif | Pur asyncio |
+| Calcul minoritaire mais bloquant | `to_thread` |
+| Calcul Python lourd prolongé | `ProcessPoolExecutor` |
+| Algorithme modifiable | Découpage + `await asyncio.sleep(0)` |
+| Lib C libérant GIL (NumPy) | Peut rester dans coroutine |

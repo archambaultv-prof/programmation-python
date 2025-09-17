@@ -1,0 +1,56 @@
+---
+sidebar_label: Intégrer sync et async
+sidebar_position: 3
+description: Utiliser asyncio avec du code synchrone existant et inversement
+---
+
+# Mélanger code synchrone et asynchrone
+
+Dans un projet réel on doit souvent :
+- Appeler du code async depuis du code classique
+- Exécuter du code bloquant (lib, CPU) sans bloquer la loop
+
+## Entrée principale : `asyncio.run()`
+
+Toujours utilisé **une seule fois** au point d'entrée du programme.
+
+```python
+# main.py
+import asyncio
+
+async def logique():
+    return 42
+
+if __name__ == "__main__":
+    resultat = asyncio.run(logique())
+    print(resultat)
+```
+
+Éviter d'appeler `asyncio.run()` depuis une coroutine déjà en cours (erreur).
+
+## Appeler async depuis sync (hors main)
+
+Lorsqu'on décide d'utiliser `asyncio`, il est préférable de propager
+l'asynchronicité jusqu'au sommet de la pile d'appels. Il est en 
+effet compliqué et source d'erreurs de vouloir encapsuler de l'async dans
+du sync. Cela est possible avec `asyncio.run()` si aucune loop n'est active.
+
+```python
+import asyncio
+
+async def tache_async(x):
+    await asyncio.sleep(1)
+    return x * 2
+
+def version_sync(*args, **kwargs):
+    return asyncio.run(tache_async(*args, **kwargs))  # bloque jusqu’au résultat
+
+# usage
+res = version_sync(42)
+print(res)
+```
+
+Si jamais une loop est active (ex: dans un serveur web async), `asyncio.run()`
+lève une `RuntimeError`. Dans ce cas, il faut repenser l'architecture pour
+propager l'asynchronicité, ou utiliser un autre thread pour faire l'appel
+avec `asyncio.run()` sur ce thread.
