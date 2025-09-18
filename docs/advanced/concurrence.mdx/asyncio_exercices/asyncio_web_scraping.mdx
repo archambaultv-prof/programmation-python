@@ -1,0 +1,51 @@
+---
+sidebar_label: Web scraping
+sidebar_position: 4
+description: Web scraping concurrent avec asyncio
+---
+
+# 🌐 Web scraping (asyncio)
+
+## 🎯 Objectif pédagogique
+
+- Utiliser la librairie `aiohttp` pour des requêtes HTTP asynchrones.
+
+## 📜 Énoncé
+
+Écrire un programme qui télécharge plusieurs pages web
+de façon concurrente avec `asyncio`. Utiliser la librairie
+`aiohttp` pour faire les requêtes HTTP de façon asynchrone.
+
+Structurer votre code de façon à bien indiquer quand chaque
+étape est effectuée (démarrage du téléchargement, fin du
+téléchargement, etc.) pour visualiser la concurrence.
+
+Les sites à télécharger sont :
+
+- `https://www.cmaisonneuve.qc.ca/`
+- `https://www.python.org/`
+- `https://www.radio-canada.ca/`
+- `https://xkcd.com/1319/`
+
+### Exemple de code pour démarrer
+
+```python
+import aiohttp
+import asyncio
+
+async def fetch_html(url: str) -> str:
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            # Vérifie le statut
+            if response.status != 200:
+                raise Exception(f"Erreur HTTP {response.status}")
+            return await response.text()
+
+async def main():
+    url = "https://www.cmaisonneuve.qc.ca/"
+    html = await fetch_html(url)
+    print(html[:500])  # Affiche seulement les 500 premiers caractères
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
