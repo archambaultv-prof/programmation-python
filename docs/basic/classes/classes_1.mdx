@@ -78,6 +78,35 @@ Dans cet exemple, si vous ne fournissez pas d'arguments lors de la création d'u
 instance de la classe `Point`, les valeurs par défaut `0` seront utilisées pour
 les attributs `x` et `y`.
 
+### Destructeurs
+
+Le destructeur d'une classe est une méthode spéciale appelée `__del__`. Cette
+méthode est appelée lorsque l'instance de la classe est détruite. C'est à dire
+lorsque l'objet n'est plus référencé et que le ramasse-miettes de Python décide
+de libérer la mémoire occupée par l'objet.
+
+Le destructeur est utilisé pour libérer les ressources utilisées par l'instance
+de la classe. Les ressources peuvent être des fichiers ouverts, des connexions
+réseau, ou d'autres ressources système. Le destructeur peut également être
+utilisé pour effectuer des actions de nettoyage avant que l'objet ne soit
+détruit, comme enregistrer des données ou afficher un message.
+
+Cependant, il est important de noter que le destructeur n'est pas
+garanti d'être appelé dans tous les cas, notamment lorsque le programme se
+termine ou lorsqu'il y a des références circulaires. Par conséquent, il est
+généralement recommandé d'utiliser des gestionnaires de contexte ou des blocs
+`try...finally` pour gérer les ressources de manière plus fiable.
+
+```python
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __del__(self):
+        print(f"Le point ({self.x}, {self.y}) a été détruit.")
+```
+
 ## Attributs et méthodes
 
 On appelle attributs les variables qui appartiennent à un objet. Les attributs
