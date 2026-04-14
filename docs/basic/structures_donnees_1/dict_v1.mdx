@@ -41,6 +41,27 @@ age = mon_dict.pop("age")     # retourne et supprime 'âge'
 del mon_dict["ville"]         # supprime 'ville'
 ```
 
+## Tester l'existence d'une clé
+
+L'opérateur `in` permet de vérifier si une clé existe dans un dictionnaire
+**sans déclencher d'erreur** :
+
+```python
+etudiant = {"nom": "Alice", "age": 21}
+
+print("nom" in etudiant)    # True
+print("email" in etudiant)  # False
+```
+
+Cela est très utile pour éviter un `KeyError` avant d'accéder à une valeur :
+
+```python
+if "email" in etudiant:
+    print(etudiant["email"])
+else:
+    print("Pas d'email enregistré")
+```
+
 ## Itérer sur un dictionnaire
 
 Il existe trois méthodes très utilse pour itérer sur un dictionnaire :
