@@ -6,8 +6,333 @@ description: Les files
 
 # Les files
 
-:::info
+## Qu'est-ce qu'une file ?
 
-À venir
+Une file est une structure de données qui stocke des éléments selon le principe
+**FIFO** (*First In, First Out*), c'est-à-dire :
+
+* le **premier** élément ajouté est le **premier** à être retiré ;
+* on ajoute à l'**arrière** et on retire à l'**avant**.
+
+On peut imaginer une file d'attente au cinéma : la première personne arrivée est
+la première servie.
+
+```text
+Avant                          Arrière
+  |                               |
+  v                               v
++-----+   +-----+   +-----+   +-----+
+|  10 |-->|  20 |-->|  30 |-->|  40 |
++-----+   +-----+   +-----+   +-----+
+```
+
+Dans cet exemple, si on retire un élément, on obtiendra d'abord `10`, puis
+`20`, puis `30`, puis `40`.
+
+## Pourquoi les files existent-elles ?
+
+Les files sont utiles lorsqu'on veut traiter les éléments **dans l'ordre de
+leur arrivée**.
+
+Voici quelques situations courantes :
+
+* **File d'impression** : les documents sont imprimés dans l'ordre où ils ont
+  été envoyés.
+* **Gestion de tâches** : un serveur traite les requêtes dans l'ordre de
+  réception.
+* **Mémoire tampon** : les données reçues en continu sont traitées dans l'ordre
+  d'arrivée (ex. : flux vidéo, messages réseau).
+
+La file existe donc parce qu'elle modélise très bien les problèmes où l'on doit
+respecter l'**ordre d'arrivée**.
+
+## Les opérations principales
+
+Une file propose généralement les opérations suivantes :
+
+* `enqueue(element)` : ajoute un élément à l'arrière.
+* `dequeue()` : retire et retourne l'élément à l'avant.
+* `peek()` ou `front()` : retourne l'élément à l'avant sans le retirer.
+* `is_empty()` : indique si la file est vide.
+
+Exemple d'évolution d'une file :
+
+```python
+from collections import deque
+
+file = deque()
+
+file.append(10)   # enqueue
+file.append(20)   # enqueue
+file.append(30)   # enqueue
+
+print(file)        # deque([10, 20, 30])
+print(file[0])     # 10   -> avant (peek)
+
+valeur = file.popleft()
+print(valeur)      # 10
+print(file)        # deque([20, 30])
+```
+
+Dans cet exemple, `10` est retiré en premier car c'est le premier élément qui a
+été ajouté.
+
+## Utiliser une file en Python
+
+En Python, la façon la plus simple de représenter une file est d'utiliser un
+`deque` du module `collections`.
+
+```python
+from collections import deque
+
+file = deque()
+
+# Enfiler des éléments
+file.append("a")
+file.append("b")
+file.append("c")
+
+print(file)  # deque(['a', 'b', 'c'])
+
+# Consulter l'avant
+print(file[0])  # 'a'
+
+# Défiler
+print(file.popleft())  # 'a'
+print(file.popleft())  # 'b'
+
+print(file)  # deque(['c'])
+```
+
+Ici :
+
+* `append()` ajoute un élément à l'**arrière** de la file ;
+* `popleft()` retire l'élément à l'**avant** de la file.
+
+:::warning
+
+On pourrait utiliser une simple liste avec `pop(0)` pour retirer l'élément à
+l'avant, mais cette opération est **lente** : Python doit décaler tous les
+éléments restants d'une position vers la gauche. Le `deque` est conçu pour être
+efficace aux deux extrémités.
 
 :::
+
+## Exemple concret : simuler une file d'attente
+
+Les files sont très utiles pour simuler un processus où les éléments sont
+traités dans l'ordre d'arrivée.
+
+Principe :
+
+* on ajoute des clients à la file au fur et à mesure ;
+* on les sert dans l'ordre d'arrivée ;
+* la file se vide progressivement.
+
+```python
+from collections import deque
+
+file_attente = deque()
+
+# Arrivée des clients
+file_attente.append("Alice")
+file_attente.append("Bob")
+file_attente.append("Charlie")
+
+# Service des clients
+while len(file_attente) > 0:
+    client = file_attente.popleft()
+    print(f"Service de {client}")
+
+# Affiche :
+# Service de Alice
+# Service de Bob
+# Service de Charlie
+```
+
+## Si `append()` et `popleft()` n'existaient pas
+
+Comme pour la pile, on peut implémenter une file nous-mêmes avec un simple
+tableau pour mieux comprendre ce qui se passe plus bas niveau.
+
+Le défi supplémentaire ici est que l'on retire à l'avant **et** on ajoute à
+l'arrière. Si on décalait tous les éléments à chaque retrait, ce serait très
+coûteux. On utilise plutôt un **buffer circulaire** : deux pointeurs (`tete` et
+`queue`) qui avancent dans le tableau et « reviennent au début » quand ils
+atteignent la fin.
+
+```text
+Tableau interne :  [ None, 'b', 'c', None ]
+                           ^         ^
+                         tete       queue
+```
+
+Construisons cette file étape par étape.
+
+### Étape 1 : la structure de base
+
+On a besoin de quatre informations : le tableau, sa capacité, le nombre
+d'éléments et la position de la tête.
+
+```python
+class File:
+    def __init__(self, capacite_initiale=4):
+        self.data = [None] * capacite_initiale
+        self.capacite = capacite_initiale
+        self.taille = 0
+        self.tete = 0  # indice du premier élément
+```
+
+Au départ, le tableau contient `capacite_initiale` cases toutes à `None`, et
+`taille` vaut `0` (la file est vide). La position de la queue se calcule à
+partir de `tete` et `taille`.
+
+### Étape 2 : redimensionner le tableau
+
+Quand on doit changer la taille du tableau, on crée un nouveau tableau et on
+recopie les éléments **dans l'ordre**, en « déroulant » le buffer circulaire.
+
+```python
+    def _redimensionner(self, nouvelle_capacite):
+        nouveau = [None] * nouvelle_capacite
+        for i in range(self.taille):
+            nouveau[i] = self.data[(self.tete + i) % self.capacite]
+        self.data = nouveau
+        self.tete = 0
+        self.capacite = nouvelle_capacite
+```
+
+L'opérateur `%` (modulo) permet de « boucler » : quand l'indice dépasse la fin
+du tableau, on revient au début.
+
+### Étape 3 : enfiler (*enqueue*)
+
+On place l'élément à la position `(tete + taille) % capacite`, puis on
+incrémente la taille. Si le tableau est plein, on **double** la capacité avant
+d'insérer.
+
+```python
+    def enqueue(self, element):
+        if self.taille == self.capacite:
+            self._redimensionner(self.capacite * 2)
+
+        indice = (self.tete + self.taille) % self.capacite
+        self.data[indice] = element
+        self.taille += 1
+```
+
+### Étape 4 : défiler (*dequeue*)
+
+On récupère l'élément à la position `tete`, on nettoie la case, puis on avance
+la tête (avec modulo). Si le tableau devient trop vide (le quart de sa
+capacité), on le **divise par 2**.
+
+```python
+    def dequeue(self):
+        if self.taille == 0:
+            raise IndexError("dequeue sur une file vide")
+
+        element = self.data[self.tete]
+        self.data[self.tete] = None
+        self.tete = (self.tete + 1) % self.capacite
+        self.taille -= 1
+
+        if self.taille > 0 and self.taille <= self.capacite // 4:
+            self._redimensionner(self.capacite // 2)
+
+        return element
+```
+
+### Étape 5 : consulter l'avant (*peek*)
+
+```python
+    def peek(self):
+        if self.taille == 0:
+            raise IndexError("peek sur une file vide")
+        return self.data[self.tete]
+```
+
+### La classe au complet
+
+```python
+class File:
+    def __init__(self, capacite_initiale=4):
+        self.data = [None] * capacite_initiale
+        self.capacite = capacite_initiale
+        self.taille = 0
+        self.tete = 0
+
+    def _redimensionner(self, nouvelle_capacite):
+        nouveau = [None] * nouvelle_capacite
+        for i in range(self.taille):
+            nouveau[i] = self.data[(self.tete + i) % self.capacite]
+        self.data = nouveau
+        self.tete = 0
+        self.capacite = nouvelle_capacite
+
+    def enqueue(self, element):
+        if self.taille == self.capacite:
+            self._redimensionner(self.capacite * 2)
+        indice = (self.tete + self.taille) % self.capacite
+        self.data[indice] = element
+        self.taille += 1
+
+    def dequeue(self):
+        if self.taille == 0:
+            raise IndexError("dequeue sur une file vide")
+        element = self.data[self.tete]
+        self.data[self.tete] = None
+        self.tete = (self.tete + 1) % self.capacite
+        self.taille -= 1
+        if self.taille > 0 and self.taille <= self.capacite // 4:
+            self._redimensionner(self.capacite // 2)
+        return element
+
+    def peek(self):
+        if self.taille == 0:
+            raise IndexError("peek sur une file vide")
+        return self.data[self.tete]
+
+    def est_vide(self):
+        return self.taille == 0
+
+    def __len__(self):
+        return self.taille
+
+    def __repr__(self):
+        elements = []
+        for i in range(self.taille):
+            elements.append(self.data[(self.tete + i) % self.capacite])
+        return str(elements)
+```
+
+### Exemple d'utilisation
+
+```python
+file = File(capacite_initiale=2)
+
+file.enqueue(10)
+file.enqueue(20)
+print(file)             # [10, 20]
+print(file.capacite)    # 2
+
+file.enqueue(30)        # le tableau est plein -> capacité doublée (2 -> 4)
+print(file)             # [10, 20, 30]
+print(file.capacite)    # 4
+
+print(file.dequeue())   # 10
+print(file.dequeue())   # 20
+print(file)             # [30]
+print(file.capacite)    # 2  (réduit de moitié car 1 <= 4 // 4)
+```
+
+### Pourquoi un buffer circulaire ?
+
+Sans buffer circulaire, retirer l'élément à l'avant obligerait à décaler tous
+les autres éléments d'une position, ce qui coûte $n$ copies à chaque retrait.
+
+Avec le buffer circulaire, les deux pointeurs (`tete` et `queue`) avancent
+simplement grâce au modulo. Aucun décalage n'est nécessaire.
+
+Comme pour la pile, on double la capacité quand le tableau est plein et on la
+divise par 2 quand il est rempli au quart, ce qui évite l'effet « yo-yo ».
