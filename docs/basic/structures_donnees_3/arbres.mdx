@@ -1,0 +1,644 @@
+---
+sidebar_label: Les arbres
+sidebar_position: 6
+description: Les arbres
+---
+
+# Les arbres
+
+## Qu'est-ce qu'un arbre ?
+
+Un arbre est une structure de données **hiérarchique**. Contrairement aux piles
+et aux files qui sont linéaires, un arbre organise les données en niveaux : un
+élément peut avoir plusieurs « enfants ».
+
+On peut imaginer un arbre généalogique, un système de fichiers ou le sommaire
+d'un livre.
+
+```text
+         Racine
+        /      \
+     A            B
+    / \          / \
+   C   D        E   F
+      / \
+     G   H
+```
+
+### Vocabulaire
+
+* **Nœud** (*node*) : chaque élément de l'arbre.
+* **Racine** (*root*) : le nœud tout en haut, sans parent.
+* **Enfant** (*child*) : un nœud directement relié en dessous d'un autre.
+* **Parent** : le nœud directement relié au-dessus.
+* **Feuille** (*leaf*) : un nœud qui n'a aucun enfant.
+* **Profondeur** (*depth*) : la distance (en nombre d'arêtes) entre la racine et
+  un nœud donné. La racine est à profondeur 0.
+* **Hauteur** (*height*) : la profondeur maximale parmi toutes les feuilles.
+
+Dans l'arbre ci-dessus :
+
+* `Racine` est la racine (profondeur 0) ;
+* `A` et `B` sont les enfants de `Racine` (profondeur 1) ;
+* `C`, `D`, `E`, `F` sont à profondeur 2 ;
+* `G` et `H` sont des feuilles à profondeur 3 ;
+* la hauteur de l'arbre est 3.
+
+## Pourquoi les arbres existent-ils ?
+
+Les arbres sont utiles lorsque les données ont une **relation parent-enfant**
+naturelle :
+
+* **Système de fichiers** : un dossier contient des fichiers et d'autres
+  dossiers.
+* **HTML / XML** : chaque balise peut contenir d'autres balises.
+* **Organigramme** : un gestionnaire supervise plusieurs employés.
+
+Les arbres permettent aussi de chercher, trier et organiser des données de
+manière efficace, comme nous le verrons avec les arbres binaires de recherche.
+
+## Arbre général en Python
+
+Dans un arbre général, chaque nœud peut avoir un nombre quelconque d'enfants.
+On le représente simplement avec une classe qui contient une valeur et une liste
+d'enfants.
+
+### La classe `Noeud`
+
+```python
+class Noeud:
+    def __init__(self, valeur):
+        self.valeur = valeur
+        self.enfants = []
+```
+
+Chaque nœud connaît sa valeur et la liste de ses enfants. Un nœud sans enfant
+est une feuille.
+
+### Construire un arbre
+
+```python
+racine = Noeud("Racine")
+
+a = Noeud("A")
+b = Noeud("B")
+racine.enfants.append(a)
+racine.enfants.append(b)
+
+a.enfants.append(Noeud("C"))
+a.enfants.append(Noeud("D"))
+
+b.enfants.append(Noeud("E"))
+b.enfants.append(Noeud("F"))
+```
+
+Cet arbre correspond à :
+
+```text
+         Racine
+        /      \
+       A        B
+      / \      / \
+     C   D    E   F
+```
+
+### Ajouter un enfant
+
+Plutôt que de manipuler directement la liste d'enfants, on peut ajouter une
+méthode à la classe `Noeud` pour créer et ajouter un enfant en une seule étape :
+
+```python
+class Noeud:
+    def __init__(self, valeur):
+        self.valeur = valeur
+        self.enfants = []
+
+    def ajouter_enfant(self, valeur):
+        enfant = Noeud(valeur)
+        self.enfants.append(enfant)
+        return enfant
+```
+
+```python
+racine = Noeud("Racine")
+a = racine.ajouter_enfant("A")
+b = racine.ajouter_enfant("B")
+a.ajouter_enfant("C")
+a.ajouter_enfant("D")
+```
+
+### Retirer un enfant
+
+Pour retirer un enfant, on le cherche par sa valeur et on le retire de la
+liste :
+
+```python
+    def retirer_enfant(self, valeur):
+        for i in range(len(self.enfants)):
+            if self.enfants[i].valeur == valeur:
+                return self.enfants.pop(i)
+        return None
+```
+
+```python
+racine = Noeud("Racine")
+racine.ajouter_enfant("A")
+racine.ajouter_enfant("B")
+racine.ajouter_enfant("C")
+
+retire = racine.retirer_enfant("B")
+print(retire.valeur)  # B
+print([e.valeur for e in racine.enfants])  # ['A', 'C']
+```
+
+### Parcourir un arbre
+
+Pour visiter tous les nœuds d'un arbre, on utilise la **récursivité** : on
+traite le nœud courant, puis on parcourt chacun de ses enfants.
+
+```python
+def afficher_arbre(noeud, niveau=0):
+    print("  " * niveau + str(noeud.valeur))
+    for enfant in noeud.enfants:
+        afficher_arbre(enfant, niveau + 1)
+```
+
+```python
+racine = Noeud("Racine")
+a = racine.ajouter_enfant("A")
+b = racine.ajouter_enfant("B")
+a.ajouter_enfant("C")
+a.ajouter_enfant("D")
+b.ajouter_enfant("E")
+
+afficher_arbre(racine)
+# Racine
+#   A
+#     C
+#     D
+#   B
+#     E
+```
+
+### Chercher une valeur
+
+On peut chercher une valeur dans tout l'arbre en parcourant récursivement :
+
+```python
+def chercher(noeud, valeur):
+    if noeud.valeur == valeur:
+        return noeud
+
+    for enfant in noeud.enfants:
+        resultat = chercher(enfant, valeur)
+        if resultat is not None:
+            return resultat
+
+    return None
+```
+
+```python
+noeud_d = chercher(racine, "D")
+print(noeud_d.valeur)  # D
+
+noeud_z = chercher(racine, "Z")
+print(noeud_z)  # None
+```
+
+Dans le pire cas, il faut visiter **tous** les nœuds pour conclure qu'une valeur
+est absente. Sur un arbre de `n` nœuds, la recherche coûte donc $n$ opérations.
+
+### La classe au complet
+
+```python
+class Noeud:
+    def __init__(self, valeur):
+        self.valeur = valeur
+        self.enfants = []
+
+    def ajouter_enfant(self, valeur):
+        enfant = Noeud(valeur)
+        self.enfants.append(enfant)
+        return enfant
+
+    def retirer_enfant(self, valeur):
+        for i in range(len(self.enfants)):
+            if self.enfants[i].valeur == valeur:
+                return self.enfants.pop(i)
+        return None
+
+    def __repr__(self):
+        return f"Noeud({self.valeur!r})"
+```
+
+---
+
+## Arbres binaires de recherche
+
+### Qu'est-ce qu'un arbre binaire ?
+
+Un **arbre binaire** est un arbre où chaque nœud a **au plus deux enfants**,
+appelés enfant **gauche** et enfant **droit**.
+
+```text
+       10
+      /  \
+     5    15
+    / \     \
+   3   7    20
+```
+
+### Qu'est-ce qu'un arbre binaire de recherche ?
+
+Un **arbre binaire de recherche** (ABR, ou *Binary Search Tree* en anglais)
+respecte une règle supplémentaire :
+
+* toutes les valeurs du **sous-arbre gauche** sont **inférieures** à la valeur
+  du nœud ;
+* toutes les valeurs du **sous-arbre droit** sont **supérieures** à la valeur
+  du nœud.
+
+Cette règle s'applique **à chaque nœud** de l'arbre.
+
+```text
+       10               <- 10
+      /  \
+     5    15             <- 5 < 10,  15 > 10  ✓
+    / \     \
+   3   7    20           <- 3 < 5,  7 > 5,  20 > 15  ✓
+```
+
+Grâce à cette propriété, on peut chercher une valeur **sans parcourir tout
+l'arbre** : à chaque nœud, on sait s'il faut aller à gauche ou à droite.
+
+### La classe `NoeudABR`
+
+```python
+class NoeudABR:
+    def __init__(self, valeur):
+        self.valeur = valeur
+        self.gauche = None
+        self.droit = None
+```
+
+### Insérer une valeur
+
+On compare la valeur à insérer avec le nœud courant :
+
+* si elle est **plus petite**, on va à gauche ;
+* si elle est **plus grande**, on va à droite ;
+* quand on atteint `None`, on a trouvé la bonne place.
+
+```python
+def inserer(racine, valeur):
+    if racine is None:
+        return NoeudABR(valeur)
+
+    if valeur < racine.valeur:
+        racine.gauche = inserer(racine.gauche, valeur)
+    elif valeur > racine.valeur:
+        racine.droit = inserer(racine.droit, valeur)
+
+    return racine
+```
+
+```python
+racine = None
+for v in [10, 5, 15, 3, 7, 20]:
+    racine = inserer(racine, v)
+```
+
+Cela produit l'arbre vu plus haut.
+
+### Chercher une valeur
+
+La recherche suit la même logique : à chaque nœud, on sait dans quelle
+direction aller.
+
+```python
+def chercher_abr(racine, valeur):
+    if racine is None:
+        return False
+
+    if valeur == racine.valeur:
+        return True
+    elif valeur < racine.valeur:
+        return chercher_abr(racine.gauche, valeur)
+    else:
+        return chercher_abr(racine.droit, valeur)
+```
+
+```python
+print(chercher_abr(racine, 7))   # True
+print(chercher_abr(racine, 12))  # False
+```
+
+À chaque étape, on élimine **la moitié** de l'arbre. Si l'arbre est bien
+équilibré, la recherche fait $\log(n)$ opérations au lieu de $n$ pour une liste.
+
+### Trouver le minimum et le maximum
+
+Le minimum est toujours le nœud le plus à **gauche**, le maximum le plus à
+**droite** :
+
+```python
+def minimum(racine):
+    noeud = racine
+    while noeud.gauche is not None:
+        noeud = noeud.gauche
+    return noeud.valeur
+
+
+def maximum(racine):
+    noeud = racine
+    while noeud.droit is not None:
+        noeud = noeud.droit
+    return noeud.valeur
+```
+
+```python
+print(minimum(racine))  # 3
+print(maximum(racine))  # 20
+```
+
+### Parcours en ordre (*inorder traversal*)
+
+En parcourant un ABR dans l'ordre **gauche → nœud → droite**, on obtient les
+valeurs **triées** :
+
+```python
+def parcours_en_ordre(racine):
+    if racine is None:
+        return []
+
+    return (
+        parcours_en_ordre(racine.gauche)
+        + [racine.valeur]
+        + parcours_en_ordre(racine.droit)
+    )
+```
+
+```python
+print(parcours_en_ordre(racine))  # [3, 5, 7, 10, 15, 20]
+```
+
+C'est une propriété très utile : un ABR permet de maintenir des données triées
+naturellement.
+
+### Retirer une valeur
+
+Retirer un nœud d'un ABR est plus délicat que l'insertion, car il faut
+conserver la propriété de l'arbre (gauche &lt; nœud &lt; droite). Il y a **trois
+cas** à considérer.
+
+#### Cas 1 : le nœud est une feuille
+
+Si le nœud n'a aucun enfant, on le retire simplement en retournant `None` à
+son parent.
+
+```text
+       10                    10
+      /  \       retirer 3   /  \
+     5    15     -------->  5    15
+    / \     \              / \     \
+   3   7    20            .   7    20
+```
+
+#### Cas 2 : le nœud a un seul enfant
+
+Si le nœud a exactement un enfant, on le remplace par cet enfant.
+
+```text
+       10                    10
+      /  \       retirer 15  /  \
+     5    15     -------->  5    20
+    / \     \              / \
+   3   7    20            3   7
+```
+
+#### Cas 3 : le nœud a deux enfants
+
+C'est le cas le plus complexe. On ne peut pas simplement retirer le nœud, car
+il reste deux sous-arbres à raccrocher. La stratégie est la suivante :
+
+1. trouver le **successeur en ordre** : le plus petit nœud du sous-arbre
+   **droit** (c'est-à-dire le nœud le plus à gauche du sous-arbre droit) ;
+2. **copier** la valeur du successeur dans le nœud à retirer ;
+3. **retirer** le successeur de son emplacement d'origine (ce qui revient au
+   cas 1 ou 2, car le successeur n'a jamais d'enfant gauche).
+
+```text
+       10                    15
+      /  \       retirer 10  /  \
+     5    15     -------->  5    20
+    / \     \              / \
+   3   7    20            3   7
+```
+
+Ici, le successeur de `10` est `15` (le minimum du sous-arbre droit).
+
+#### Le code
+
+```python
+def supprimer(racine, valeur):
+    if racine is None:
+        return None
+
+    if valeur < racine.valeur:
+        racine.gauche = supprimer(racine.gauche, valeur)
+    elif valeur > racine.valeur:
+        racine.droit = supprimer(racine.droit, valeur)
+    else:
+        # On a trouvé le nœud à retirer
+
+        # Cas 1 et 2 : aucun enfant ou un seul enfant
+        if racine.gauche is None:
+            return racine.droit
+        if racine.droit is None:
+            return racine.gauche
+
+        # Cas 3 : deux enfants
+        # Trouver le successeur (minimum du sous-arbre droit)
+        successeur = racine.droit
+        while successeur.gauche is not None:
+            successeur = successeur.gauche
+
+        racine.valeur = successeur.valeur
+        racine.droit = supprimer(racine.droit, successeur.valeur)
+
+    return racine
+```
+
+```python
+racine = None
+for v in [10, 5, 15, 3, 7, 20]:
+    racine = inserer(racine, v)
+
+racine = supprimer(racine, 5)
+print(parcours_en_ordre(racine))  # [3, 7, 10, 15, 20]
+
+racine = supprimer(racine, 10)
+print(parcours_en_ordre(racine))  # [3, 7, 15, 20]
+```
+
+### La classe au complet
+
+Les fonctions présentées jusqu'ici prennent toutes un nœud `racine` en
+paramètre. En regroupant le tout dans une classe `ABR`, on obtient une
+interface plus propre où la racine est gérée automatiquement.
+
+```python
+class NoeudABR:
+    def __init__(self, valeur):
+        self.valeur = valeur
+        self.gauche = None
+        self.droit = None
+
+
+class ABR:
+    def __init__(self):
+        self.racine = None
+
+    def inserer(self, valeur):
+        self.racine = self._inserer(self.racine, valeur)
+
+    def _inserer(self, noeud, valeur):
+        if noeud is None:
+            return NoeudABR(valeur)
+
+        if valeur < noeud.valeur:
+            noeud.gauche = self._inserer(noeud.gauche, valeur)
+        elif valeur > noeud.valeur:
+            noeud.droit = self._inserer(noeud.droit, valeur)
+
+        return noeud
+
+    def chercher(self, valeur):
+        return self._chercher(self.racine, valeur)
+
+    def _chercher(self, noeud, valeur):
+        if noeud is None:
+            return False
+        if valeur == noeud.valeur:
+            return True
+        elif valeur < noeud.valeur:
+            return self._chercher(noeud.gauche, valeur)
+        else:
+            return self._chercher(noeud.droit, valeur)
+
+    def minimum(self):
+        if self.racine is None:
+            raise ValueError("L'arbre est vide")
+        noeud = self.racine
+        while noeud.gauche is not None:
+            noeud = noeud.gauche
+        return noeud.valeur
+
+    def maximum(self):
+        if self.racine is None:
+            raise ValueError("L'arbre est vide")
+        noeud = self.racine
+        while noeud.droit is not None:
+            noeud = noeud.droit
+        return noeud.valeur
+
+    def supprimer(self, valeur):
+        self.racine = self._supprimer(self.racine, valeur)
+
+    def _supprimer(self, noeud, valeur):
+        if noeud is None:
+            return None
+
+        if valeur < noeud.valeur:
+            noeud.gauche = self._supprimer(noeud.gauche, valeur)
+        elif valeur > noeud.valeur:
+            noeud.droit = self._supprimer(noeud.droit, valeur)
+        else:
+            if noeud.gauche is None:
+                return noeud.droit
+            if noeud.droit is None:
+                return noeud.gauche
+
+            successeur = noeud.droit
+            while successeur.gauche is not None:
+                successeur = successeur.gauche
+
+            noeud.valeur = successeur.valeur
+            noeud.droit = self._supprimer(noeud.droit, successeur.valeur)
+
+        return noeud
+
+    def parcours_en_ordre(self):
+        return self._parcours_en_ordre(self.racine)
+
+    def _parcours_en_ordre(self, noeud):
+        if noeud is None:
+            return []
+        return (
+            self._parcours_en_ordre(noeud.gauche)
+            + [noeud.valeur]
+            + self._parcours_en_ordre(noeud.droit)
+        )
+
+    def __repr__(self):
+        return str(self.parcours_en_ordre())
+```
+
+Chaque méthode publique (`inserer`, `chercher`, etc.) délègue le travail à une
+méthode privée (préfixée par `_`) qui reçoit le nœud courant et utilise la
+récursivité. C'est un patron classique : l'utilisateur n'a pas à manipuler les
+nœuds directement.
+
+### Exemple d'utilisation
+
+```python
+arbre = ABR()
+
+for v in [10, 5, 15, 3, 7, 20]:
+    arbre.inserer(v)
+
+print(arbre)                  # [3, 5, 7, 10, 15, 20]
+print(arbre.chercher(7))      # True
+print(arbre.chercher(12))     # False
+print(arbre.minimum())        # 3
+print(arbre.maximum())        # 20
+
+arbre.supprimer(5)
+print(arbre)                  # [3, 7, 10, 15, 20]
+
+arbre.supprimer(10)
+print(arbre)                  # [3, 7, 15, 20]
+```
+
+### Le cas pathologique : l'arbre dégénéré
+
+Si on insère des valeurs **déjà triées**, l'arbre devient une longue chaîne où
+chaque nœud n'a qu'un seul enfant. On appelle cela un **arbre dégénéré** :
+
+```python
+racine = None
+for v in [1, 2, 3, 4, 5]:
+    racine = inserer(racine, v)
+```
+
+```text
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+```
+
+Dans ce cas, l'arbre ressemble à une liste chaînée et la recherche redevient
+$O(n)$ — on perd tout l'avantage de l'ABR.
+
+C'est un problème important en pratique. Pour y remédier, il existe des
+**arbres équilibrés** (par exemple les arbres AVL ou les arbres rouge-noir) qui
+se réorganisent automatiquement après chaque insertion ou suppression pour
+garantir une hauteur en $O(\log n)$. L'étude de ces structures dépasse le cadre
+de ce cours, mais il est bon de savoir qu'elles existent et qu'elles résolvent
+ce problème.

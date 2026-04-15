@@ -1,0 +1,310 @@
+---
+sidebar_label: Les piles
+sidebar_position: 2
+description: Les piles
+---
+
+# Les piles
+
+## Qu'est-ce qu'une pile ?
+
+Une pile est une structure de données qui stocke des éléments selon le principe
+**LIFO** (*Last In, First Out*), c'est-à-dire :
+
+* le **dernier** élément ajouté est le **premier** à être retiré ;
+* les opérations se font toujours au **sommet** de la pile.
+
+On peut imaginer une pile d'assiettes : on dépose une nouvelle assiette sur le
+dessus, puis on retire aussi celle du dessus.
+
+```text
+Sommet
+  |
+  v
++-----+
+|  30 |
++-----+
+|  20 |
++-----+
+|  10 |
++-----+
+```
+
+Dans cet exemple, si on retire un élément, on obtiendra d'abord `30`, puis
+`20`, puis `10`.
+
+## Pourquoi les piles existent-elles ?
+
+Les piles sont utiles lorsqu'on veut traiter les éléments dans l'ordre inverse
+de leur arrivée.
+
+Voici quelques situations courantes :
+
+* **Historique d'actions** : annuler la dernière action dans un éditeur.
+* **Navigation** : revenir à la page précédente dans un navigateur.
+* **Parcours de structures** : certains algorithmes utilisent une pile pour se
+  souvenir des étapes à reprendre plus tard.
+
+La pile existe donc parce qu'elle modélise très bien les problèmes où l'on doit
+**revenir en arrière** sur les opérations les plus récentes.
+
+## Les opérations principales
+
+Une pile propose généralement les opérations suivantes :
+
+* `push(element)` : ajoute un élément au sommet.
+* `pop()` : retire et retourne l'élément au sommet.
+* `peek()` ou `top()` : retourne l'élément au sommet sans le retirer.
+* `is_empty()` : indique si la pile est vide.
+
+Exemple d'évolution d'une pile :
+
+```python
+pile = []
+
+pile.append(10)  # push
+pile.append(20)  # push
+pile.append(30)  # push
+
+print(pile)      # [10, 20, 30]
+print(pile[-1])  # 30   -> sommet (peek)
+
+valeur = pile.pop()
+print(valeur)    # 30
+print(pile)      # [10, 20]
+```
+
+Dans cet exemple, `30` est retiré en premier car c'est le dernier élément qui a
+été ajouté.
+
+## Utiliser une pile en Python
+
+Comme vu précédemment, en Python, la façon la plus simple de représenter une
+pile est d'utiliser une liste.
+
+```python
+pile = []
+
+# Empiler des éléments
+pile.append("a")
+pile.append("b")
+pile.append("c")
+
+print(pile)  # ['a', 'b', 'c']
+
+# Consulter le sommet
+print(pile[-1])  # 'c'
+
+# Dépiler
+print(pile.pop())  # 'c'
+print(pile.pop())  # 'b'
+
+print(pile)  # ['a']
+```
+
+Ici :
+
+* la **fin de la liste** représente le sommet de la pile ;
+* `append()` ajoute un élément au sommet ;
+* `pop()` retire l'élément du sommet.
+
+Ce choix est important : travailler à la fin de la liste est naturel et efficace
+en Python.
+
+## Exemple concret : vérifier des parenthèses
+
+Les piles sont très utiles pour vérifier qu'une expression contient des
+parenthèses bien placées.
+
+Principe :
+
+* on empile chaque parenthèse ouvrante `(` ;
+* lorsqu'on rencontre une parenthèse fermante `)`, on retire une ouvrante ;
+* si on veut retirer alors que la pile est vide, l'expression est invalide ;
+* à la fin, la pile doit être vide.
+
+```python
+def parentheses_equilibrees(expression):
+    pile = []
+
+    for caractere in expression:
+        if caractere == '(':
+            pile.append(caractere)
+        elif caractere == ')':
+            if len(pile) == 0:
+                return False
+            pile.pop()
+
+    return len(pile) == 0
+
+
+print(parentheses_equilibrees("(a + b) * (c - d)"))  # True
+print(parentheses_equilibrees("((a + b)"))           # False
+print(parentheses_equilibrees(")a + b("))            # False
+```
+
+## Si `append()` et `pop()` n'existaient pas
+
+La liste en Python est déjà en soi une structure de données qui fait office de
+pile. Toutefois, pour mieux comprendre ce qui se passe plus bas niveau,
+imaginons que Python ne fournit pas `append()` ni `pop()`.
+
+Dans un langage comme le C, on doit gérer nous-mêmes :
+
+* un **tableau** de taille fixe (le *buffer*) ;
+* un **pointeur vers le sommet** qui indique combien d'éléments sont réellement
+  utilisés ;
+* le **redimensionnement** du tableau lorsqu'il est plein ou trop vide.
+
+Construisons cette pile étape par étape.
+
+### Étape 1 : la structure de base
+
+On a besoin de trois informations : le tableau, sa capacité totale et le nombre
+d'éléments qu'il contient réellement (le sommet).
+
+```python
+class Pile:
+    def __init__(self, capacite_initiale=4):
+        self.data = [None] * capacite_initiale
+        self.capacite = capacite_initiale
+        self.sommet = 0  # pointe vers la prochaine case libre
+```
+
+Au départ, le tableau contient `capacite_initiale` cases toutes à `None`, et
+`sommet` vaut `0` (la pile est vide).
+
+### Étape 2 : redimensionner le tableau
+
+Quand on doit changer la taille du tableau, on crée un nouveau tableau, on
+recopie les éléments un par un, puis on remplace l'ancien.
+
+```python
+    def _redimensionner(self, nouvelle_capacite):
+        nouveau = [None] * nouvelle_capacite
+        for i in range(self.sommet):
+            nouveau[i] = self.data[i]
+        self.data = nouveau
+        self.capacite = nouvelle_capacite
+```
+
+### Étape 3 : empiler (*push*)
+
+On place l'élément à la position `sommet`, puis on avance le pointeur. Si le
+tableau est plein, on **double** la capacité avant d'insérer.
+
+```python
+    def push(self, element):
+        if self.sommet == self.capacite:
+            self._redimensionner(self.capacite * 2)
+
+        self.data[self.sommet] = element
+        self.sommet += 1
+```
+
+### Étape 4 : dépiler (*pop*)
+
+On recule le pointeur, on récupère l'élément et on nettoie la case. Si le
+tableau devient trop vide (le quart de sa capacité), on le **divise par 2** pour
+ne pas gaspiller de mémoire.
+
+```python
+    def pop(self):
+        if self.sommet == 0:
+            raise IndexError("pop sur une pile vide")
+
+        self.sommet -= 1
+        element = self.data[self.sommet]
+        self.data[self.sommet] = None
+
+        if self.sommet > 0 and self.sommet <= self.capacite // 4:
+            self._redimensionner(self.capacite // 2)
+
+        return element
+```
+
+### Étape 5 : consulter le sommet (*peek*)
+
+```python
+    def peek(self):
+        if self.sommet == 0:
+            raise IndexError("peek sur une pile vide")
+        return self.data[self.sommet - 1]
+```
+
+### La classe au complet
+
+```python
+class Pile:
+    def __init__(self, capacite_initiale=4):
+        self.data = [None] * capacite_initiale
+        self.capacite = capacite_initiale
+        self.sommet = 0
+
+    def _redimensionner(self, nouvelle_capacite):
+        nouveau = [None] * nouvelle_capacite
+        for i in range(self.sommet):
+            nouveau[i] = self.data[i]
+        self.data = nouveau
+        self.capacite = nouvelle_capacite
+
+    def push(self, element):
+        if self.sommet == self.capacite:
+            self._redimensionner(self.capacite * 2)
+        self.data[self.sommet] = element
+        self.sommet += 1
+
+    def pop(self):
+        if self.sommet == 0:
+            raise IndexError("pop sur une pile vide")
+        self.sommet -= 1
+        element = self.data[self.sommet]
+        self.data[self.sommet] = None
+        if self.sommet > 0 and self.sommet <= self.capacite // 4:
+            self._redimensionner(self.capacite // 2)
+        return element
+
+    def peek(self):
+        if self.sommet == 0:
+            raise IndexError("peek sur une pile vide")
+        return self.data[self.sommet - 1]
+
+    def est_vide(self):
+        return self.sommet == 0
+
+    def __len__(self):
+        return self.sommet
+
+    def __repr__(self):
+        return str(self.data[:self.sommet])
+```
+
+### Exemple d'utilisation
+
+```python
+pile = Pile(capacite_initiale=2)
+
+pile.push(10)
+pile.push(20)
+print(pile)             # [10, 20]
+print(pile.capacite)    # 2
+
+pile.push(30)           # le tableau est plein -> capacité doublée (2 -> 4)
+print(pile)             # [10, 20, 30]
+print(pile.capacite)    # 4
+
+print(pile.pop())       # 30
+print(pile.pop())       # 20
+print(pile)             # [10]
+print(pile.capacite)    # 2  (réduit de moitié car 1 <= 4 // 4)
+```
+
+### Pourquoi doubler plutôt que `+1` ?
+
+Si on agrandit de `+1` à chaque `push`, on recopie tout le tableau à chaque
+insertion. En doublant la capacité, les recopies deviennent de plus en plus rares : on
+copie `n` éléments, puis on a `n` places libres avant la prochaine recopie.
+
+La même logique s'applique pour la réduction : on divise par 2 seulement quand
+la pile est remplie au quart. Cela évite l'effet « yo-yo » où l'on agrandirait
+et réduirait sans cesse autour de la même taille.

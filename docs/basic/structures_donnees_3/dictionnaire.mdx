@@ -1,0 +1,296 @@
+---
+sidebar_label: Les dictionnaires
+sidebar_position: 5
+description: Les dictionnaires
+---
+
+# Les dictionnaires (partie 2)
+
+## Rappel
+
+Comme vu dans [la première partie](../structures_donnees_1/dict_v1.mdx), un
+dictionnaire stocke des paires **clé → valeur**. Contrairement à une liste où
+l'on accède aux éléments par leur position, un dictionnaire permet d'accéder à
+une valeur directement grâce à sa clé.
+
+```python
+etudiant = {"nom": "Alice", "age": 21, "programme": "Informatique"}
+print(etudiant["nom"])  # Alice
+```
+
+Dans la première partie, nous avons vu comment créer un dictionnaire, accéder
+aux valeurs, ajouter, modifier, supprimer des entrées et itérer sur un
+dictionnaire. Ici, nous allons explorer des usages plus avancés puis comprendre
+**comment un dictionnaire fonctionne sous le capot**.
+
+## Compréhension de dictionnaire
+
+Comme pour les listes, Python permet de créer un dictionnaire en une seule ligne
+avec une **compréhension** :
+
+```python
+carres = {x: x ** 2 for x in range(6)}
+print(carres)  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
+```
+
+On peut aussi filtrer :
+
+```python
+pairs = {x: x ** 2 for x in range(10) if x % 2 == 0}
+print(pairs)  # {0: 0, 2: 4, 4: 16, 6: 36, 8: 64}
+```
+
+## Exemple concret : compter les occurrences
+
+Les dictionnaires sont très utiles pour compter combien de fois chaque élément
+apparaît dans une séquence.
+
+```python
+phrase = "abracadabra"
+compteur = {}
+
+for lettre in phrase:
+    if lettre in compteur:
+        compteur[lettre] += 1
+    else:
+        compteur[lettre] = 1
+
+print(compteur)  # {'a': 5, 'b': 2, 'r': 2, 'c': 1, 'd': 1}
+```
+
+Principe :
+
+* on parcourt chaque caractère de la chaîne ;
+* si la clé existe déjà, on incrémente le compteur ;
+* sinon, on crée la clé avec la valeur `1`.
+
+---
+
+## Comment fonctionne un dictionnaire ?
+
+Jusqu'ici, nous avons utilisé le dictionnaire comme un outil. Mais pourquoi
+l'accès par clé est-il si rapide ? La réponse repose sur une structure appelée
+**table de hachage** (*hash table*).
+
+### Le problème de la recherche
+
+Imaginons qu'on veuille retrouver un mot dans un dictionnaire papier. On ne lit
+pas chaque page une par une : on utilise l'ordre alphabétique pour sauter
+directement à la bonne section.
+
+Un dictionnaire Python fait quelque chose de similaire, mais avec des nombres :
+il **calcule un indice** à partir de la clé pour savoir directement **où**
+ranger (ou chercher) la valeur.
+
+### Qu'est-ce qu'un *hash* ?
+
+Un **hash** (ou *empreinte*) est un nombre entier calculé à partir d'une valeur.
+La fonction qui fait ce calcul s'appelle une **fonction de hachage**.
+
+Propriétés importantes :
+
+* une même valeur donne **toujours** le même hash ;
+* deux valeurs différentes donnent **généralement** des hashs différents ;
+* le calcul est **rapide**.
+
+En Python, la fonction `hash()` retourne le hash d'un objet :
+
+```python
+print(hash("alice"))     # ex: 6121152047685668747
+print(hash("bob"))       # ex: 7063735234232627530
+print(hash(42))          # ex: 42
+print(hash((1, 2, 3)))   # ex: 529344067295497451
+```
+
+:::warning
+
+Seuls les types **immuables** (non modifiables) peuvent être utilisés comme clés
+de dictionnaire, car leur hash ne doit jamais changer. C'est pourquoi les
+listes, les ensembles et les dictionnaires ne peuvent pas servir de clés.
+
+```python
+hash([1, 2, 3])  # TypeError: unhashable type: 'list'
+```
+
+:::
+
+### De la clé à l'indice
+
+Le hash est un grand nombre. Pour en faire un **indice** valide dans un tableau,
+on utilise le modulo :
+
+```text
+indice = hash(cle) % capacite
+```
+
+Par exemple, avec une capacité de 8 :
+
+```python
+capacite = 8
+print(hash("nom") % capacite)  # ex: 6
+print(hash("age") % capacite)  # ex: 7
+```
+
+La clé `"nom"` est rangée à l'indice 6, la clé `"age"` à l'indice 7. Pas
+besoin de parcourir tout le tableau : on **calcule** directement la position.
+
+### Illustration
+
+Voici une table de hachage simplifiée avec une capacité de 8 :
+
+```text
+Indice :  0       1       2       3       4       5       6       7
+        +-------+-------+-------+-------+-------+-------+-------+-------+
+        | None  | None  | None  | "nom" | None  | None  | "age" | None  |
+        |       |       |       | Alice |       |       |  21   |       |
+        +-------+-------+-------+-------+-------+-------+-------+-------+
+```
+
+Pour retrouver la valeur associée à `"nom"` :
+
+1. calculer `hash("nom") % 8` → 3 ;
+2. aller directement à l'indice 3 ;
+3. vérifier que la clé stockée est bien `"nom"` ;
+4. retourner `"Alice"`.
+
+### Les collisions
+
+Il arrive que deux clés différentes produisent le **même indice**. C'est ce
+qu'on appelle une **collision**.
+
+```python
+# Exemple fictif
+hash("nom") % 8  # → 3
+hash("xyz") % 8  # → 3 aussi !
+```
+
+[Plusieurs stratégies existent](https://www.geeksforgeeks.org/dsa/collision-resolution-techniques/) pour gérer les collisions. La plus simple est le
+**sondage linéaire** (*linear probing*) : si la case est déjà occupée par une
+autre clé, on avance à la case suivante jusqu'à en trouver une libre.
+
+```text
+Indice 3 occupé par "nom" → on essaie l'indice 4 → libre → on y place "xyz".
+```
+
+D'autres stratégies existent (chaînage, sondage quadratique, double hachage),
+mais le principe reste le même : trouver une place libre lorsque deux clés
+entrent en conflit.
+
+### Redimensionnement
+
+Si le tableau devient trop plein, les collisions se multiplient et les
+performances se dégradent. Pour éviter cela, on **double la capacité** quand le
+taux de remplissage dépasse un certain seuil (souvent autour de 2/3).
+
+Le processus est le même que pour la pile et la file :
+
+1. créer un nouveau tableau plus grand ;
+2. **recalculer** l'indice de chaque clé (car la capacité a changé) ;
+3. recopier chaque paire clé-valeur à sa nouvelle position.
+
+C'est pour cette raison qu'on choisit un facteur multiplicatif (×2) plutôt
+qu'un agrandissement constant (+1) : les redimensionnements deviennent rares et
+le coût moyen reste faible.
+
+### Implémenter une table de hachage simplifiée
+
+Voici une implémentation minimale pour illustrer le mécanisme. Elle utilise le
+sondage linéaire pour gérer les collisions.
+
+```python
+class TableDeHachage:
+    def __init__(self, capacite_initiale=8):
+        self.capacite = capacite_initiale
+        self.taille = 0
+        self.cles = [None] * capacite_initiale
+        self.valeurs = [None] * capacite_initiale
+
+    def _indice(self, cle):
+        return hash(cle) % self.capacite
+
+    def _redimensionner(self):
+        anciennes_cles = self.cles
+        anciennes_valeurs = self.valeurs
+        self.capacite *= 2
+        self.cles = [None] * self.capacite
+        self.valeurs = [None] * self.capacite
+        self.taille = 0
+
+        for i in range(len(anciennes_cles)):
+            if anciennes_cles[i] is not None:
+                self.ajouter(anciennes_cles[i], anciennes_valeurs[i])
+
+    def ajouter(self, cle, valeur):
+        if self.taille >= self.capacite * 2 // 3:
+            self._redimensionner()
+
+        indice = self._indice(cle)
+
+        while self.cles[indice] is not None and self.cles[indice] != cle:
+            indice = (indice + 1) % self.capacite  # sondage linéaire
+
+        if self.cles[indice] is None:
+            # Case libre : nouvelle entrée
+            self.cles[indice] = cle
+            self.valeurs[indice] = valeur
+            self.taille += 1
+        else:
+            # La clé existe déjà : mise à jour
+            self.valeurs[indice] = valeur
+
+    def obtenir(self, cle):
+        indice = self._indice(cle)
+
+        while self.cles[indice] is not None:
+            if self.cles[indice] == cle:
+                return self.valeurs[indice]
+            indice = (indice + 1) % self.capacite
+
+        raise KeyError(cle)
+
+    def contient(self, cle):
+        indice = self._indice(cle)
+
+        while self.cles[indice] is not None:
+            if self.cles[indice] == cle:
+                return True
+            indice = (indice + 1) % self.capacite
+
+        return False
+
+    def __repr__(self):
+        paires = []
+        for i in range(self.capacite):
+            if self.cles[i] is not None:
+                paires.append(f"{self.cles[i]!r}: {self.valeurs[i]!r}")
+        return "{" + ", ".join(paires) + "}"
+```
+
+### Exemple d'utilisation
+
+```python
+table = TableDeHachage()
+
+table.ajouter("nom", "Alice")
+table.ajouter("age", 21)
+table.ajouter("programme", "Informatique")
+
+print(table.obtenir("nom"))        # Alice
+print(table.contient("email"))     # False
+
+table.ajouter("age", 22)           # mise à jour
+print(table.obtenir("age"))        # 22
+
+print(table)  # {'nom': 'Alice', 'age': 22, 'programme': 'Informatique'}
+```
+
+### Pourquoi c'est rapide ?
+
+Dans une liste, chercher une valeur demande de parcourir potentiellement tous
+les éléments. Avec une table de hachage, on calcule directement l'indice :
+l'accès est presque toujours constant, sauf lorsqu'il y a de nombreuses
+collisions.
+
+C'est cette idée qui fait du dictionnaire Python l'une des structures les plus
+utilisées : on obtient un accès quasi instantané, que le dictionnaire contienne
+10 ou 10 millions d'entrées.
