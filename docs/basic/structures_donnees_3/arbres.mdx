@@ -336,6 +336,55 @@ print(chercher_abr(racine, 12))  # False
 À chaque étape, on élimine **la moitié** de l'arbre. Si l'arbre est bien
 équilibré, la recherche fait $\log(n)$ opérations au lieu de $n$ pour une liste.
 
+### Trouver le minimum et le maximum
+
+Le minimum est toujours le nœud le plus à **gauche**, le maximum le plus à
+**droite** :
+
+```python
+def minimum(racine):
+    noeud = racine
+    while noeud.gauche is not None:
+        noeud = noeud.gauche
+    return noeud.valeur
+
+
+def maximum(racine):
+    noeud = racine
+    while noeud.droit is not None:
+        noeud = noeud.droit
+    return noeud.valeur
+```
+
+```python
+print(minimum(racine))  # 3
+print(maximum(racine))  # 20
+```
+
+### Parcours en ordre (*inorder traversal*)
+
+En parcourant un ABR dans l'ordre **gauche → nœud → droite**, on obtient les
+valeurs **triées** :
+
+```python
+def parcours_en_ordre(racine):
+    if racine is None:
+        return []
+
+    return (
+        parcours_en_ordre(racine.gauche)
+        + [racine.valeur]
+        + parcours_en_ordre(racine.droit)
+    )
+```
+
+```python
+print(parcours_en_ordre(racine))  # [3, 5, 7, 10, 15, 20]
+```
+
+C'est une propriété très utile : un ABR permet de maintenir des données triées
+naturellement.
+
 ### Retirer une valeur
 
 Retirer un nœud d'un ABR est plus délicat que l'insertion, car il faut
@@ -431,55 +480,6 @@ print(parcours_en_ordre(racine))  # [3, 7, 10, 15, 20]
 racine = supprimer(racine, 10)
 print(parcours_en_ordre(racine))  # [3, 7, 15, 20]
 ```
-
-### Trouver le minimum et le maximum
-
-Le minimum est toujours le nœud le plus à **gauche**, le maximum le plus à
-**droite** :
-
-```python
-def minimum(racine):
-    noeud = racine
-    while noeud.gauche is not None:
-        noeud = noeud.gauche
-    return noeud.valeur
-
-
-def maximum(racine):
-    noeud = racine
-    while noeud.droit is not None:
-        noeud = noeud.droit
-    return noeud.valeur
-```
-
-```python
-print(minimum(racine))  # 3
-print(maximum(racine))  # 20
-```
-
-### Parcours en ordre (*inorder traversal*)
-
-En parcourant un ABR dans l'ordre **gauche → nœud → droite**, on obtient les
-valeurs **triées** :
-
-```python
-def parcours_en_ordre(racine):
-    if racine is None:
-        return []
-
-    return (
-        parcours_en_ordre(racine.gauche)
-        + [racine.valeur]
-        + parcours_en_ordre(racine.droit)
-    )
-```
-
-```python
-print(parcours_en_ordre(racine))  # [3, 5, 7, 10, 15, 20]
-```
-
-C'est une propriété très utile : un ABR permet de maintenir des données triées
-naturellement.
 
 ### La classe au complet
 
