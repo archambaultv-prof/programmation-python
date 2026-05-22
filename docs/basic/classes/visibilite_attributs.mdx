@@ -1,0 +1,149 @@
+---
+sidebar_label: Visibilité des attributs
+sidebar_position: 6
+description: Convention _ et __ en Python — attributs publics, protégés et privés
+---
+
+# Visibilité des attributs
+
+En Python, il n'existe pas de vrais modificateurs d'accès comme `private` ou
+`protected` en Java ou C++. À la place, Python utilise des **conventions de
+nommage** et un mécanisme appelé *name mangling* pour signaler la visibilité
+souhaitée d'un attribut ou d'une méthode.
+
+## Les trois niveaux de visibilité
+
+### Public — `attribut`
+
+Un attribut sans underscore est **public** : il fait partie de l'interface de
+la classe et peut être accédé librement depuis n'importe où.
+
+```python
+class Point:
+    def __init__(self, x, y):
+        self.x = x   # public
+        self.y = y   # public
+
+p = Point(3, 4)
+print(p.x)   # 3 — accès direct, tout à fait normal
+```
+
+### Protégé — `_attribut`
+
+Un underscore au début est une **convention** qui signale que l'attribut est
+« interne » à la classe (ou à sa hiérarchie). Python n'applique **aucune
+restriction technique** : l'attribut reste accessible de l'extérieur. C'est
+un contrat entre développeurs qui dit : *« n'utilisez pas ceci directement
+en dehors de la classe »*.
+
+```python
+class CompteBancaire:
+    def __init__(self, solde):
+        self._solde = solde   # protégé par convention
+
+    def deposer(self, montant):
+        self._solde += montant
+
+    def afficher(self):
+        print(f"Solde : {self._solde} $")
+
+compte = CompteBancaire(100)
+compte.afficher()          # Solde : 100 $
+print(compte._solde)       # 100 — fonctionne, mais déconseillé
+```
+
+### Privé — `__attribut` (name mangling)
+
+Deux underscores au début déclenchent le ***name mangling*** : Python
+renomme automatiquement l'attribut en `_NomClasse__attribut`. Cela le rend
+difficile d'accès depuis l'extérieur et **évite les collisions de noms** dans
+les hiérarchies d'héritage.
+
+```python
+class MaClasse:
+    def __init__(self):
+        self.__secret = 42
+
+obj = MaClasse()
+# print(obj.__secret)          # AttributeError !
+print(obj._MaClasse__secret)   # 42 — name mangling dévoilé
+```
+
+L'attribut n'est pas *vraiment* privé — il reste accessible si on connaît le
+nom transformé — mais c'est un signal fort que cet attribut ne doit pas être
+utilisé en dehors de la classe.
+
+## Cas d'usage du double underscore
+
+Le double underscore est utile pour **éviter les collisions** dans l'héritage.
+Si une classe fille définit accidentellement un attribut avec le même nom qu'un
+attribut de la classe mère, le name mangling protège l'attribut de la classe mère :
+
+```python
+class Base:
+    def __init__(self):
+        self.__valeur = "base"   # stocké comme _Base__valeur
+
+    def afficher(self):
+        print(self.__valeur)     # cherche _Base__valeur
+
+class Fille(Base):
+    def __init__(self):
+        super().__init__()
+        self.__valeur = "fille"  # stocké comme _Fille__valeur — pas de conflit !
+
+f = Fille()
+f.afficher()  # "base" — la classe mère accède bien à son propre attribut
+```
+
+Sans le double underscore, la classe fille écraserait l'attribut de la classe
+mère et `afficher()` afficherait `"fille"`.
+
+## Tableau récapitulatif
+
+| Nommage | Visibilité | Restriction Python | Usage typique |
+|---------|-----------|-------------------|---------------|
+| `attribut` | Public | Aucune | Interface publique de la classe |
+| `_attribut` | Protégé | Aucune (convention) | Attribut interne, ne pas utiliser de l'extérieur |
+| `__attribut` | Privé | Name mangling | Éviter les collisions en héritage |
+
+:::tip Bonne pratique
+Dans la grande majorité des cas, `_attribut` (un seul underscore) est
+suffisant pour signaler qu'un attribut est interne. Réservez `__attribut`
+(double underscore) aux situations où vous craignez réellement une collision
+de nom dans une hiérarchie d'héritage.
+:::
+
+## Les accesseurs et mutateurs (`@property`)
+
+Pour exposer un attribut protégé de façon contrôlée, on utilise `@property`
+et le décorateur `.setter` :
+
+```python
+class Temperature:
+    def __init__(self, celsius):
+        self._celsius = celsius
+
+    @property
+    def celsius(self):
+        return self._celsius
+
+    @celsius.setter
+    def celsius(self, valeur):
+        if valeur < -273.15:
+            raise ValueError("Température inférieure au zéro absolu.")
+        self._celsius = valeur
+
+    @property
+    def fahrenheit(self):
+        return self._celsius * 9 / 5 + 32
+
+t = Temperature(100)
+print(t.celsius)     # 100
+print(t.fahrenheit)  # 212.0
+t.celsius = 0
+t.celsius = -300     # ValueError
+```
+
+Le `@property` permet de garder une **syntaxe d'attribut** (`t.celsius`) tout
+en exécutant de la logique (validation, conversion) sous le capot.

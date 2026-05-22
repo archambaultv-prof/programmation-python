@@ -574,3 +574,329 @@ description: Questions conceptuelles
   </TabItem>
 </Tabs>
 
+---
+
+### 16. Qu'est-ce qu'un accesseur et un mutateur ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce qu'un **accesseur** (*getter*) et un **mutateur** (*setter*) ?
+    Comment les définir en Python avec `@property` ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    - Un **accesseur** (*getter*) est une méthode qui retourne la valeur d'un
+      attribut protégé sans l'exposer directement.
+    - Un **mutateur** (*setter*) est une méthode qui modifie la valeur d'un
+      attribut protégé, souvent après validation.
+
+    En Python, on les définit avec les décorateurs `@property` et `@<nom>.setter` :
+
+    ```python
+    class Point:
+        def __init__(self, x, y):
+            self._x = x   # attribut protégé par convention
+            self._y = y
+
+        @property
+        def x(self):          # accesseur
+            return self._x
+
+        @x.setter
+        def x(self, valeur):  # mutateur
+            if valeur < 0:
+                raise ValueError("x ne peut pas être négatif.")
+            self._x = valeur
+
+    p = Point(3, 4)
+    print(p.x)   # 3  — syntaxe d'attribut, pas p.x()
+    p.x = 5      # appelle le setter
+    p.x = -1     # ValueError
+    ```
+
+    :::info Syntaxe d'attribut
+    Même si ce sont des méthodes, `@property` permet de les utiliser **comme
+    des attributs** (`p.x` et non `p.x()`). Cela rend l'interface publique de la
+    classe plus propre et cohérente.
+    :::
+  </TabItem>
+</Tabs>
+
+---
+
+### 17. Qu'est-ce que le typage canard ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce que le **typage canard** (*duck typing*) ? En quoi diffère-t-il
+    du polymorphisme classique par héritage ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    Le **typage canard** est un principe issu de l'expression : *« Si ça
+    marche comme un canard et que ça fait coin-coin, c'est un canard. »*
+
+    En pratique, Python ne vérifie pas le **type** d'un objet avant d'appeler
+    une méthode — il vérifie seulement si l'objet possède la méthode demandée.
+    Il n'est donc pas nécessaire d'hériter d'une classe commune pour profiter
+    du polymorphisme.
+
+    ```python
+    class Chien:
+        def parler(self):
+            print("Wouf !")
+
+    class Robot:
+        def parler(self):
+            print("Bip boop.")
+
+    # Aucun lien d'héritage entre Chien et Robot
+    for personnage in [Chien(), Robot()]:
+        personnage.parler()   # fonctionne pour les deux
+    ```
+
+    | | Polymorphisme par héritage | Typage canard |
+    |---|---|---|
+    | Lien requis | Héritage d'une classe commune | Aucun |
+    | Vérification | À la conception (classe mère) | À l'exécution (méthode présente ?) |
+    | Recommandé pour | Hiérarchies bien définies | Interagir avec du code tiers |
+
+    Le typage canard est puissant mais moins expressif : sans classe mère
+    commune, rien ne *garantit* qu'un objet implémentera la méthode attendue.
+    C'est pourquoi on préfère souvent des classes abstraites (`ABC`) pour les
+    hiérarchies maîtrisées.
+  </TabItem>
+</Tabs>
+
+---
+
+### 18. Qu'est-ce qu'une méthode spéciale (dunder method) ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce qu'une **méthode spéciale** (aussi appelée *dunder method* ou
+    méthode magique) ? Donnez des exemples et expliquez quand Python les appelle.
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    Les **méthodes spéciales** sont des méthodes dont le nom est encadré de
+    deux underscores (`__nom__`). Python les appelle **automatiquement** dans
+    des contextes précis — jamais directement par le programmeur.
+
+    | Méthode | Déclenchée par |
+    |---------|---------------|
+    | `__init__` | Création d'une instance (`MaClasse(...)`) |
+    | `__str__` | `print()`, `str()` |
+    | `__repr__` | `repr()`, console interactive |
+    | `__eq__` | Opérateur `==` |
+    | `__lt__` | Opérateur `<` |
+    | `__add__` | Opérateur `+` |
+    | `__len__` | Fonction `len()` |
+    | `__getitem__` | Accès par index `obj[i]` |
+
+    ```python
+    class Vecteur:
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+
+        def __add__(self, autre):
+            return Vecteur(self.x + autre.x, self.y + autre.y)
+
+        def __str__(self):
+            return f"({self.x}, {self.y})"
+
+    v1 = Vecteur(1, 2)
+    v2 = Vecteur(3, 4)
+    print(v1 + v2)  # (4, 6) — appelle __add__ puis __str__
+    ```
+
+    Ces méthodes permettent à vos classes de s'intégrer naturellement avec les
+    opérateurs et fonctions Python standard.
+  </TabItem>
+</Tabs>
+
+---
+
+### 19. Qu'est-ce que l'héritage coopératif ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce que l'**héritage coopératif** ? Pourquoi est-il important
+    d'utiliser `super()` dans un contexte d'héritage multiple ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    L'**héritage coopératif** est une façon de structurer l'héritage multiple
+    où chaque classe délègue à `super()` la responsabilité d'appeler la
+    prochaine classe dans le MRO. Cela garantit que toutes les classes de la
+    hiérarchie sont initialisées **une seule fois**, dans le bon ordre, sans
+    oubli ni duplication.
+
+    Le principe : chaque `__init__` traite ses propres paramètres, puis
+    transmet le reste via `**kwargs` à `super().__init__()`.
+
+    ```python
+    class Parler:
+        def __init__(self, message, **kwargs):
+            self.message = message
+            super().__init__(**kwargs)
+
+    class Marcher:
+        def __init__(self, distance, **kwargs):
+            self.distance = distance
+            super().__init__(**kwargs)
+
+    class Personne(Parler, Marcher):
+        def __init__(self, message, distance):
+            super().__init__(message=message, distance=distance)
+
+    p = Personne("Bonjour !", 10)
+    p.message   # "Bonjour !"
+    p.distance  # 10
+    ```
+
+    Sans héritage coopératif (appels manuels directs), certaines classes de la
+    chaîne pourraient être initialisées deux fois ou pas du tout lors d'un
+    héritage en diamant.
+  </TabItem>
+</Tabs>
+
+---
+
+### 20. Peut-on définir des attributs abstraits ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Peut-on forcer une sous-classe à définir un **attribut** (et pas seulement
+    une méthode) dans une classe abstraite Python ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    Oui, avec `@property` combiné à `@abstractmethod`. On définit une
+    propriété abstraite dans la classe mère ; chaque sous-classe doit alors
+    implémenter la propriété (ou simplement l'attribut correspondant).
+
+    ```python
+    from abc import ABC, abstractmethod
+
+    class Forme(ABC):
+        @property
+        @abstractmethod
+        def couleur(self) -> str:
+            pass
+
+        @abstractmethod
+        def aire(self) -> float:
+            pass
+
+    class Cercle(Forme):
+        def __init__(self, rayon, couleur):
+            self.rayon = rayon
+            self._couleur = couleur
+
+        @property
+        def couleur(self) -> str:
+            return self._couleur
+
+        def aire(self) -> float:
+            import math
+            return math.pi * self.rayon ** 2
+
+    c = Cercle(5, "rouge")
+    print(c.couleur)  # rouge
+    ```
+
+    Si `Cercle` n'implémentait pas `couleur`, Python lèverait une `TypeError`
+    à l'instanciation, comme pour une méthode abstraite ordinaire.
+  </TabItem>
+</Tabs>
+
+---
+
+### 21. Composition vs héritage — quand choisir ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Quelle est la différence entre la **composition** et l'**héritage** ?
+    Quand doit-on préférer l'une à l'autre ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    - L'**héritage** modélise une relation **« est-un »** : un `Chien` *est un*
+      `Animal`.
+    - La **composition** modélise une relation **« a-un »** : une `Voiture`
+      *a un* `Moteur`.
+
+    ```python
+    # Héritage — Chien EST UN Animal
+    class Animal:
+        def respirer(self): ...
+
+    class Chien(Animal):
+        def aboyer(self): ...
+
+    # Composition — Voiture A UN Moteur
+    class Moteur:
+        def demarrer(self): ...
+
+    class Voiture:
+        def __init__(self):
+            self.moteur = Moteur()   # composition
+
+        def demarrer(self):
+            self.moteur.demarrer()
+    ```
+
+    **Règle générale :** privilégier la composition à l'héritage (*favor
+    composition over inheritance*). L'héritage crée un couplage fort entre
+    classes mère et fille : modifier la classe mère peut casser les classes
+    filles de façon inattendue. La composition est plus flexible et plus facile
+    à modifier.
+
+    Utilisez l'héritage uniquement lorsque la relation « est-un » est clairement
+    vraie et stable dans le temps.
+  </TabItem>
+</Tabs>
+
+---
+
+### 22. Quelle est la différence entre `_attribut` et `__attribut` ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Quelle est la différence entre `_attribut` (un underscore) et `__attribut`
+    (deux underscores) en Python ? Qu'est-ce que le *name mangling* ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    | Convention | Signification | Accès depuis l'extérieur |
+    |-----------|---------------|--------------------------|
+    | `attribut` | Public | Libre |
+    | `_attribut` | Protégé (convention) | Possible, mais déconseillé |
+    | `__attribut` | Privé (*name mangling*) | Difficile, mais pas impossible |
+
+    - `_attribut` : simple **convention** pour signaler que l'attribut est
+      « interne » à la classe. Python n'applique aucune restriction — c'est un
+      contrat entre développeurs.
+    - `__attribut` : Python applique le **name mangling** : le nom est
+      automatiquement transformé en `_NomClasse__attribut`. Cela évite les
+      collisions de noms en cas d'héritage, mais l'attribut reste accessible si
+      on connaît le nom modifié.
+
+    ```python
+    class MaClasse:
+        def __init__(self):
+            self.public = 1
+            self._protege = 2
+            self.__prive = 3
+
+    obj = MaClasse()
+    print(obj.public)           # 1  — OK
+    print(obj._protege)         # 2  — fonctionne, mais déconseillé
+    # print(obj.__prive)        # AttributeError !
+    print(obj._MaClasse__prive) # 3  — name mangling dévoilé
+    ```
+
+    :::tip Bonne pratique
+    En Python, on utilise `_attribut` pour signaler qu'un attribut ne fait
+    pas partie de l'API publique. Le double underscore (`__`) est réservé aux
+    cas où on veut vraiment éviter une collision de nom dans une hiérarchie
+    d'héritage.
+    :::
+  </TabItem>
+</Tabs>
+
