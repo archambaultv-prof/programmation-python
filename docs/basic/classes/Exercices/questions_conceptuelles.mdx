@@ -514,25 +514,63 @@ description: Questions conceptuelles
     | Méthode de classe | `@classmethod` | `cls` (classe) | attributs de classe seulement |
     | Méthode statique | `@staticmethod` | *(aucun)* | aucun accès implicite |
 
-    ```python
-    class Exemple:
-        compteur = 0
+    **`@classmethod` — constructeurs alternatifs**
 
-        def methode_normale(self):
-            print(f"instance : {self}")
+    L'usage le plus courant est de fournir des **constructeurs alternatifs** :
+    plusieurs façons de créer un objet à partir de formats différents, sans
+    surcharger `__init__`.
+
+    ```python
+    class Date:
+        def __init__(self, jour, mois, annee):
+            self.jour = jour
+            self.mois = mois
+            self.annee = annee
 
         @classmethod
-        def methode_classe(cls):
-            print(f"classe : {cls}")
+        def from_string(cls, chaine):
+            # chaine attendue : "22-05-2026"
+            jour, mois, annee = chaine.split("-")
+            return cls(int(jour), int(mois), int(annee))
 
-        @staticmethod
-        def methode_statique():
-            print("méthode utilitaire indépendante")
+        def __str__(self):
+            return f"{self.jour}/{self.mois}/{self.annee}"
+
+    d1 = Date(22, 5, 2026)             # constructeur normal
+    d2 = Date.from_string("22-05-2026") # constructeur alternatif
+    print(d1)  # 22/5/2026
+    print(d2)  # 22/5/2026
     ```
 
-    Les méthodes de classe sont souvent utilisées comme fabriques alternatives
-    (`from_string`, `from_file`, etc.). Les méthodes statiques regroupent des
-    fonctions utilitaires liées à la classe sans avoir besoin de `self` ou `cls`.
+    **`@staticmethod` — fonction utilitaire rattachée à la classe**
+
+    Une méthode statique est simplement une fonction ordinaire (`def ...`) qu'on
+    aurait pu définir en dehors de la classe. Son seul intérêt est de la
+    **regrouper logiquement** avec la classe, pour que le code soit mieux
+    organisé.
+
+    ```python
+    class Date:
+        # ... (même classe qu'au-dessus)
+
+        @staticmethod
+        def est_annee_bissextile(annee):
+            return annee % 4 == 0 and (annee % 100 != 0 or annee % 400 == 0)
+
+    print(Date.est_annee_bissextile(2024))  # True
+    ```
+
+    `est_annee_bissextile` n'a pas besoin de l'instance (`self`) ni de la
+    classe (`cls`) : c'est une fonction pure. On aurait pu l'écrire en dehors
+    de la classe et elle fonctionnerait identiquement.
+
+    :::note `@staticmethod` en Python vs Java
+    En Java (et C#), il n'existe pas de fonctions libres — tout doit appartenir
+    à une classe. Les méthodes statiques y sont donc indispensables pour écrire
+    ce qui serait une simple fonction. En Python, ce besoin disparaît : on peut
+    définir une fonction directement dans un module. `@staticmethod` reste utile
+    pour le regroupement et la lisibilité, mais son usage est moins fondamental.
+    :::
   </TabItem>
 </Tabs>
 
