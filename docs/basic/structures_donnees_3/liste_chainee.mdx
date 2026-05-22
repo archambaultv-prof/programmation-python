@@ -6,8 +6,362 @@ description: Les listes chaînées
 
 # Les listes chaînées
 
-:::info
+## Qu'est-ce qu'une liste chaînée ?
 
-À venir
+Une liste chaînée est une structure de données **linéaire** composée de
+**nœuds** reliés entre eux. Chaque nœud contient deux informations :
+
+* une **valeur** (la donnée stockée) ;
+* un **pointeur vers le nœud suivant** (ou `None` si c'est le dernier).
+
+```text
+tête
+  |
+  v
++--------+    +--------+    +--------+    +--------+
+| val=10 |--->| val=20 |--->| val=30 |--->| val=40 |---> None
++--------+    +--------+    +--------+    +--------+
+```
+
+Dans cet exemple, la liste contient quatre nœuds. On entre dans la liste
+uniquement par la **tête** (*head*), qui pointe vers le premier nœud. Pour
+atteindre `40`, il faut traverser les nœuds `10`, `20` et `30`.
+
+### Vocabulaire
+
+* **Nœud** (*node*) : unité de base qui contient une valeur et un lien vers
+  le suivant.
+* **Tête** (*head*) : référence vers le premier nœud de la liste.
+* **Queue** (*tail*) : référence vers le dernier nœud (dont le suivant est
+  `None`).
+
+## Pourquoi les listes chaînées existent-elles ?
+
+En Python, les listes (`list`) sont implémentées avec un **tableau**
+redimensionnable : tous les éléments sont rangés en mémoire les uns après les
+autres. Cette organisation est très efficace pour accéder à un élément par son
+indice, mais coûteuse pour **insérer ou retirer un élément au début** : il faut
+décaler tous les éléments restants.
+
+Une liste chaînée répond différemment à ce problème : les nœuds peuvent être
+dispersés en mémoire, reliés uniquement par leurs pointeurs. Insérer ou retirer
+en tête se fait en **temps constant** ($O(1)$), sans aucun décalage.
+
+Voici quelques situations courantes :
+
+* **Historique de navigation** : les pages visitées sont chaînées et on peut
+  revenir en arrière simplement en suivant le lien précédent.
+* **Éditeur de texte** : les lignes peuvent être insérées ou supprimées
+  efficacement sans déplacer tout le document.
+* **Implémentation de piles et files** : une liste chaînée est une bonne
+  alternative au tableau avec redimensionnement dynamique pour implanter ces
+  deux structures, car les insertions et suppressions en tête sont garanties
+  en $O(1)$ sans jamais recopier de données.
+
+La liste chaînée existe donc parce qu'elle modélise très bien les problèmes
+où l'on insère et retire fréquemment **en début de liste**, là où un tableau
+serait peu efficace.
+
+## Les opérations principales
+
+Une liste chaînée propose généralement les opérations suivantes :
+
+* `prepend(element)` : insère un élément en **tête** de liste.
+* `append(element)` : insère un élément en **queue** de liste.
+* `pop_front()` : retire et retourne l'élément en tête.
+* `peek()` : retourne l'élément en tête sans le retirer.
+* `is_empty()` : indique si la liste est vide.
+
+Exemple d'évolution d'une liste chaînée :
+
+```text
+prepend(10)   :  10
+prepend(20)   :  20 --> 10
+prepend(30)   :  30 --> 20 --> 10
+
+pop_front()   retourne 30
+              :  20 --> 10
+```
+
+## Implémenter une liste chaînée en Python
+
+### La classe `Noeud`
+
+Chaque nœud stocke une valeur et une référence vers le nœud suivant.
+
+```python
+class Noeud:
+    def __init__(self, valeur):
+        self.valeur = valeur
+        self.suivant = None
+```
+
+### La classe `ListeChainee`
+
+La liste ne conserve qu'une référence vers sa tête (et optionnellement sa
+queue) ainsi que sa taille.
+
+```python
+class ListeChainee:
+    def __init__(self):
+        self.tete = None
+        self.queue = None
+        self.taille = 0
+```
+
+Au départ, la liste est vide : `tete` et `queue` valent `None`.
+
+### Insérer en tête (*prepend*)
+
+On crée un nouveau nœud, on le fait pointer vers l'ancienne tête, puis on
+met à jour la tête. Si la liste était vide, la queue pointe aussi vers ce
+nouveau nœud.
+
+```python
+    def prepend(self, element):
+        nouveau = Noeud(element)
+        nouveau.suivant = self.tete
+        self.tete = nouveau
+        if self.queue is None:
+            self.queue = nouveau
+        self.taille += 1
+```
+
+### Insérer en queue (*append*)
+
+On crée un nouveau nœud. Si la liste est vide, il devient la tête et la queue.
+Sinon, on le rattache après l'actuelle queue.
+
+```python
+    def append(self, element):
+        nouveau = Noeud(element)
+        if self.queue is None:
+            self.tete = nouveau
+            self.queue = nouveau
+        else:
+            self.queue.suivant = nouveau
+            self.queue = nouveau
+        self.taille += 1
+```
+
+### Retirer en tête (*pop_front*)
+
+On récupère la valeur de la tête, on avance la tête vers le nœud suivant. Si
+la liste devient vide, on remet `queue` à `None`.
+
+```python
+    def pop_front(self):
+        if self.tete is None:
+            raise IndexError("pop_front sur une liste vide")
+        valeur = self.tete.valeur
+        self.tete = self.tete.suivant
+        if self.tete is None:
+            self.queue = None
+        self.taille -= 1
+        return valeur
+```
+
+### Consulter la tête (*peek*)
+
+```python
+    def peek(self):
+        if self.tete is None:
+            raise IndexError("peek sur une liste vide")
+        return self.tete.valeur
+```
+
+### Parcourir la liste
+
+Pour afficher tous les éléments, on part de la tête et on suit les liens
+jusqu'à `None`.
+
+```python
+    def __repr__(self):
+        elements = []
+        courant = self.tete
+        while courant is not None:
+            elements.append(str(courant.valeur))
+            courant = courant.suivant
+        return " --> ".join(elements) + " --> None"
+```
+
+### La classe au complet
+
+```python
+class Noeud:
+    def __init__(self, valeur):
+        self.valeur = valeur
+        self.suivant = None
+
+
+class ListeChainee:
+    def __init__(self):
+        self.tete = None
+        self.queue = None
+        self.taille = 0
+
+    def prepend(self, element):
+        nouveau = Noeud(element)
+        nouveau.suivant = self.tete
+        self.tete = nouveau
+        if self.queue is None:
+            self.queue = nouveau
+        self.taille += 1
+
+    def append(self, element):
+        nouveau = Noeud(element)
+        if self.queue is None:
+            self.tete = nouveau
+            self.queue = nouveau
+        else:
+            self.queue.suivant = nouveau
+            self.queue = nouveau
+        self.taille += 1
+
+    def pop_front(self):
+        if self.tete is None:
+            raise IndexError("pop_front sur une liste vide")
+        valeur = self.tete.valeur
+        self.tete = self.tete.suivant
+        if self.tete is None:
+            self.queue = None
+        self.taille -= 1
+        return valeur
+
+    def peek(self):
+        if self.tete is None:
+            raise IndexError("peek sur une liste vide")
+        return self.tete.valeur
+
+    def est_vide(self):
+        return self.tete is None
+
+    def __len__(self):
+        return self.taille
+
+    def __repr__(self):
+        elements = []
+        courant = self.tete
+        while courant is not None:
+            elements.append(str(courant.valeur))
+            courant = courant.suivant
+        return " --> ".join(elements) + " --> None"
+```
+
+### Exemple d'utilisation
+
+```python
+liste = ListeChainee()
+
+liste.append(10)
+liste.append(20)
+liste.append(30)
+print(liste)        # 10 --> 20 --> 30 --> None
+print(len(liste))   # 3
+
+liste.prepend(5)
+print(liste)        # 5 --> 10 --> 20 --> 30 --> None
+
+print(liste.pop_front())  # 5
+print(liste)              # 10 --> 20 --> 30 --> None
+print(liste.peek())       # 10
+```
+
+## Exemple concret : implémenter une pile
+
+Comme nous l'avons vu, une pile peut être implantée avec un tableau à
+redimensionnement dynamique. Une liste chaînée est une bonne alternative :
+`prepend` joue le rôle de `push` et `pop_front` joue le rôle de `pop`. Les
+deux opérations s'effectuent en tête, en temps constant $O(1)$, sans jamais
+avoir à recopier le tableau sous-jacent.
+
+```python
+class PileChainee:
+    def __init__(self):
+        self._liste = ListeChainee()
+
+    def push(self, element):
+        self._liste.prepend(element)
+
+    def pop(self):
+        return self._liste.pop_front()
+
+    def peek(self):
+        return self._liste.peek()
+
+    def est_vide(self):
+        return self._liste.est_vide()
+
+    def __len__(self):
+        return len(self._liste)
+
+    def __repr__(self):
+        return repr(self._liste)
+
+
+pile = PileChainee()
+pile.push("a")
+pile.push("b")
+pile.push("c")
+print(pile)           # c --> b --> a --> None
+
+print(pile.pop())     # c
+print(pile.pop())     # b
+print(pile)           # a --> None
+```
+
+## Liste doublement chaînée
+
+Dans une liste **simplement** chaînée, chaque nœud ne connaît que son
+successeur. Il est donc impossible de revenir en arrière sans repartir de la
+tête.
+
+Une **liste doublement chaînée** résout ce problème : chaque nœud contient
+deux liens, un vers le **suivant** et un vers le **précédent**.
+
+```text
+tête                                     queue
+ |                                        |
+ v                                        v
++--------+    +--------+    +--------+    +--------+
+| val=10 |<-->| val=20 |<-->| val=30 |<-->| val=40 |
++--------+    +--------+    +--------+    +--------+
+```
+
+```python
+class NoeudDouble:
+    def __init__(self, valeur):
+        self.valeur = valeur
+        self.suivant = None
+        self.precedent = None
+```
+
+Avec cette structure, on peut aussi **retirer en queue** en temps constant
+$O(1)$, ce qui en fait le fondement du `deque` de Python.
+
+:::tip
+
+Le `deque` du module `collections` est en réalité une liste doublement
+chaînée optimisée. Les opérations `append`, `appendleft`, `pop` et `popleft`
+s'y effectuent toutes en $O(1)$.
 
 :::
+
+## Comparaison avec le tableau (liste Python)
+
+| Opération              | Tableau (`list`) | Liste chaînée |
+| ---------------------- | :--------------: | :-----------: |
+| Accès par indice       |      $O(1)$      |     $O(n)$    |
+| Insertion en tête      |      $O(n)$      |     $O(1)$    |
+| Insertion en queue     |      $O(1)$*     |     $O(1)$    |
+| Suppression en tête    |      $O(n)$      |     $O(1)$    |
+| Suppression en queue   |      $O(1)$*     |     $O(1)$**  |
+| Recherche d'une valeur |      $O(n)$      |     $O(n)$    |
+
+\* Amorti : coût moyen tenant compte du redimensionnement occasionnel.  
+\*\* Seulement avec une liste doublement chaînée (sinon $O(n)$).
+
+La liste chaînée brille là où le tableau est lent : les insertions et
+suppressions en début de liste. En revanche, elle ne permet pas l'accès
+direct par indice : pour atteindre le $k$-ième élément, il faut traverser
+$k$ nœuds un par un.
