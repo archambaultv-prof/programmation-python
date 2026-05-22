@@ -1,0 +1,538 @@
+---
+sidebar_label: Questions conceptuelles
+sidebar_position: 7
+description: Questions conceptuelles
+---
+
+# Questions conceptuelles
+
+### 1. Qu'est-ce qu'une classe ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce qu'une **classe** en programmation orientée objet ? Quelle est la
+    différence entre une classe et un objet (instance) ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    Une **classe** est un gabarit (ou plan de construction) qui décrit les
+    attributs et les comportements (méthodes) que posséderont les objets créés
+    à partir d'elle.
+
+    Un **objet** (ou instance) est une réalisation concrète de cette classe.
+    On dit qu'on *instancie* une classe pour obtenir un objet.
+
+    ```python
+    class Chien:
+        def __init__(self, nom):
+            self.nom = nom
+
+    rex = Chien("Rex")   # rex est une instance (objet) de la classe Chien
+    ```
+  </TabItem>
+</Tabs>
+
+---
+
+### 2. Qu'est-ce qu'un attribut et une méthode ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Quelle est la différence entre un **attribut** et une **méthode** dans une
+    classe ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    - Un **attribut** est une variable associée à un objet. Il décrit l'état ou
+      les données de l'objet (ex. : `self.nom`, `self.age`).
+    - Une **méthode** est une fonction définie à l'intérieur d'une classe. Elle
+      décrit le comportement de l'objet (ex. : `aboyer()`, `calculer_salaire()`).
+
+    ```python
+    class Chien:
+        def __init__(self, nom):
+            self.nom = nom          # attribut
+
+        def aboyer(self):           # méthode
+            print(f"{self.nom} : Wouf !")
+    ```
+  </TabItem>
+</Tabs>
+
+---
+
+### 3. Qu'est-ce que l'encapsulation ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce que l'**encapsulation** ? Pourquoi est-ce un principe important
+    en POO ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    L'**encapsulation** consiste à regrouper les données (attributs) et les
+    comportements (méthodes) au sein d'une même classe, tout en contrôlant
+    l'accès à ces données depuis l'extérieur.
+
+    Elle permet de :
+    - Protéger l'état interne d'un objet contre des modifications non prévues.
+    - Exposer seulement ce qui est nécessaire (interface publique).
+    - Faciliter la maintenance : on peut modifier l'implémentation interne sans
+      casser le code qui utilise la classe.
+
+    En Python, on signale qu'un attribut est « privé » par convention en le
+    préfixant d'un underscore (`_nom`) ou de deux underscores (`__nom`).
+  </TabItem>
+</Tabs>
+
+---
+
+### 4. Qu'est-ce que l'héritage ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce que l'**héritage** en POO ? Quel est son utilité ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    L'**héritage** est un mécanisme qui permet à une classe fille (dérivée) de
+    réutiliser les attributs et les méthodes d'une classe mère (de base), sans
+    avoir à les réécrire.
+
+    **Utilités :**
+    - Évite la duplication de code (principe DRY — *Don't Repeat Yourself*).
+    - Permet de modéliser des relations « est-un » (ex. : un `Etudiant` *est une*
+      `Personne`).
+    - Facilite l'extension du comportement d'une classe existante.
+
+    ```python
+    class Personne:
+        def __init__(self, nom):
+            self.nom = nom
+
+    class Etudiant(Personne):   # Etudiant hérite de Personne
+        def __init__(self, nom, programme):
+            super().__init__(nom)
+            self.programme = programme
+    ```
+  </TabItem>
+</Tabs>
+
+---
+
+### 5. Peut-on hériter de plusieurs classes mères en même temps ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Python supporte-t-il l'**héritage multiple** ? Si oui, comment fonctionne-t-il
+    et quels problèmes peut-il poser ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    Oui, Python supporte l'**héritage multiple** : une classe peut hériter de
+    plusieurs classes mères simultanément.
+
+    ```python
+    class A:
+        def bonjour(self):
+            print("Bonjour de A")
+
+    class B:
+        def bonjour(self):
+            print("Bonjour de B")
+
+    class C(A, B):   # héritage multiple
+        pass
+
+    c = C()
+    c.bonjour()  # affiche "Bonjour de A" — Python suit le MRO
+    ```
+
+    **Le problème du diamant** : si deux classes mères définissent la même
+    méthode, Python utilise l'ordre de résolution des méthodes (**MRO** —
+    *Method Resolution Order*) pour décider laquelle utiliser. On peut consulter
+    le MRO avec `C.__mro__`.
+
+    L'héritage multiple doit être utilisé avec précaution car il peut rendre le
+    code difficile à comprendre et à maintenir.
+  </TabItem>
+</Tabs>
+
+---
+
+### 6. Qu'est-ce que le polymorphisme ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce que le **polymorphisme** ? Quel est son utilité en POO ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    Le **polymorphisme** (du grec *plusieurs formes*) est la propriété d'une
+    même signature de méthode à produire des comportements différents selon le
+    type de l'objet sur lequel elle est appelée. Chaque objet possède une seule
+    implémentation de la méthode, mais plusieurs classes peuvent partager la
+    même signature tout en ayant chacune leur propre comportement.
+
+    **Utilités :**
+    - Permet d'écrire du code générique qui fonctionne avec différents types
+      d'objets.
+    - Facilite l'extension du système : ajouter un nouveau type d'objet ne
+      nécessite pas de modifier le code existant.
+
+    ```python
+    class Animal:
+        def parler(self):
+            pass
+
+    class Chien(Animal):
+        def parler(self):
+            print("Wouf !")
+
+    class Chat(Animal):
+        def parler(self):
+            print("Miaou !")
+
+    animaux = [Chien(), Chat(), Chien()]
+    for a in animaux:
+        a.parler()   # chaque objet répond à sa façon
+    ```
+  </TabItem>
+</Tabs>
+
+---
+
+### 7. Qu'est-ce que la surcharge de méthodes ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce que la **surcharge de méthodes** (*method overriding*) ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    La **surcharge de méthodes** (*overriding*) consiste à redéfinir dans une
+    classe fille une méthode héritée de la classe mère, afin de lui donner un
+    comportement différent.
+
+    ```python
+    class Forme:
+        def aire(self):
+            return 0
+
+    class Cercle(Forme):
+        def __init__(self, rayon):
+            self.rayon = rayon
+
+        def aire(self):           # surcharge de la méthode aire
+            import math
+            return math.pi * self.rayon ** 2
+    ```
+  </TabItem>
+</Tabs>
+
+---
+
+### 8. Qu'est-ce qu'une classe abstraite ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce qu'une **classe abstraite** ? Pourquoi l'utilise-t-on ? Peut-on
+    instancier une classe abstraite ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    Une **classe abstraite** est une classe qui sert de gabarit pour d'autres
+    classes. Elle définit une interface commune (méthodes que les sous-classes
+    doivent implémenter) sans fournir d'implémentation complète.
+
+    **On ne peut pas instancier** une classe abstraite directement.
+
+    En Python, on utilise le module `abc` pour créer des classes abstraites :
+
+    ```python
+    from abc import ABC, abstractmethod
+
+    class Forme(ABC):
+        @abstractmethod
+        def aire(self) -> float:
+            pass
+
+    class Cercle(Forme):
+        def __init__(self, rayon):
+            self.rayon = rayon
+
+        def aire(self) -> float:
+            import math
+            return math.pi * self.rayon ** 2
+
+    # f = Forme()    # TypeError : impossible d'instancier une classe abstraite
+    c = Cercle(5)    # OK
+    ```
+
+    **Utilité :** garantir que toutes les sous-classes implémentent certaines
+    méthodes, ce qui rend le code plus robuste et prévisible.
+  </TabItem>
+</Tabs>
+
+---
+
+### 9. Qu'est-ce qu'une interface ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce qu'une **interface** en POO ? Python possède-t-il un mot-clé
+    `interface` comme Java ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    Une **interface** est un contrat qui spécifie un ensemble de méthodes
+    qu'une classe doit implémenter, sans fournir aucune implémentation.
+
+    Python ne possède **pas** de mot-clé `interface`. On simule ce concept avec
+    une classe abstraite dont **toutes** les méthodes sont abstraites :
+
+    ```python
+    from abc import ABC, abstractmethod
+
+    class Serialisable(ABC):
+        @abstractmethod
+        def to_dict(self) -> dict:
+            pass
+
+        @abstractmethod
+        def from_dict(self, data: dict) -> None:
+            pass
+    ```
+
+    Toute classe qui hérite de `Serialisable` est obligée d'implémenter
+    `to_dict` et `from_dict`, sinon Python lève une `TypeError` à
+    l'instanciation.
+  </TabItem>
+</Tabs>
+
+---
+
+### 10. Comment implémenter une interface en Python ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Comment **implémenter une interface** (simulée avec `ABC`) en Python ?
+    Montrez un exemple concret.
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    On hérite de la classe abstraite et on implémente toutes ses méthodes
+    abstraites :
+
+    ```python
+    from abc import ABC, abstractmethod
+
+    class Forme(ABC):
+        @abstractmethod
+        def aire(self) -> float:
+            pass
+
+        @abstractmethod
+        def perimetre(self) -> float:
+            pass
+
+    class Rectangle(Forme):          # implémentation de l'interface
+        def __init__(self, largeur, hauteur):
+            self.largeur = largeur
+            self.hauteur = hauteur
+
+        def aire(self) -> float:
+            return self.largeur * self.hauteur
+
+        def perimetre(self) -> float:
+            return 2 * (self.largeur + self.hauteur)
+
+    r = Rectangle(4, 5)
+    print(r.aire())       # 20.0
+    print(r.perimetre())  # 18.0
+    ```
+
+    Si `Rectangle` oubliait d'implémenter `perimetre`, Python lèverait une
+    `TypeError` à la tentative d'instanciation.
+  </TabItem>
+</Tabs>
+
+---
+### 11. Qu'est-ce que `super()` ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    À quoi sert `super()` en Python ? Quand doit-on l'utiliser ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    `super()` retourne un objet proxy qui délègue les appels de méthodes à la
+    classe mère dans la hiérarchie d'héritage.
+
+    On l'utilise principalement pour :
+    - Appeler le constructeur de la classe mère dans `__init__`.
+    - Réutiliser le comportement de la classe mère dans une méthode surchargée.
+
+    ```python
+    class Personne:
+        def __init__(self, nom, age):
+            self.nom = nom
+            self.age = age
+
+    class Etudiant(Personne):
+        def __init__(self, nom, age, programme):
+            super().__init__(nom, age)   # appel au __init__ de Personne
+            self.programme = programme
+    ```
+
+    Sans `super().__init__(...)`, les attributs `nom` et `age` ne seraient pas
+    initialisés dans `Etudiant`.
+  </TabItem>
+</Tabs>
+
+---
+
+### 12. Quelle est la différence entre `__str__` et `__repr__` ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Quelle est la différence entre les méthodes spéciales `__str__` et
+    `__repr__` ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    | Méthode   | Appelée par      | Destinée à          |
+    |-----------|------------------|---------------------|
+    | `__str__` | `print()`, `str()` | L'utilisateur final — lisible |
+    | `__repr__` | `repr()`, console interactive | Le développeur — non ambigu, idéalement reproductible |
+
+    ```python
+    class Point:
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+
+        def __str__(self):
+            return f"Point ({self.x}, {self.y})"
+
+        def __repr__(self):
+            return f"Point(x={self.x}, y={self.y})"
+
+    p = Point(3, 4)
+    print(str(p))   # Point (3, 4)
+    print(repr(p))  # Point(x=3, y=4)
+    ```
+
+    Si seulement `__repr__` est défini, `str()` utilisera `__repr__` comme
+    repli. L'inverse n'est pas vrai.
+
+    :::caution Confusion fréquente : `print()` avec une liste
+    Lorsqu'un objet est **contenu dans une liste** (ou tout autre conteneur),
+    `print()` appelle `__repr__` sur les éléments, et non `__str__`. C'est
+    pourquoi `print([p])` et `print(p)` donnent des résultats différents :
+
+    ```python
+    p = Point(3, 4)
+    print(p)      # Point (3, 4)      — utilise __str__
+    print([p])    # [Point(x=3, y=4)] — utilise __repr__ de chaque élément
+    ```
+
+    Cela surprend souvent les débutants qui s'attendent à voir la version
+    lisible même à l'intérieur d'une liste.
+    :::
+  </TabItem>
+</Tabs>
+
+---
+
+### 13. Qu'est-ce que le MRO (Method Resolution Order) ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Qu'est-ce que le **MRO** (*Method Resolution Order*) et pourquoi est-il
+    important dans le contexte de l'héritage multiple ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    Le **MRO** définit l'ordre dans lequel Python recherche les méthodes dans
+    la hiérarchie de classes lors d'un héritage multiple. Python utilise
+    l'algorithme **C3 linearization** pour calculer cet ordre.
+
+    On peut consulter le MRO avec `.__mro__` ou `help()` :
+
+    ```python
+    class A: pass
+    class B(A): pass
+    class C(A): pass
+    class D(B, C): pass
+
+    print(D.__mro__)
+    # (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)
+    ```
+
+    Python parcourt les classes dans cet ordre pour trouver la première
+    définition d'une méthode. Cela résout le *problème du diamant* de manière
+    déterministe.
+  </TabItem>
+</Tabs>
+
+---
+
+### 14. Quelle est la différence entre attribut de classe et attribut d'instance ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Quelle est la différence entre un **attribut de classe** et un **attribut
+    d'instance** ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    - Un **attribut d'instance** est propre à chaque objet. Il est généralement
+      créé dans `__init__` via `self.nom = valeur`.
+    - Un **attribut de classe** est partagé par toutes les instances. Il est
+      défini directement dans le corps de la classe.
+
+    ```python
+    class Compteur:
+        nb_instances = 0       # attribut de classe
+
+        def __init__(self):
+            Compteur.nb_instances += 1
+            self.id = Compteur.nb_instances   # attribut d'instance
+
+    a = Compteur()
+    b = Compteur()
+    print(Compteur.nb_instances)  # 2  — partagé
+    print(a.id)                   # 1  — propre à a
+    print(b.id)                   # 2  — propre à b
+    ```
+
+    Modifier un attribut de classe via `self` crée en réalité un attribut
+    d'instance qui *masque* l'attribut de classe pour cet objet.
+  </TabItem>
+</Tabs>
+
+---
+
+### 15. Qu'est-ce qu'une méthode de classe et une méthode statique ?
+
+<Tabs>
+  <TabItem value="question" label="Question">
+    Quelle est la différence entre une méthode normale, une **méthode de classe**
+    (`@classmethod`) et une **méthode statique** (`@staticmethod`) ?
+  </TabItem>
+  <TabItem value="reponse" label="Réponse">
+    | Type | Décorateur | Premier paramètre | Accès |
+    |------|-----------|-------------------|-------|
+    | Méthode normale | *(aucun)* | `self` (instance) | attributs d'instance et de classe |
+    | Méthode de classe | `@classmethod` | `cls` (classe) | attributs de classe seulement |
+    | Méthode statique | `@staticmethod` | *(aucun)* | aucun accès implicite |
+
+    ```python
+    class Exemple:
+        compteur = 0
+
+        def methode_normale(self):
+            print(f"instance : {self}")
+
+        @classmethod
+        def methode_classe(cls):
+            print(f"classe : {cls}")
+
+        @staticmethod
+        def methode_statique():
+            print("méthode utilitaire indépendante")
+    ```
+
+    Les méthodes de classe sont souvent utilisées comme fabriques alternatives
+    (`from_string`, `from_file`, etc.). Les méthodes statiques regroupent des
+    fonctions utilitaires liées à la classe sans avoir besoin de `self` ou `cls`.
+  </TabItem>
+</Tabs>
+
