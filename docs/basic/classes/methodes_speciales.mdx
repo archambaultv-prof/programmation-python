@@ -154,37 +154,6 @@ for c in p:      # itération — Python utilise __getitem__ ou __iter__
     print(c)
 ```
 
-## Constructeurs alternatifs avec `@classmethod`
-
-Puisque Python n'autorise qu'un seul `__init__`, les **méthodes de classe** servent
-de constructeurs alternatifs pour offrir plusieurs façons de créer un objet.
-
-```python
-class CompteBancaire:
-    def __init__(self, titulaire, solde=0.0):
-        self.titulaire = titulaire
-        self._solde = solde
-
-    @classmethod
-    def depuis_dict(cls, donnees: dict):
-        return cls(donnees["titulaire"], donnees.get("solde", 0.0))
-
-    @classmethod
-    def compte_vide(cls, titulaire: str):
-        return cls(titulaire, 0.0)
-
-    def __repr__(self):
-        return f"CompteBancaire({self.titulaire!r}, {self._solde})"
-
-c1 = CompteBancaire("Alice", 500)
-c2 = CompteBancaire.depuis_dict({"titulaire": "Bob", "solde": 200})
-c3 = CompteBancaire.compte_vide("Charlie")
-
-print(c1)  # CompteBancaire('Alice', 500)
-print(c2)  # CompteBancaire('Bob', 200)
-print(c3)  # CompteBancaire('Charlie', 0.0)
-```
-
 ## Récapitulatif des méthodes spéciales courantes
 
 | Méthode | Contexte d'appel |

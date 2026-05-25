@@ -87,23 +87,6 @@ for compte in comptes:
 # Charlie — 1236.00 $
 ```
 
-## Extension de méthodes avec `super()`
-
-Plutôt que de **remplacer** complètement une méthode de la classe mère, on peut
-l'**étendre** : appeler la version de la classe mère et y ajouter un comportement.
-
-```python
-class CompteEpargneNotifiable(CompteEpargne):
-    def appliquer_interets(self):
-        interets = self.calculer_interets()
-        super().appliquer_interets()          # comportement de la classe mère
-        print(f"[{self.titulaire}] Intérêts de {interets:.2f} $ appliqués.")
-
-c = CompteEpargneNotifiable("Alice", 1000, taux=0.05)
-c.appliquer_interets()
-# [Alice] Intérêts de 50.00 $ appliqués.
-```
-
 ## Polymorphisme et typage canard
 
 Python permet une forme de polymorphisme encore plus souple : le **typage canard**

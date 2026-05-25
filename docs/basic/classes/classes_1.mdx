@@ -83,6 +83,22 @@ compte_alice.afficher_solde()  # Alice — Solde : 1700.00 $
 compte_bob.retirer(100)        # Fonds insuffisants.
 ```
 
+### Attributs et méthodes
+
+- Les **attributs** sont les données propres à l'objet. Ils sont créés dans
+  `__init__` avec `self.nom = valeur` et accessibles avec la notation pointée
+  `objet.attribut`.
+- Les **méthodes** sont les fonctions définies dans la classe. Elles prennent
+  toujours `self` comme premier paramètre.
+
+```python
+compte = CompteBancaire("Charlie", 500)
+
+print(compte.titulaire)   # "Charlie"   — accès à un attribut
+print(compte.solde)       # 500         — accès à un attribut
+compte.deposer(200)        #            — appel de méthode
+```
+
 ### Le constructeur `__init__` et `self`
 
 Le **constructeur** est la méthode `__init__`. Python l'appelle automatiquement
@@ -103,55 +119,37 @@ compte_b = CompteBancaire("Bob")
 # même si elles ont été créées par le même __init__
 ```
 
-Le concept de `self` est fondamental pour comprendre comment les objets
-fonctionnent en Python ou dans n'importe quel langage orienté objet. Puisqu'il
-peut y avoir plusieurs objets de la même classe, `self` permet à chaque méthode
-de faire référence à l'objet spécifique sur lequel elle est appelée,
-garantissant ainsi que les données et les comportements restent liés à
-l'instance correcte. Par exemple :
+En réalité, lorsque vous écrivez `compte_alice.deposer(500)`, Python traduit
+cela en un appel à la méthode de la **classe** en lui passant l'objet
+explicitement comme premier argument. Ces deux formes sont strictement
+équivalentes :
 
 ```python
 compte_alice = CompteBancaire("Alice", 1200.0)
-compte_bob   = CompteBancaire("Bob")           # solde_initial = 0.0 par défaut
+compte_bob   = CompteBancaire("Bob")
 
+# Forme habituelle — Python passe self automatiquement
 compte_alice.deposer(500)
 compte_alice.afficher_solde()  # Alice — Solde : 1700.00 $
 compte_bob.retirer(100)        # Fonds insuffisants.
+
+# Forme explicite — équivalente, mais plus verbeuse
+CompteBancaire.deposer(compte_alice, 500)
+CompteBancaire.afficher_solde(compte_alice)  # Alice — Solde : 1700.00 $
+CompteBancaire.retirer(compte_bob, 100)      # Fonds insuffisants.
 ```
 
-pourrait être réécrit en passant explicitement `self` :
-
-```python
-compte_alice = CompteBancaire("Alice", 1200.0)
-compte_bob   = CompteBancaire("Bob")           # solde_initial
-compte_alice.deposer(compte_alice, 500)
-compte_alice.afficher_solde(compte_alice)  # Alice — Solde : 1700.00 $
-compte_bob.retirer(compte_bob, 100)        # Fonds insuff
-ints.
-```
+Appeler la méthode depuis l'objet (`compte_alice.deposer(500)`) est donc un
+raccourci syntaxique : Python identifie automatiquement la classe de l'objet et
+lui transmet l'instance comme `self`.
 
 :::info Pas de surcharge de constructeur
 Contrairement à Java ou C++, Python ne permet pas de définir plusieurs
 `__init__`. On compense avec des **valeurs par défaut** ou des
 **méthodes de classe** (constructeurs alternatifs), que nous verrons dans la
-page [Méthodes spéciales](./methodes_speciales).
+page [Encapsulation](./encapsulation).
 :::
 
-### Attributs et méthodes
-
-- Les **attributs** sont les données propres à l'objet. Ils sont créés dans
-  `__init__` avec `self.nom = valeur` et accessibles avec la notation pointée
-  `objet.attribut`.
-- Les **méthodes** sont les fonctions définies dans la classe. Elles prennent
-  toujours `self` comme premier paramètre.
-
-```python
-compte = CompteBancaire("Charlie", 500)
-
-print(compte.titulaire)   # "Charlie"   — accès à un attribut
-print(compte.solde)       # 500         — accès à un attribut
-compte.deposer(200)        #            — appel de méthode
-```
 
 ## Constructeurs et destructeurs
 
