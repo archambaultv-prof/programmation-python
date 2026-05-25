@@ -1,0 +1,226 @@
+---
+sidebar_label: Pilier 1 — Encapsulation
+sidebar_position: 1
+description: Encapsulation en Python — visibilité, accesseurs, mutateurs
+---
+
+# Pilier 1 — Encapsulation
+
+L'**encapsulation** est le premier pilier de la POO. Son idée centrale est de
+**regrouper les données et les comportements** qui les manipulent dans une même
+unité (la classe), tout en **contrôlant ce qui est accessible depuis l'extérieur**.
+
+Concrètement, cela signifie :
+- Cacher les détails d'implémentation internes.
+- N'exposer que ce qui est nécessaire à l'utilisateur de la classe (l'*interface publique*).
+- Protéger les données contre des modifications non prévues ou invalides.
+
+**Pourquoi c'est important ?** Si le solde d'un compte bancaire pouvait être modifié
+directement de n'importe où dans le code, un bug pourrait le passer à `-999999` sans
+que la classe le sache. L'encapsulation empêche cela.
+
+## Visibilité des attributs
+
+Python ne possède pas de mot-clé `private` ou `protected` comme Java. À la place,
+il utilise des **conventions de nommage** et un mécanisme appelé *name mangling*.
+
+### Public — `attribut`
+
+Pas de préfixe : l'attribut fait partie de l'interface publique de la classe.
+N'importe qui peut le lire ou le modifier.
+
+```python
+class CompteBancaire:
+    def __init__(self, titulaire):
+        self.titulaire = titulaire   # public — fait partie de l'interface
+```
+
+### Protégé — `_attribut`
+
+Un underscore en préfixe est une **convention** qui signale *« cet attribut est
+interne, ne l'utilisez pas directement depuis l'extérieur »*. Python n'applique
+aucune restriction technique : l'attribut reste lisible. C'est un **contrat entre
+développeurs**.
+
+```python
+class CompteBancaire:
+    def __init__(self, titulaire, solde):
+        self.titulaire = titulaire
+        self._solde = solde          # protégé — interne à la classe
+```
+
+### Privé — `__attribut` et *name mangling*
+
+Deux underscores déclenchent le ***name mangling*** : Python renomme
+automatiquement `__attribut` en `_NomClasse__attribut`. Cela évite les
+**collisions de noms** dans les hiérarchies d'héritage et rend l'attribut
+difficile (mais pas impossible) d'accès depuis l'extérieur.
+
+```python
+class CompteBancaire:
+    def __init__(self, titulaire, solde):
+        self.titulaire = titulaire
+        self.__solde = solde         # privé — name mangling actif
+
+c = CompteBancaire("Alice", 1000)
+# print(c.__solde)               # AttributeError !
+print(c._CompteBancaire__solde)  # 1000 — name mangling dévoilé
+```
+
+Le double underscore est utile lorsqu'une classe fille risque de définir
+accidentellement un attribut de même nom que la classe mère :
+
+```python
+class Base:
+    def __init__(self):
+        self.__valeur = "base"    # stocké comme _Base__valeur
+
+    def afficher(self):
+        print(self.__valeur)      # cherche _Base__valeur
+
+class Fille(Base):
+    def __init__(self):
+        super().__init__()
+        self.__valeur = "fille"   # stocké comme _Fille__valeur — pas de conflit
+
+f = Fille()
+f.afficher()  # "base" — la classe mère accède bien à son propre attribut
+```
+
+:::tip Bonne pratique
+Dans la majorité des cas, `_attribut` (un seul underscore) est suffisant. Réservez
+`__attribut` aux situations où vous craignez réellement une collision de noms
+dans une hiérarchie d'héritage.
+:::
+
+## Accesseurs et mutateurs
+
+Un **accesseur** (*getter*) lit un attribut protégé. Un **mutateur** (*setter*)
+le modifie, souvent après validation. En Python, on les définit élégamment avec
+le décorateur `@property`, ce qui permet de garder une **syntaxe d'attribut**
+(`compte.solde`) tout en exécutant de la logique sous le capot.
+
+```python
+class CompteBancaire:
+    def __init__(self, titulaire, solde_initial=0.0):
+        self.titulaire = titulaire
+        self._solde = solde_initial
+
+    @property
+    def solde(self):                         # accesseur
+        return self._solde
+
+    @solde.setter
+    def solde(self, valeur):                 # mutateur
+        if valeur < 0:
+            raise ValueError("Le solde ne peut pas être négatif.")
+        self._solde = valeur
+
+    def deposer(self, montant):
+        if montant <= 0:
+            raise ValueError("Le montant doit être positif.")
+        self._solde += montant
+
+    def retirer(self, montant):
+        if montant <= 0:
+            raise ValueError("Le montant doit être positif.")
+        if montant > self._solde:
+            raise ValueError("Fonds insuffisants.")
+        self._solde -= montant
+
+c = CompteBancaire("Alice", 1000)
+print(c.solde)    # 1000   — syntaxe d'attribut, appelle l'accesseur
+c.solde = 500     #        — appelle le mutateur
+c.solde = -100    # ValueError
+```
+
+:::info Syntaxe d'attribut
+Même si `solde` est techniquement une méthode, `@property` permet de l'utiliser
+comme `c.solde` et non `c.solde()`. L'interface publique reste propre et
+intuitive.
+:::
+
+## Attributs de classe vs attributs d'instance
+
+Jusqu'ici, tous les attributs étaient des **attributs d'instance** : chaque objet
+possède sa propre copie. Il existe aussi les **attributs de classe**, définis
+directement dans le corps de la classe (sans `self`) et **partagés** par toutes
+les instances.
+
+```python
+class CompteBancaire:
+    taux_interet = 0.02          # attribut de classe — partagé par tous les comptes
+    nb_comptes = 0               # attribut de classe — compteur global
+
+    def __init__(self, titulaire, solde=0.0):
+        self.titulaire = titulaire   # attribut d'instance
+        self._solde = solde          # attribut d'instance
+        CompteBancaire.nb_comptes += 1
+
+compte_a = CompteBancaire("Alice", 1000)
+compte_b = CompteBancaire("Bob",   500)
+
+print(CompteBancaire.nb_comptes)   # 2 — partagé
+print(CompteBancaire.taux_interet) # 0.02
+CompteBancaire.taux_interet = 0.03 # modifie le taux pour tous les comptes
+```
+
+:::caution Piège courant
+Si vous écrivez `self.taux_interet = 0.05` dans une méthode d'instance, vous
+créez un **attribut d'instance** qui *masque* l'attribut de classe pour cet
+objet uniquement. Les autres instances voient toujours l'attribut de classe.
+:::
+
+## Méthodes d'instance, de classe et statiques
+
+Tout comme les attributs, les méthodes ont trois variantes selon ce à quoi elles
+ont accès.
+
+### Méthode d'instance
+
+La plus courante. Reçoit `self` : accès à tous les attributs de l'objet.
+
+```python
+def deposer(self, montant):
+    self._solde += montant
+```
+
+### Méthode de classe — `@classmethod`
+
+Reçoit `cls` (la classe elle-même, pas une instance). Utilisée typiquement pour
+des **constructeurs alternatifs** — plusieurs façons de créer un objet sans
+surcharger `__init__`.
+
+```python
+class CompteBancaire:
+    def __init__(self, titulaire, solde=0.0):
+        self.titulaire = titulaire
+        self._solde = solde
+
+    @classmethod
+    def depuis_dict(cls, donnees: dict):
+        return cls(donnees["titulaire"], donnees["solde"])
+
+d = {"titulaire": "Alice", "solde": 1500.0}
+c = CompteBancaire.depuis_dict(d)
+print(c.titulaire)  # Alice
+```
+
+### Méthode statique — `@staticmethod`
+
+Ne reçoit ni `self` ni `cls`. C'est une fonction ordinaire logiquement liée à
+la classe, qu'on aurait pu définir en dehors. Son utilité est principalement de
+**regrouper** des fonctions utilitaires avec la classe.
+
+```python
+class CompteBancaire:
+    @staticmethod
+    def valider_montant(montant) -> bool:
+        return isinstance(montant, (int, float)) and montant > 0
+```
+
+:::note `@staticmethod` en Python vs Java
+En Java, les méthodes statiques sont indispensables car il n'existe pas de
+fonctions libres. En Python, une fonction de module accomplit la même chose.
+`@staticmethod` est une question d'organisation, pas de nécessité.
+:::

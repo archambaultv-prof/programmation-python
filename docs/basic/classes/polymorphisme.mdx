@@ -1,132 +1,140 @@
 ---
-sidebar_label: Polymorphisme
-sidebar_position: 3
-description: Polymorphisme en Python
+sidebar_label: Pilier 4 — Polymorphisme
+sidebar_position: 5
+description: Polymorphisme en Python — surcharge, extension, typage canard
 ---
 
-# Polymorphisme
+# Pilier 4 — Polymorphisme
 
-Le polymorphisme est un concept fondamental en programmation orientée objet. Il
-permet de définir des méthodes dans une classe de base qui peuvent être
-*redéfinies* dans les classes dérivées. Cela permet à un objet d'une classe
-dérivée d'être traité comme un objet de la classe de base, mais avec un
-comportement spécifique à la classe dérivée. Ce type de polymorphisme
-est appelé polymorphisme d'inclusion ou de sous-typage.
+Le **polymorphisme** (du grec *plusieurs formes*) est le quatrième pilier de la
+POO. Il désigne la capacité d'une **même signature de méthode** à produire des
+comportements différents selon le type de l'objet sur lequel elle est appelée.
+Plusieurs classes peuvent ainsi partager la même signature tout en fournissant
+chacune leur propre implémentation.
 
-## Surcharge de méthodes
+**Pourquoi c'est utile ?**
+- On peut écrire du code générique qui manipule des objets de types différents
+  sans connaître leur type exact.
+- Ajouter un nouveau type de compte ne nécessite pas de modifier le code qui
+  l'utilise — il suffit qu'il respecte l'interface.
 
-En Python, le polymorphisme est généralement réalisé par la *surcharge de
-méthodes*. Cela signifie que vous pouvez définir une méthode dans une classe
-de base, puis la redéfinir dans une classe dérivée.
+## Surcharge de méthodes (*overriding*)
 
-Par exemple, vous pouvez définir une classe `Animal` avec une méthode `parler`, puis
-définir une classe `Chien` qui hérite de `Animal` et redéfinit la méthode `parler` pour
-qu'elle affiche "Le chien aboie". Voici un exemple :
+La forme la plus courante de polymorphisme en Python est la **redéfinition**
+(*override*) d'une méthode héritée. La classe fille fournit sa propre
+implémentation, qui remplace celle de la classe mère.
+
+Reprenons notre fil rouge : `CompteEpargne` et `CompteCredit` implémentent
+chacun `calculer_interets` à leur façon.
 
 ```python
-class Animal:
-    def parler(self):
-        print("L'animal parle.")
+from abc import ABC, abstractmethod
 
-class Chien(Animal):
-    def parler(self):
-        print("Le chien aboie.")
+class CompteBancaire(ABC):
+    def __init__(self, titulaire, solde=0.0):
+        self.titulaire = titulaire
+        self._solde = solde
 
-animal = Animal()
-chien = Chien()
+    @abstractmethod
+    def calculer_interets(self) -> float:
+        pass
 
-for el in [animal, chien]:
-    el.parler()  # Affiche : L'animal parle. puis Le chien aboie.
+    def appliquer_interets(self):
+        self._solde += self.calculer_interets()
+
+    def __str__(self):
+        return f"{self.titulaire} — {self._solde:.2f} $"
+
+
+class CompteEpargne(CompteBancaire):
+    def __init__(self, titulaire, solde=0.0, taux=0.02):
+        super().__init__(titulaire, solde)
+        self.taux = taux
+
+    def calculer_interets(self) -> float:
+        return self._solde * self.taux   # intérêts positifs
+
+
+class CompteCredit(CompteBancaire):
+    def __init__(self, titulaire, limite=1000.0):
+        super().__init__(titulaire, 0.0)
+        self.limite = limite
+
+    def calculer_interets(self) -> float:
+        if self._solde < 0:
+            return self._solde * 0.18    # frais si découvert
+        return 0.0
 ```
 
-Comme on peut le voir, la méthode `parler` de la classe `Chien` remplace
-celle de la classe `Animal`. De plus, dans ce code la liste contient des objets de
-type `Animal` et `Chien`, mais la méthode `parler` appelée est commune aux deux
-objets et donc le code fonctionne correctement.
-
-## Extension de méthodes
-
-Si l'on souhaite que la méthode de la classe dérivée appelle la méthode de la
-classe de base, on peut utiliser le mot-clé `super()`. Cela permet d'appeler la
-méthode de la classe de base depuis la classe dérivée. Voici un exemple :
+Le polymorphisme se révèle quand on traite une collection d'objets de types
+différents de façon **uniforme** :
 
 ```python
-class Animal:
-    def parler(self):
-        print("L'animal parle.")
+comptes = [
+    CompteEpargne("Alice", 5000, taux=0.05),
+    CompteCredit("Bob", limite=2000),
+    CompteEpargne("Charlie", 1200, taux=0.03),
+]
 
-class Chien(Animal):
-    def parler(self):
-        super().parler()  # Appelle la méthode de la classe de base
-        print("Le chien aboie.")
+# On appelle la même méthode sur tous les comptes —
+# chacun répond à sa propre façon
+for compte in comptes:
+    compte.appliquer_interets()
+    print(compte)
 
-chien = Chien()
-chien.parler()  # Affiche : L'animal parle. puis Le chien aboie.
+# Alice — 5250.00 $
+# Bob   — 0.00 $     (pas de découvert, pas de frais)
+# Charlie — 1236.00 $
 ```
 
 ## Polymorphisme et typage canard
 
-Puisque tout est comme un dictionnaire en Python, le polymorphisme est très facile à
-mettre en œuvre. Lorsque vous appelez une méthode sur un objet, Python cherche d'abord la
-méthode dans le dictionnaire de l'objet. Si la *signature* de la méthode est
-trouvée, Python appelle la méthode. Sinon, Python remonte la chaîne d'héritage
-pour trouver la méthode.
+Python permet une forme de polymorphisme encore plus souple : le **typage canard**
+(*duck typing*). Son nom vient de l'expression : *« Si ça marche comme un canard
+et que ça fait coin-coin, c'est un canard. »*
 
-Ainsi, il n'est même pas nécessaire d'hériter d'une classe mère pour avoir
-une méthode en commun. Vous pouvez simplement ajouter une méthode à un objet existant qui a
-la même signature qu'une méthode de la classe mère.
+Python ne vérifie pas le **type** d'un objet avant d'appeler une méthode. Il
+vérifie seulement si l'objet **possède** la méthode demandée. Il n'est donc pas
+nécessaire d'hériter d'une classe commune pour bénéficier du polymorphisme.
 
 ```python
-class Animal:
-    def parler(self):
-        print("L'animal parle.")
+class RapportPDF:
+    def generer(self):
+        print("Génération d'un rapport PDF...")
 
-class Chien:
-    def parler(self):
-        print("Le chien aboie.")
+class RapportCSV:
+    def generer(self):
+        print("Export CSV des données...")
 
-animal = Animal()
-chien = Chien()
-for el in [animal, chien]:
-    el.parler()  # La méthode parler est disponible pour les deux objets.
+class RapportEmail:
+    def generer(self):
+        print("Envoi du rapport par email...")
+
+# Aucun lien d'héritage entre ces trois classes —
+# le typage canard fonctionne quand même
+rapports = [RapportPDF(), RapportCSV(), RapportEmail()]
+for r in rapports:
+    r.generer()
 ```
 
-C'est ce qu'on appelle le *typage canard* en programmation orientée objet. Si
-un objet a la méthode `parler`, alors il peut être traité comme une instance
-d'une classe qui a la méthode `parler`.
+### Quand utiliser le typage canard ?
 
-## Quand utiliser le typage canard ?
+Le typage canard est utile notamment quand vous interagissez avec des objets
+issus de bibliothèques tierces que vous ne contrôlez pas. Vous ne pouvez pas
+les faire hériter de votre classe abstraite, mais s'ils ont la bonne méthode,
+ça fonctionne.
 
-De façon à bien structurer votre code, il est *recommandé* de définir des classes
-mères, des classes abstraites ou des interfaces pour garantir que les méthodes
-sont redéfinies dans les classes filles. Cela permet de rendre votre code plus
-lisible et plus facile à maintenir. Cela évite aussi de dupliquer du code.
+Cependant, pour les hiérarchies que vous maîtrisez, il est **recommandé** de
+définir une classe abstraite (`ABC`) plutôt que de compter sur le typage canard :
 
-Néanmoins, l'utilisation du typage canard permet de ne pas avoir à utiliser
-l'héritage pour obtenir du polymorphisme. Vous pouvez simplement ajouter des
-méthodes à des objets existants pour obtenir le même effet. Cela est très utile
-lorsque vous devez interagir avec des objets qui ne sont pas sous votre contrôle,
-comme ceux provenant de bibliothèques tierces ou de la bibliothèque standard.
+- La classe abstraite documente explicitement le contrat.
+- Python lève une erreur à l'instanciation si une méthode est oubliée, plutôt
+  qu'à l'exécution quand la méthode est appelée.
+- Le code est plus lisible et plus sûr.
 
-Par exemple, la fonction `open` de Python retourne un objet qui représente un
-fichier. L'objet retourné par `open` a plusieurs méthodes, mais si votre code n'a besoin
-que de la méthode `read`, vous pouvez simplement ajouter cette méthode à un objet
-existant pour obtenir le même effet.
-
-```python
-class MonFichier:
-    def __init__(self, contenu):
-        self.contenu = contenu
-
-    def read(self):
-        return self.contenu
-
-
-f = MonFichier("Hello, world!")
-print(f.read())  # Affiche : Hello, world!
-```
-
-Ainsi, chaque fois qu'une fonction dans votre code a besoin d'un fichier et
-utilise uniquement la méthode `read`, vous pouvez simplement lui passer un
-objet `MonFichier`. Ceci est beaucoup plus flexible et bien plus simple que
-d'utiliser l'héritage.
+| | Polymorphisme par héritage | Typage canard |
+|---|---|---|
+| Lien requis | Héritage d'une classe commune | Aucun |
+| Vérification | À la conception | À l'exécution |
+| Sécurité | Élevée (erreur tôt) | Faible (erreur tardive) |
+| Recommandé pour | Hiérarchies maîtrisées | Interagir avec du code tiers |

@@ -1,103 +1,256 @@
 ---
-sidebar_label: Héritage
-sidebar_position: 2
-description: Héritage en Python
+sidebar_label: Pilier 2 — Héritage
+sidebar_position: 3
+description: Héritage en Python — héritage simple, multiple, MRO, héritage coopératif
 ---
 
-# Héritage
+# Pilier 2 — Héritage
 
-L'héritage est un concept fondamental en programmation orientée objet. Il permet
-de définir une classe en se basant sur une autre classe déjà existante. La
-classe existante est appelée la classe mère ou la classe de base, et la nouvelle
-classe est appelée la classe fille ou la classe dérivée. Cela permet de
-réutiliser le code déjà existant et de créer des classes plus spécialisées.
+L'**héritage** est le deuxième pilier de la POO. Il permet à une classe (la
+*classe fille* ou *dérivée*) de **réutiliser** les attributs et méthodes d'une
+autre classe (la *classe mère* ou *de base*), sans les réécrire.
 
-Par exemple, la classe `Point` définie précédemment peut être utilisée comme
-classe de base pour définir une classe `PointCouleur` qui ajoute un attribut
-`couleur` à un point. On pourrait aussi définir une classe `PointTitre` qui
-ajoute un attribut `titre` à un point. Ces deux classes héritent des attributs
-et des méthodes de la classe `Point`.
+L'héritage modélise une relation **« est-un »** : un `CompteEpargne` *est un*
+`CompteBancaire`. Il permet de créer des hiérarchies de classes de plus en plus
+spécialisées, tout en évitant la duplication de code (principe *DRY — Don't
+Repeat Yourself*).
+
+## Héritage simple
+
+En Python, on hérite d'une classe en plaçant la classe mère entre parenthèses
+après le nom de la classe fille :
+
+```python
+class CompteEpargne(CompteBancaire):   # CompteEpargne hérite de CompteBancaire
+    pass
+```
+
+La classe fille **reçoit automatiquement** tous les attributs et méthodes de la
+classe mère. Un `CompteEpargne` peut donc déjà déposer, retirer et s'afficher
+sans rien réécrire.
+
+### Ajouter des attributs et des méthodes
+
+La classe fille peut définir ses propres attributs et méthodes **en plus** de
+ceux hérités. Pour initialiser les attributs de la classe mère, on appelle
+`super().__init__()` (nous y reviendrons en détail [plus bas](#la-méthode-super)) :
+
+```python
+class CompteEpargne(CompteBancaire):
+    def __init__(self, titulaire, solde=0.0, taux=0.02):
+        super().__init__(titulaire, solde)  # initialise la partie CompteBancaire
+        self.taux = taux                   # nouvel attribut propre à CompteEpargne
+
+    def appliquer_interets(self):          # nouvelle méthode propre à CompteEpargne
+        self._solde += self._solde * self.taux
+
+epargne = CompteEpargne("Alice", 1000, taux=0.05)
+epargne.deposer(500)           # méthode héritée de CompteBancaire
+epargne.appliquer_interets()   # méthode propre à CompteEpargne
+print(epargne)                 # Compte(Alice, 1575.00 $)
+```
+
+### Redéfinir une méthode (*override*)
+
+Une classe fille peut aussi **remplacer** une méthode héritée en la redéfinissant
+avec le même nom. Voici `CompteCredit`, où le découvert est autorisé : la méthode
+`retirer` doit donc se comporter différemment :
+
+```python
+class CompteCredit(CompteBancaire):
+    def __init__(self, titulaire, limite_credit=1000.0):
+        super().__init__(titulaire, 0.0)
+        self.limite_credit = limite_credit
+
+    def retirer(self, montant):             # redéfinition de CompteBancaire.retirer
+        if montant > self._solde + self.limite_credit:
+            raise ValueError("Limite de crédit dépassée.")
+        self._solde -= montant              # le solde peut devenir négatif
+
+credit = CompteCredit("Bob", limite_credit=500)
+credit.retirer(300)   # autorisé — découvert dans la limite
+print(credit)         # Compte(Bob, -300.00 $)
+```
+
+Voici un résumé de la hiérarchie obtenue :
 
 <div style={{"text-align": "center"}}>
 
 ```mermaid
 classDiagram
-    class Point {
-        x: int
-        y: int
-        __init__(x: int, y: int)
-        distance(other: Point): float
+    class CompteBancaire {
+        titulaire: str
+        _solde: float
+        deposer(montant)
+        retirer(montant)
     }
 
-    class PointCouleur {
-        couleur: str
-        __init__(x: int, y: int, couleur: str)
+    class CompteEpargne {
+        taux: float
+        appliquer_interets()
     }
 
-    class PointTitre {
-        titre: str
-        __init__(x: int, y: int, titre: str)
+    class CompteCredit {
+        limite_credit: float
+        retirer(montant)
     }
 
-    Point <|-- PointCouleur
-    Point <|-- PointTitre
+    CompteBancaire <|-- CompteEpargne
+    CompteBancaire <|-- CompteCredit
 ```
 
 </div>
 
-Le code Python correspondant serait le suivant :
-
-```python
-class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def distance(self, other):
-        return ((self.x - other.x) ** 2 + (self.y - other.y) ** 2) ** 0.5
-
-class PointCouleur(Point):
-    def __init__(self, x, y, couleur):
-        super().__init__(x, y)
-        self.couleur = couleur
-
-class PointTitre(Point):
-    def __init__(self, x, y, titre):
-        super().__init__(x, y)
-        self.titre = titre
-```
-
-Dans cet exemple, la classe `PointCouleur` hérite de la classe `Point` en
-spécifiant `Point` entre parenthèses après le nom de la classe. Cela signifie
-que `PointCouleur` hérite de tous les attributs et méthodes de la classe `Point`.
-La méthode `__init__` de la classe `PointCouleur` appelle la méthode `__init__`
-de la classe `Point` en utilisant la fonction `super()`. Cela permet d'initialiser
-les attributs de la classe `Point` avant d'ajouter l'attribut `couleur`.
-
-Ainsi, l'héritage permet de créer une hiérarchie de classes où les classes
-filles héritent des attributs et des méthodes des classes mères.
-
 ## La méthode `super()`
 
-La fonction `super()` est utilisée pour appeler un attribut ou une méthode de
-la classe mère depuis une classe fille. Elle est souvent utilisée dans les
-méthodes `__init__` pour initialiser les attributs de la classe mère avant
-d'ajouter des attributs spécifiques à la classe fille comme dans l'exemple
-précédent.
+`super()` retourne un proxy vers la **classe suivante dans le MRO** (l'ordre de
+résolution des méthodes). Elle est le moyen recommandé d'appeler une méthode de
+la classe mère depuis une classe fille.
 
-Il serait également possible d'appeler directement la méthode de la classe mère
-comme suit :
+Son usage le plus courant est dans `__init__` pour initialiser la partie héritée
+avant d'ajouter les attributs spécifiques à la classe fille :
 
 ```python
-class PointCouleur(Point):
-    def __init__(self, x, y, couleur):
-        Point.__init__(self, x, y)
-        self.couleur = couleur
+class CompteEpargne(CompteBancaire):
+    def __init__(self, titulaire, solde=0.0, taux=0.02):
+        super().__init__(titulaire, solde)  # ← délègue à CompteBancaire.__init__
+        self.taux = taux                   # ← attribut propre à CompteEpargne
 ```
 
-Toutefois, l'utilisation de `super()` est recommandée car elle permet de gérer
-automatiquement la hiérarchie des classes. De plus, la méthode `super()` est
-particulièrement utile également pour étendre une méthode de la classe mère
-dans une classe fille plutôt que de la remplacer complètement. Nous verrons
-ceci à la section [polymorphisme](./polymorphisme.mdx).
-ceci à la section [polymorphisme](./polymorphisme.mdx).
+On pourrait appeler `CompteBancaire.__init__(self, titulaire, solde)` directement,
+mais `super()` est préférable car elle **s'adapte automatiquement** à la
+hiérarchie, notamment en cas d'héritage multiple.
+
+`super()` s'utilise aussi pour **étendre** une méthode plutôt que la remplacer :
+
+```python
+class CompteEpargne(CompteBancaire):
+    def retirer(self, montant):
+        print(f"Retrait depuis un compte épargne : frais de 0.50 $")
+        super().retirer(montant + 0.50)   # appelle la logique de la classe mère
+```
+
+## Héritage multiple
+
+En Python, une classe peut hériter de **plusieurs classes mères** simultanément.
+
+```python
+class Notifiable:
+    def notifier(self, message):
+        print(f"[Notification] {message}")
+
+class CompteEpargneNotifiable(CompteEpargne, Notifiable):
+    def appliquer_interets(self):
+        super().appliquer_interets()
+        self.notifier(f"Intérêts appliqués. Nouveau solde : {self._solde:.2f} $")
+
+c = CompteEpargneNotifiable("Alice", 1000, taux=0.05)
+c.appliquer_interets()
+# [Notification] Intérêts appliqués. Nouveau solde : 1050.00 $
+```
+
+L'héritage multiple doit être utilisé avec **parcimonie** : il peut rendre le
+code difficile à comprendre et à maintenir. Préférez la [composition](./composition_heritage)
+lorsque possible.
+
+### Le problème du diamant
+
+Un problème classique de l'héritage multiple survient quand deux classes mères
+héritent elles-mêmes d'une même classe :
+
+<div style={{"text-align": "center"}}>
+
+```mermaid
+classDiagram
+    class A {
+        foo()
+    }
+    class B {
+        foo()
+    }
+    class C {
+        foo()
+    }
+    class D {
+        foo()
+    }
+    A <|-- B
+    A <|-- C
+    B <|-- D
+    C <|-- D
+```
+
+</div>
+
+Quand `D.foo()` est appelé, quelle version utiliser — celle de `B` ou de `C` ?
+Python résout cette ambiguïté avec le **MRO**.
+
+## Ordre de résolution des méthodes (MRO)
+
+Le **MRO** (*Method Resolution Order*) est l'ordre dans lequel Python parcourt
+les classes pour trouver une méthode. Il est calculé avec l'algorithme **C3**,
+qui garantit un ordre cohérent et sans ambiguïté.
+
+On peut consulter le MRO d'une classe avec `.__mro__` :
+
+```python
+class A:
+    def foo(self): print("A")
+
+class B(A):
+    def foo(self): print("B")
+
+class C(A):
+    def foo(self): print("C")
+
+class D(B, C):
+    pass
+
+print(D.__mro__)
+# (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)
+
+D().foo()  # "B" — Python prend la première définition dans le MRO
+```
+
+Le MRO garantit que :
+1. La classe elle-même est toujours cherchée en premier.
+2. L'ordre des classes mères déclaré est respecté.
+3. Chaque classe n'apparaît qu'une seule fois.
+
+## Héritage coopératif
+
+Lorsque plusieurs classes d'une hiérarchie multiple définissent `__init__`,
+l'**héritage coopératif** garantit que chaque classe est initialisée **une seule
+fois** et dans le bon ordre, en s'appuyant sur le MRO et `super()`.
+
+Principe : chaque classe traite ses propres paramètres, puis transmet le reste
+via `**kwargs` à `super().__init__()`.
+
+```python
+class Notifiable:
+    def __init__(self, email, **kwargs):
+        self.email = email
+        super().__init__(**kwargs)   # transmet les kwargs restants
+
+    def notifier(self, message):
+        print(f"[{self.email}] {message}")
+
+class CompteBancaire:
+    def __init__(self, titulaire, solde=0.0, **kwargs):
+        self.titulaire = titulaire
+        self._solde = solde
+        super().__init__(**kwargs)
+
+class CompteEpargneNotifiable(Notifiable, CompteBancaire):
+    def __init__(self, titulaire, solde, taux, email):
+        super().__init__(titulaire=titulaire, solde=solde, email=email)
+        self.taux = taux
+
+c = CompteEpargneNotifiable("Alice", 1000, taux=0.05, email="alice@exemple.com")
+print(c.titulaire)  # Alice
+print(c.email)      # alice@exemple.com
+c.notifier("Bienvenue !")
+```
+
+Sans héritage coopératif, certaines classes dans la chaîne pourraient être
+initialisées deux fois ou pas du tout dans un scénario en diamant.

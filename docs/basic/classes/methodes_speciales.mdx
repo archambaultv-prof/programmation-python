@@ -1,0 +1,171 @@
+---
+sidebar_label: Méthodes spéciales
+sidebar_position: 2
+description: Méthodes spéciales (dunder methods) en Python
+---
+
+# Méthodes spéciales
+
+Les **méthodes spéciales** (ou *dunder methods*, de l'anglais *double underscore*)
+sont des méthodes dont le nom est encadré de deux underscores : `__nom__`. Python
+les appelle **automatiquement** dans des contextes bien précis — jamais directement
+par le programmeur. Elles permettent à vos classes de s'intégrer naturellement
+avec les opérateurs, fonctions et structures de Python.
+
+Par exemple, quand vous écrivez `print(compte)`, Python cherche et appelle
+`compte.__str__()`. Quand vous écrivez `a + b`, Python appelle `a.__add__(b)`.
+Définir ces méthodes, c'est « apprendre » à Python comment manipuler vos objets.
+
+## `__str__` et `__repr__`
+
+Ces deux méthodes contrôlent la **représentation textuelle** d'un objet.
+
+| Méthode | Appelée par | Destinée à |
+|---------|------------|------------|
+| `__str__` | `print()`, `str()` | L'utilisateur final — lisible |
+| `__repr__` | `repr()`, console interactive | Le développeur — non ambigu, idéalement reproductible |
+
+```python
+class CompteBancaire:
+    def __init__(self, titulaire, solde=0.0):
+        self.titulaire = titulaire
+        self._solde = solde
+
+    def __str__(self):
+        return f"Compte de {self.titulaire} — Solde : {self._solde:.2f} $"
+
+    def __repr__(self):
+        return f"CompteBancaire(titulaire={self.titulaire!r}, solde={self._solde})"
+
+c = CompteBancaire("Alice", 1000)
+print(c)        # Compte de Alice — Solde : 1000.00 $
+print(repr(c))  # CompteBancaire(titulaire='Alice', solde=1000)
+```
+
+:::caution Piège : `print()` sur une liste
+Quand un objet est **contenu dans une liste**, `print()` appelle `__repr__` sur
+les éléments — pas `__str__`. C'est une source fréquente de confusion.
+
+```python
+comptes = [CompteBancaire("Alice", 1000), CompteBancaire("Bob", 500)]
+print(comptes[0])  # Compte de Alice — Solde : 1000.00 $  → __str__
+print(comptes)     # [CompteBancaire(...), CompteBancaire(...)]  → __repr__
+```
+
+Si seulement `__repr__` est défini, `str()` l'utilisera comme repli. L'inverse
+n'est pas vrai.
+:::
+
+## Opérateurs de comparaison
+
+Ces méthodes sont appelées automatiquement par les opérateurs `==`, `<`, etc.
+
+```python
+class CompteBancaire:
+    def __init__(self, titulaire, solde=0.0):
+        self.titulaire = titulaire
+        self._solde = solde
+
+    def __eq__(self, autre):
+        return self.titulaire == autre.titulaire
+
+    def __lt__(self, autre):
+        return self._solde < autre._solde
+
+    def __le__(self, autre):
+        return self._solde <= autre._solde
+
+c1 = CompteBancaire("Alice", 1000)
+c2 = CompteBancaire("Bob",   500)
+c3 = CompteBancaire("Alice", 300)
+
+print(c1 == c3)  # True  — même titulaire
+print(c2 < c1)   # True  — solde de Bob < solde de Alice
+```
+
+:::info `functools.total_ordering`
+Si vous définissez `__eq__` et **un seul** opérateur de comparaison (`__lt__`
+par exemple), le décorateur `@functools.total_ordering` déduit automatiquement
+les autres (`__gt__`, `__le__`, `__ge__`).
+:::
+
+## Opérateurs arithmétiques
+
+```python
+class CompteBancaire:
+    def __init__(self, titulaire, solde=0.0):
+        self.titulaire = titulaire
+        self._solde = solde
+
+    def __add__(self, autre):
+        """Fusionne deux comptes — retourne un nouveau compte."""
+        nouveau_titulaire = f"{self.titulaire} & {autre.titulaire}"
+        return CompteBancaire(nouveau_titulaire, self._solde + autre._solde)
+
+    def __str__(self):
+        return f"Compte({self.titulaire}, {self._solde:.2f} $)"
+
+c1 = CompteBancaire("Alice", 1000)
+c2 = CompteBancaire("Bob",   500)
+c3 = c1 + c2
+print(c3)  # Compte(Alice & Bob, 1500.00 $)
+```
+
+Voici les méthodes arithmétiques les plus courantes :
+
+| Méthode | Opérateur |
+|---------|-----------|
+| `__add__(self, other)` | `+` |
+| `__sub__(self, other)` | `-` |
+| `__mul__(self, other)` | `*` |
+| `__truediv__(self, other)` | `/` |
+| `__floordiv__(self, other)` | `//` |
+| `__mod__(self, other)` | `%` |
+
+## Longueur et accès par index
+
+Ces méthodes permettent à vos objets de se comporter comme des conteneurs.
+
+```python
+class Portefeuille:
+    """Un portefeuille contenant plusieurs comptes."""
+    def __init__(self):
+        self._comptes = []
+
+    def ajouter(self, compte):
+        self._comptes.append(compte)
+
+    def __len__(self):
+        return len(self._comptes)
+
+    def __getitem__(self, index):
+        return self._comptes[index]
+
+    def __str__(self):
+        return f"Portefeuille ({len(self)} comptes)"
+
+p = Portefeuille()
+p.ajouter(CompteBancaire("Alice", 1000))
+p.ajouter(CompteBancaire("Bob",   500))
+
+print(len(p))    # 2
+print(p[0])      # accès par index — appelle __getitem__
+for c in p:      # itération — Python utilise __getitem__ ou __iter__
+    print(c)
+```
+
+## Récapitulatif des méthodes spéciales courantes
+
+| Méthode | Contexte d'appel |
+|---------|-----------------|
+| `__init__(self, ...)` | Création d'une instance |
+| `__del__(self)` | Destruction de l'instance |
+| `__str__(self)` | `print()`, `str()` |
+| `__repr__(self)` | `repr()`, console |
+| `__eq__(self, other)` | `==` |
+| `__lt__(self, other)` | `<` |
+| `__add__(self, other)` | `+` |
+| `__len__(self)` | `len()` |
+| `__getitem__(self, key)` | `obj[key]` |
+| `__contains__(self, item)` | `item in obj` |
+| `__iter__(self)` | Boucle `for`, `list()`, etc. |

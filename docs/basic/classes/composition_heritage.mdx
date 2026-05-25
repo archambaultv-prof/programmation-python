@@ -1,0 +1,147 @@
+---
+sidebar_label: Composition vs héritage
+sidebar_position: 6
+description: Composition et héritage en Python
+---
+
+# Composition vs héritage
+
+Deux mécanismes fondamentaux permettent de réutiliser du code en POO :
+l'**héritage** et la **composition**. Choisir le bon mécanisme améliore la
+lisibilité, la flexibilité et la maintenabilité du code.
+
+## Héritage — relation « est-un »
+
+L'héritage convient lorsqu'une classe **est une** spécialisation d'une autre.
+On dit que la relation est de type **« est-un »** (*is-a*).
+
+> Un `Chien` *est un* `Animal`. Un `Etudiant` *est une* `Personne`.
+
+```python
+class Animal:
+    def __init__(self, nom):
+        self.nom = nom
+
+    def respirer(self):
+        print(f"{self.nom} respire.")
+
+class Chien(Animal):
+    def aboyer(self):
+        print(f"{self.nom} : Wouf !")
+
+rex = Chien("Rex")
+rex.respirer()  # Rex respire.
+rex.aboyer()    # Rex : Wouf !
+```
+
+## Composition — relation « a-un »
+
+La composition convient lorsqu'une classe **contient** une autre classe comme
+composante. On dit que la relation est de type **« a-un »** (*has-a*).
+
+> Une `Voiture` *a un* `Moteur`. Un `Ordinateur` *a un* `Processeur`.
+
+Au lieu d'hériter, on crée simplement un attribut qui est une instance de
+l'autre classe :
+
+```python
+class Moteur:
+    def __init__(self, puissance):
+        self.puissance = puissance
+
+    def demarrer(self):
+        print(f"Moteur {self.puissance}ch démarré.")
+
+    def arreter(self):
+        print("Moteur arrêté.")
+
+class Voiture:
+    def __init__(self, marque, puissance):
+        self.marque = marque
+        self.moteur = Moteur(puissance)   # composition
+
+    def demarrer(self):
+        print(f"{self.marque} : ")
+        self.moteur.demarrer()
+
+ma_voiture = Voiture("Toyota", 150)
+ma_voiture.demarrer()
+# Toyota :
+# Moteur 150ch démarré.
+```
+
+## Pourquoi préférer la composition ?
+
+:::tip Règle générale
+*Prefer composition over inheritance* (préférez la composition à l'héritage) est
+une recommandation classique en génie logiciel.
+:::
+
+L'héritage crée un **couplage fort** entre la classe mère et la classe fille.
+Toute modification de la classe mère peut provoquer des effets de bord dans les
+classes filles, parfois de façon inattendue. Plus la hiérarchie est profonde,
+plus ce risque augmente.
+
+La composition est plus **flexible** :
+
+- On peut changer la composante (le `Moteur`) sans modifier la `Voiture`.
+- On peut partager une composante entre plusieurs classes sans lien d'héritage.
+- On peut remplacer une composante par une autre à l'exécution.
+
+```python
+class MoteurElectrique:
+    def __init__(self, puissance):
+        self.puissance = puissance
+
+    def demarrer(self):
+        print(f"Moteur électrique {self.puissance}kW démarré silencieusement.")
+
+# On change simplement le moteur, sans toucher à Voiture
+tesla = Voiture("Tesla", 300)
+tesla.moteur = MoteurElectrique(300)
+tesla.demarrer()
+```
+
+## Quand utiliser l'héritage ?
+
+L'héritage reste approprié lorsque :
+
+1. La relation **« est-un »** est clairement vraie et stable dans le temps.
+2. La classe fille a besoin de **redéfinir** le comportement de la classe mère
+   (polymorphisme).
+3. On veut garantir une **interface commune** à travers une classe abstraite.
+
+```python
+from abc import ABC, abstractmethod
+
+class Forme(ABC):
+    @abstractmethod
+    def aire(self) -> float:
+        pass
+
+class Rectangle(Forme):      # Un Rectangle EST UNE Forme
+    def __init__(self, l, h):
+        self.l = l
+        self.h = h
+
+    def aire(self) -> float:
+        return self.l * self.h
+
+class Cercle(Forme):          # Un Cercle EST UNE Forme
+    def __init__(self, r):
+        self.r = r
+
+    def aire(self) -> float:
+        import math
+        return math.pi * self.r ** 2
+```
+
+## Résumé
+
+| | Héritage | Composition |
+|---|---|---|
+| Relation | « est-un » | « a-un » |
+| Couplage | Fort | Faible |
+| Flexibilité | Moindre | Élevée |
+| Cas typique | Polymorphisme, interface commune | Réutilisation de composantes |
+| Risque | Modifications en cascade | Délégation explicite plus verbeuse |
