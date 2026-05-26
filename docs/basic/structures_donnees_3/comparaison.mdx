@@ -12,6 +12,7 @@ description: Comparaison des structures de données
 | Pile (LIFO) | Opérations `push`/`pop` en $O(1)$ <br/> Idéale pour l'historique et la récursion | Accès limité au sommet <br/> Pas de recherche efficace |
 | File (FIFO) | Ajout/retrait en $O(1)$ avec `deque` <br/> Utile pour les files d'attente | Accès limité aux extrémités <br/> Pas d'accès direct à un élément interne |
 | Dictionnaire (`dict`) | Accès, insertion et suppression en $O(1)$ en moyenne <br/> Structure clé-valeur très pratique | Coût mémoire plus élevé <br/> Non trié |
+| Liste chaînée | Insertion/suppression en tête en $O(1)$ <br/> Taille dynamique sans réallocation | Accès par index lent $O(n)$ <br/> Coût mémoire supplémentaire (pointeurs) |
 | Arbre binaire de recherche (ABR) | Données ordonnées <br/> Recherche, insertion et suppression en $O(\log n)$ en moyenne | Peut se déséquilibrer (pire cas $O(n)$) <br/> Implémentation plus complexe |
 
 ## Résumé rapide
@@ -20,5 +21,6 @@ description: Comparaison des structures de données
 - **Pile** : traitement en ordre dernier entré, premier sorti (LIFO).
 - **File** : traitement en ordre premier entré, premier sorti (FIFO).
 - **Dictionnaire** : retrouver rapidement une valeur à partir d'une clé.
+- **Liste chaînée** : insertions/suppressions fréquentes en début ou en milieu de séquence sans réallocation.
 - **ABR** : données ordonnées avec beaucoup d'opérations de recherche, d'insertion et de suppression.
 
